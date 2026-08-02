@@ -1,0 +1,46 @@
+project:
+  type: book
+  output-dir: _book
+
+book:
+  title: "Entropy-Based Learning"
+  subtitle: "Principles, Methods, and Scientific Applications"
+  author: "Yatao Bian"
+  date: today
+  description: >
+    An introduction to modern entropy- and energy-based learning, spanning the
+    maximum-entropy and minimum-entropy principles, energy-based models, and
+    their applications to scientific and reasoning-oriented AI.
+  site-url: "https://yataobian.com/"
+  repo-url: "https://github.com/yataobian"
+  chapters:
+    - index.qmd
+    - intro.qmd
+    - part: "Part I — Foundations"
+      chapters:
+        - chapters/01-entropy.qmd
+        - chapters/02-energy-models.qmd
+    - part: "Part II — Methods"
+      chapters:
+        - chapters/03-max-entropy.qmd
+        - chapters/04-min-entropy.qmd
+        - chapters/05-energy-reasoning.qmd
+    - part: "Part III — Applications"
+      chapters:
+        - chapters/06-ai-for-science.qmd
+    - summary.qmd
+    - references.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    code-fold: true
+    number-sections: true
+
+execute:
+  freeze: auto
+  warning: false
+  error: false

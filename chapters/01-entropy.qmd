@@ -1,0 +1,43 @@
+# Entropy and the Maximum Entropy Principle
+
+## Shannon entropy
+
+For a discrete random variable $X$ with probability mass function $p(x)$, the
+**Shannon entropy** is
+
+$$
+H(p) = -\sum_{x} p(x) \log p(x),
+$$
+
+which quantifies the average uncertainty (in nats or bits) of $X$. Entropy is
+maximized by the uniform distribution and minimized (equal to zero) by a
+deterministic one.
+
+## The maximum entropy principle
+
+Given constraints — typically moment constraints of the form
+$\mathbb{E}_p[f_k(X)] = \mu_k$ — the **maximum entropy** distribution solves
+
+$$
+\max_{p}\; H(p)
+\quad \text{s.t.} \quad
+\sum_x p(x) = 1,\;\; \mathbb{E}_p[f_k(X)] = \mu_k .
+$$
+
+Its solution is the **Gibbs / exponential-family** distribution
+
+$$
+p(x) = \frac{1}{Z(\boldsymbol{\lambda})}\,
+\exp\!\Big(\textstyle\sum_k \lambda_k f_k(x)\Big),
+$$
+
+where $\boldsymbol{\lambda}$ are Lagrange multipliers and $Z$ is the partition
+function. This is the least-biased distribution consistent with what we know.
+
+## Why it matters for learning
+
+The maximum-entropy principle explains why exponential families are ubiquitous,
+grounds the Boltzmann machine in statistical physics, and — as developed in
+@bian2022energybased — provides a principled basis for defining valuations in
+machine learning. The next chapter formalizes the energy viewpoint that makes
+this connection precise.

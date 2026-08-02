@@ -1,0 +1,19 @@
+# Summary
+
+This book introduced **entropy-based learning** through two complementary
+principles and their shared energy-based substrate:
+
+- **Maximum entropy** yields the least-biased model consistent with given
+  constraints — grounding exponential families, Boltzmann machines, and a
+  principled family of game-theoretic valuations [@bian2022energybased].
+- **Minimum entropy** sharpens a capable model's own predictions, enabling
+  *unsupervised* elicitation of reasoning (EMPO) in a latent semantic space.
+- **Energy-based models** connect the two, and their landscapes can be used at
+  inference time for guidance, refinement, and reasoning-as-optimization.
+
+Taken together, these ideas form a unified lens for building
+**reasoning-empowered scientific foundation models**.
+
+This is an early scaffold; future revisions will add worked examples, code, and
+experiments. For updates, see <https://yataobian.com/> and the
+[Blue Whale Lab](https://bluewhale.yataobian.com/).

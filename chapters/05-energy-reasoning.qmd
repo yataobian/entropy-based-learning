@@ -1,0 +1,43 @@
+# Energy-Based Reasoning, Guidance, and Refinement {#sec-energy-reasoning}
+
+Energy-based thinking is not only a training paradigm; it is also a powerful
+*inference-time* tool. Given an energy function $E_\theta(x)$ that scores how
+"good" a candidate solution $x$ is, we can **guide**, **refine**, and **search**
+at test time.
+
+## Guidance
+
+An energy (or a gradient of it) can steer a generative process toward
+desiderata:
+
+$$
+x \leftarrow x - \eta\, \nabla_x E_\theta(x),
+$$
+
+nudging samples toward lower-energy, higher-quality regions. This is the
+mechanism behind classifier / energy guidance in diffusion-style generation and,
+more broadly, behind constraint-aware generation.
+
+## Refinement
+
+Rather than accepting a single forward pass, we can iteratively **refine** a
+candidate by repeatedly lowering its energy — an optimization view of
+"thinking longer." Refinement trades extra compute for higher-quality outputs,
+and connects naturally to the minimum-entropy view of self-consistent reasoning
+in @sec-min-entropy.
+
+## Reasoning as energy minimization
+
+A unifying perspective:
+
+- A **reasoning problem** defines an (implicit) energy landscape over candidate
+  solution trajectories.
+- **Reasoning** is the process of finding low-energy trajectories — via search,
+  guidance, or refinement.
+- **Learning** shapes the landscape so that correct or self-consistent
+  solutions sit at the minima.
+
+This viewpoint ties together the threads of the book: maximum entropy defines
+principled landscapes, minimum entropy sharpens them from self-supervision, and
+energy-based inference navigates them. The next part turns to where these ideas
+pay off — scientific intelligence.

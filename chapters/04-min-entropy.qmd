@@ -1,0 +1,51 @@
+# Minimum-Entropy Learning {#sec-min-entropy}
+
+## Turning uncertainty into a training signal
+
+Where the maximum-entropy principle asks us to *stay* uncertain given limited
+information, the **minimum-entropy principle** asks the opposite in a different
+regime: when a capable model's own predictions are informative, *reducing*
+their uncertainty can sharpen useful behavior — sometimes with no external
+labels at all.
+
+## EMPO: unsupervised elicitation of reasoning
+
+**EMPO** (Entropy Minimized Policy Optimization) is an early attempt at *fully
+unsupervised* incentivization of large-language-model reasoning, in the spirit
+of R1-Zero-style training. The key idea:
+
+> Enhance reasoning by **minimizing the predictive entropy** of the LLM in a
+> **latent semantic space**, requiring no supervised information.
+
+Concretely, instead of rewarding matches against ground-truth answers, EMPO
+treats *semantic self-consistency* as the objective. Sampled reasoning
+trajectories that concentrate probability mass onto a coherent semantic cluster
+incur low entropy and are reinforced; diffuse, self-inconsistent outputs are
+penalized.
+
+$$
+\mathcal{L}_{\text{EMPO}} \;\propto\;
+H\big(q(\,\cdot \mid x)\big),
+$$
+
+where $q$ is the model's distribution over *semantic meanings* (not raw tokens)
+for a prompt $x$, and $H$ is minimized over the policy.
+
+## Why entropy in semantic space?
+
+- **No labels needed.** The supervision comes from the model's own agreement
+  with itself, unlocking data that has no verifiable answers.
+- **Robust to surface form.** Working in a latent semantic space avoids
+  rewarding superficial token-level repetition and targets meaning.
+- **Complements RLVR.** Minimum-entropy objectives can extend reasoning
+  incentivization beyond domains with automatically checkable answers.
+
+## Contrast with Chapter 3
+
+| Principle | Regime | Effect |
+|---|---|---|
+| Maximum entropy (@sec-max-entropy) | Limited information / constraints | Stay least-biased |
+| Minimum entropy (this chapter) | Capable self-consistent model | Sharpen behavior, elicit reasoning |
+
+The two principles are not in conflict: they apply at different stages and to
+different quantities.

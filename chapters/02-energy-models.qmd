@@ -1,0 +1,35 @@
+# Energy-Based Models
+
+## From energy to probability
+
+An **energy-based model (EBM)** associates to each configuration $x$ a scalar
+*energy* $E_\theta(x)$ and defines a Gibbs distribution
+
+$$
+p_\theta(x) = \frac{1}{Z(\theta)}\, e^{-E_\theta(x)},
+\qquad
+Z(\theta) = \sum_x e^{-E_\theta(x)} .
+$$
+
+Low-energy configurations are more probable. This is precisely the
+maximum-entropy solution of the previous chapter, now with a learnable energy
+function. EBMs are attractive because they impose no normalization constraint on
+$E_\theta$ and can flexibly express dependencies.
+
+## The challenge: the partition function
+
+The difficulty is the partition function $Z(\theta)$, which is generally
+intractable. Learning and inference therefore rely on techniques such as:
+
+- **Sampling** (MCMC, Langevin dynamics) to approximate expectations,
+- **Score matching** and **contrastive** objectives that avoid computing $Z$,
+- **Variational** bounds.
+
+## Connection to this book
+
+Energy-based modeling is the substrate on which later chapters build:
+
+- *Maximum-entropy learning* (@sec-max-entropy) uses Gibbs distributions to
+  derive game-theoretic valuations [@bian2022energybased].
+- *Energy-based reasoning* (@sec-energy-reasoning) treats an energy landscape as
+  an object to guide, refine, and search over at inference time.

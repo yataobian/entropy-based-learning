@@ -1,0 +1,37 @@
+# Maximum-Entropy Learning {#sec-max-entropy}
+
+## Energy-based cooperative games
+
+A striking application of the maximum-entropy principle is to **valuation
+problems** in machine learning: how much does a feature, data point, or player
+contribute to an outcome? The classical answer is the **Shapley value** from
+cooperative game theory, but it is one particular choice among many.
+
+In *Energy-Based Learning for Cooperative Games* [@bian2022energybased], the
+valuation problem is recast through an energy / maximum-entropy lens. A
+cooperative game with characteristic function $v(S)$ over coalitions
+$S \subseteq N$ induces a Gibbs distribution over coalitions,
+
+$$
+p(S) \propto \exp\big(v(S) / \tau\big),
+$$
+
+where $\tau$ controls the temperature. Applying the maximum-entropy principle to
+game-theoretic valuations yields a **new class of valuation methods**, of which
+the Shapley value arises as a special case.
+
+## Why this is useful
+
+- **Principled interpretation.** Valuations become the expectation of a
+  well-defined quantity under a maximum-entropy distribution, giving a
+  principled framework for interpreting AI models.
+- **A family, not a point.** The temperature $\tau$ traces a spectrum of
+  valuation schemes, enabling trade-offs beyond the single Shapley solution.
+- **Bridges to physics.** The same Gibbs machinery links directly to the
+  statistical-physics origins of the Boltzmann machine.
+
+## Takeaway
+
+Maximizing entropy turns "which valuation should I use?" into "which constraints
+do I believe?" — a shift that clarifies assumptions and unifies existing methods
+under one roof.
