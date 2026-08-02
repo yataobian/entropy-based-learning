@@ -2,3 +2,4 @@
 /_book/
 .DS_Store
 CLAUDE.local.md
+**/*.quarto_ipynb
