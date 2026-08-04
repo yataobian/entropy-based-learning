@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="dcterms.date" content="2026-08-02">
-<meta name="description" content="An introduction to modern entropy- and energy-based learning, spanning the maximum-entropy and minimum-entropy principles, energy-based models, and their applications to scientific and reasoning-oriented AI.">
+<meta name="description" content="An introduction to modern entropy- and energy-based learning, spanning the maximum-entropy, minimum-entropy, and minimax-entropy principles, and their applications to scientific and reasoning-oriented AI.">
 
 <title>3&nbsp; Energy-Based Models – Entropy-Based Learning</title>
 <style>
@@ -224,8 +224,14 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/05-energy-reasoning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></span></a>
+  <a href="../chapters/05-minimax-entropy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Minimax-Entropy Learning</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/06-energy-reasoning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></span></a>
   </div>
 </li>
       </ul>
@@ -241,8 +247,8 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/06-ai-for-science.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></span></a>
+  <a href="../chapters/07-ai-for-science.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></span></a>
   </div>
 </li>
       </ul>
@@ -250,7 +256,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -333,7 +339,7 @@ Z(\theta) = \sum_x e^{-E_\theta(x)} .
 <p>Energy-based modeling is the substrate on which later chapters build:</p>
 <ul>
 <li><em>Maximum-entropy learning</em> (<a href="03-max-entropy.html" class="quarto-xref"><span>Chapter 4</span></a>) uses Gibbs distributions to derive game-theoretic valuations <span class="citation" data-cites="bian2022energybased">(<a href="../references.html#ref-bian2022energybased" role="doc-biblioref">Bian et al. 2022</a>)</span>.</li>
-<li><em>Energy-based reasoning</em> (<a href="05-energy-reasoning.html" class="quarto-xref"><span>Chapter 6</span></a>) treats an energy landscape as an object to guide, refine, and search over at inference time.</li>
+<li><em>Energy-based reasoning</em> (<a href="06-energy-reasoning.html" class="quarto-xref"><span>Chapter 7</span></a>) treats an energy landscape as an object to guide, refine, and search over at inference time.</li>
 </ul>
 
 

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="dcterms.date" content="2026-08-03">
-<meta name="description" content="An introduction to modern entropy- and energy-based learning, spanning the maximum-entropy and minimum-entropy principles, energy-based models, and their applications to scientific and reasoning-oriented AI.">
+<meta name="description" content="An introduction to modern entropy- and energy-based learning, spanning the maximum-entropy, minimum-entropy, and minimax-entropy principles, and their applications to scientific and reasoning-oriented AI.">
 
 <title>5&nbsp; Minimum-Entropy Learning – Entropy-Based Learning</title>
 <style>
@@ -28,7 +28,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -38,7 +57,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../chapters/05-energy-reasoning.html" rel="next">
+<link href="../chapters/05-minimax-entropy.html" rel="next">
 <link href="../chapters/03-max-entropy.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -205,8 +224,14 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/05-energy-reasoning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></span></a>
+  <a href="../chapters/05-minimax-entropy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Minimax-Entropy Learning</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/06-energy-reasoning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></span></a>
   </div>
 </li>
       </ul>
@@ -222,8 +247,8 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/06-ai-for-science.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></span></a>
+  <a href="../chapters/07-ai-for-science.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></span></a>
   </div>
 </li>
       </ul>
@@ -231,7 +256,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -253,7 +278,7 @@ window.Quarto = {
   <li><a href="#turning-uncertainty-into-a-training-signal" id="toc-turning-uncertainty-into-a-training-signal" class="nav-link active" data-scroll-target="#turning-uncertainty-into-a-training-signal"><span class="header-section-number">5.1</span> Turning uncertainty into a training signal</a></li>
   <li><a href="#empo-unsupervised-elicitation-of-reasoning" id="toc-empo-unsupervised-elicitation-of-reasoning" class="nav-link" data-scroll-target="#empo-unsupervised-elicitation-of-reasoning"><span class="header-section-number">5.2</span> EMPO: unsupervised elicitation of reasoning</a></li>
   <li><a href="#why-entropy-in-semantic-space" id="toc-why-entropy-in-semantic-space" class="nav-link" data-scroll-target="#why-entropy-in-semantic-space"><span class="header-section-number">5.3</span> Why entropy in semantic space?</a></li>
-  <li><a href="#contrast-with-chapter-3" id="toc-contrast-with-chapter-3" class="nav-link" data-scroll-target="#contrast-with-chapter-3"><span class="header-section-number">5.4</span> Contrast with Chapter 3</a></li>
+  <li><a href="#contrast-with-the-neighbouring-principles" id="toc-contrast-with-the-neighbouring-principles" class="nav-link" data-scroll-target="#contrast-with-the-neighbouring-principles"><span class="header-section-number">5.4</span> Contrast with the neighbouring principles</a></li>
   </ul>
 </nav>
     </div>
@@ -297,7 +322,7 @@ window.Quarto = {
 </section>
 <section id="empo-unsupervised-elicitation-of-reasoning" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="empo-unsupervised-elicitation-of-reasoning"><span class="header-section-number">5.2</span> EMPO: unsupervised elicitation of reasoning</h2>
-<p><strong>EMPO</strong> (Entropy Minimized Policy Optimization) is an early attempt at <em>fully unsupervised</em> incentivization of large-language-model reasoning, in the spirit of R1-Zero-style training. The key idea:</p>
+<p><strong>EMPO</strong> (Entropy Minimized Policy Optimization) is an early attempt at <em>fully unsupervised</em> incentivization of large-language-model reasoning, in the spirit of R1-Zero-style training <span class="citation" data-cites="zhang2025empo">(<a href="../references.html#ref-zhang2025empo" role="doc-biblioref">Zhang et al. 2025</a>)</span>. The key idea:</p>
 <blockquote class="blockquote">
 <p>Enhance reasoning by <strong>minimizing the predictive entropy</strong> of the LLM in a <strong>latent semantic space</strong>, requiring no supervised information.</p>
 </blockquote>
@@ -316,8 +341,8 @@ H\big(q(\,\cdot \mid x)\big),
 <li><strong>Complements RLVR.</strong> Minimum-entropy objectives can extend reasoning incentivization beyond domains with automatically checkable answers.</li>
 </ul>
 </section>
-<section id="contrast-with-chapter-3" class="level2" data-number="5.4">
-<h2 data-number="5.4" class="anchored" data-anchor-id="contrast-with-chapter-3"><span class="header-section-number">5.4</span> Contrast with Chapter 3</h2>
+<section id="contrast-with-the-neighbouring-principles" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="contrast-with-the-neighbouring-principles"><span class="header-section-number">5.4</span> Contrast with the neighbouring principles</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -342,11 +367,21 @@ H\big(q(\,\cdot \mid x)\big),
 <td>Capable self-consistent model</td>
 <td>Sharpen behavior, elicit reasoning</td>
 </tr>
+<tr class="odd">
+<td>Minimax entropy (<a href="05-minimax-entropy.html" class="quarto-xref"><span>Chapter 6</span></a>)</td>
+<td>Choosing which features to model</td>
+<td>Keep the features that most reduce entropy</td>
+</tr>
 </tbody>
 </table>
-<p>The two principles are not in conflict: they apply at different stages and to different quantities.</p>
+<p>These principles are not in conflict: they apply at different stages and to different quantities. The next chapter shows how the first two combine into the third.</p>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-zhang2025empo" class="csl-entry" role="listitem">
+Zhang, Qingyang, Haitao Wu, Changqing Zhang, Peilin Zhao, and Yatao Bian. 2025. <span>“Right Question Is Already Half the Answer: Fully Unsupervised LLM Reasoning Incentivization.”</span> <em>Advances in Neural Information Processing Systems (NeurIPS)</em>. <a href="https://arxiv.org/abs/2504.05812">https://arxiv.org/abs/2504.05812</a>.
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->
@@ -757,8 +792,8 @@ H\big(q(\,\cdot \mid x)\big),
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../chapters/05-energy-reasoning.html" class="pagination-link" aria-label="Energy-Based Reasoning, Guidance, and Refinement">
-        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../chapters/05-minimax-entropy.html" class="pagination-link" aria-label="Minimax-Entropy Learning">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Minimax-Entropy Learning</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

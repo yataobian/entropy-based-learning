@@ -6,10 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-08-03">
-<meta name="description" content="An introduction to modern entropy- and energy-based learning, spanning the maximum-entropy and minimum-entropy principles, energy-based models, and their applications to scientific and reasoning-oriented AI.">
+<meta name="dcterms.date" content="2026-08-04">
+<meta name="description" content="An introduction to modern entropy- and energy-based learning, spanning the maximum-entropy, minimum-entropy, and minimax-entropy principles, and their applications to scientific and reasoning-oriented AI.">
 
-<title>6&nbsp; Energy-Based Reasoning, Guidance, and Refinement – Entropy-Based Learning</title>
+<title>8&nbsp; Entropy-Based Learning for Science – Entropy-Based Learning</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -28,7 +28,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -38,8 +57,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../chapters/06-ai-for-science.html" rel="next">
-<link href="../chapters/04-min-entropy.html" rel="prev">
+<link href="../summary.html" rel="next">
+<link href="../chapters/06-energy-reasoning.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -78,35 +97,6 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -119,7 +109,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/03-max-entropy.html">Part II — Methods</a></li><li class="breadcrumb-item"><a href="../chapters/05-energy-reasoning.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/07-ai-for-science.html">Part III — Applications</a></li><li class="breadcrumb-item"><a href="../chapters/07-ai-for-science.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -205,8 +195,14 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/05-energy-reasoning.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></span></a>
+  <a href="../chapters/05-minimax-entropy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Minimax-Entropy Learning</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/06-energy-reasoning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></span></a>
   </div>
 </li>
       </ul>
@@ -222,8 +218,8 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/06-ai-for-science.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></span></a>
+  <a href="../chapters/07-ai-for-science.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></span></a>
   </div>
 </li>
       </ul>
@@ -231,7 +227,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -250,18 +246,18 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#guidance" id="toc-guidance" class="nav-link active" data-scroll-target="#guidance"><span class="header-section-number">6.1</span> Guidance</a></li>
-  <li><a href="#refinement" id="toc-refinement" class="nav-link" data-scroll-target="#refinement"><span class="header-section-number">6.2</span> Refinement</a></li>
-  <li><a href="#reasoning-as-energy-minimization" id="toc-reasoning-as-energy-minimization" class="nav-link" data-scroll-target="#reasoning-as-energy-minimization"><span class="header-section-number">6.3</span> Reasoning as energy minimization</a></li>
+  <li><a href="#two-synergistic-directions" id="toc-two-synergistic-directions" class="nav-link active" data-scroll-target="#two-synergistic-directions"><span class="header-section-number">8.1</span> Two synergistic directions</a></li>
+  <li><a href="#molecular-foundation-models" id="toc-molecular-foundation-models" class="nav-link" data-scroll-target="#molecular-foundation-models"><span class="header-section-number">8.2</span> Molecular foundation models</a></li>
+  <li><a href="#outlook" id="toc-outlook" class="nav-link" data-scroll-target="#outlook"><span class="header-section-number">8.3</span> Outlook</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/03-max-entropy.html">Part II — Methods</a></li><li class="breadcrumb-item"><a href="../chapters/05-energy-reasoning.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/07-ai-for-science.html">Part III — Applications</a></li><li class="breadcrumb-item"><a href="../chapters/07-ai-for-science.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="sec-energy-reasoning" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></span></h1>
+<h1 class="title"><span id="sec-ai-for-science" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></span></h1>
 </div>
 
 
@@ -272,7 +268,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 3, 2026</p>
+      <p class="date">August 4, 2026</p>
     </div>
   </div>
   
@@ -290,30 +286,30 @@ window.Quarto = {
 </header>
 
 
-<p>Energy-based thinking is not only a training paradigm; it is also a powerful <em>inference-time</em> tool. Given an energy function <span class="math inline">\(E_\theta(x)\)</span> that scores how “good” a candidate solution <span class="math inline">\(x\)</span> is, we can <strong>guide</strong>, <strong>refine</strong>, and <strong>search</strong> at test time.</p>
-<section id="guidance" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="guidance"><span class="header-section-number">6.1</span> Guidance</h2>
-<p>An energy (or a gradient of it) can steer a generative process toward desiderata:</p>
-<p><span class="math display">\[
-x \leftarrow x - \eta\, \nabla_x E_\theta(x),
-\]</span></p>
-<p>nudging samples toward lower-energy, higher-quality regions. This is the mechanism behind classifier / energy guidance in diffusion-style generation and, more broadly, behind constraint-aware generation.</p>
-</section>
-<section id="refinement" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="refinement"><span class="header-section-number">6.2</span> Refinement</h2>
-<p>Rather than accepting a single forward pass, we can iteratively <strong>refine</strong> a candidate by repeatedly lowering its energy — an optimization view of “thinking longer.” Refinement trades extra compute for higher-quality outputs, and connects naturally to the minimum-entropy view of self-consistent reasoning in <a href="04-min-entropy.html" class="quarto-xref"><span>Chapter 5</span></a>.</p>
-</section>
-<section id="reasoning-as-energy-minimization" class="level2" data-number="6.3">
-<h2 data-number="6.3" class="anchored" data-anchor-id="reasoning-as-energy-minimization"><span class="header-section-number">6.3</span> Reasoning as energy minimization</h2>
-<p>A unifying perspective:</p>
+<p>The ultimate aim of this research program is <strong>scientific intelligence</strong> — AI that is not only accurate and robust, but increasingly endowed with reasoning capabilities that enable new modes of scientific inquiry. Entropy- and energy-based learning offer principled tools for this goal.</p>
+<section id="two-synergistic-directions" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="two-synergistic-directions"><span class="header-section-number">8.1</span> Two synergistic directions</h2>
 <ul>
-<li>A <strong>reasoning problem</strong> defines an (implicit) energy landscape over candidate solution trajectories.</li>
-<li><strong>Reasoning</strong> is the process of finding low-energy trajectories — via search, guidance, or refinement.</li>
-<li><strong>Learning</strong> shapes the landscape so that correct or self-consistent solutions sit at the minima.</li>
+<li><strong>Advancing AI with Science.</strong> Fundamental scientific and mathematical theories — statistical physics, information theory, the maximum-entropy principle — inspire principled AI methodologies. Energy-based games (<a href="03-max-entropy.html" class="quarto-xref"><span>Chapter 4</span></a>), entropy-minimized reasoning (<a href="04-min-entropy.html" class="quarto-xref"><span>Chapter 5</span></a>), and minimax-entropy model selection (<a href="05-minimax-entropy.html" class="quarto-xref"><span>Chapter 6</span></a>) are three examples.</li>
+<li><strong>Advancing Science with AI.</strong> The same methods accelerate discovery in the sciences, from molecular representation learning to chemical reasoning.</li>
 </ul>
-<p>This viewpoint ties together the threads of the book: maximum entropy defines principled landscapes, minimum entropy sharpens them from self-supervision, and energy-based inference navigates them. The next part turns to where these ideas pay off — scientific intelligence.</p>
+</section>
+<section id="molecular-foundation-models" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="molecular-foundation-models"><span class="header-section-number">8.2</span> Molecular foundation models</h2>
+<p>A concrete thread runs from <strong>self-supervised graph transformers</strong> for molecular representation learning toward <strong>molecule–language</strong> models with reasoning capabilities. The trajectory mirrors the broader shift from <em>pretraining–finetuning</em> to <em>LLM-style reasoning</em>, and entropy-based objectives provide label-efficient signals where annotated data are scarce.</p>
+</section>
+<section id="outlook" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="outlook"><span class="header-section-number">8.3</span> Outlook</h2>
+<p>A deeper unification may be within reach. The minimax view (<a href="05-minimax-entropy.html" class="quarto-xref"><span>Chapter 6</span></a>) suggests that modelling the world and committing to a decision are two halves of one objective — an idea that echoes the <strong>free-energy principle</strong> proposed as a unified account of perception and action in the brain <span class="citation" data-cites="friston2010free">(<a href="../references.html#ref-friston2010free" role="doc-biblioref">Friston 2010</a>)</span>. Making that correspondence precise, and scaling it to LLMs, agents, and multimodal scientific models, is an open and appealing direction.</p>
+<p>As the research matures, this book will grow to include worked examples, executable code, and reproducible experiments.</p>
+<p>See the <a href="https://bluewhale.yataobian.com/">Blue Whale Lab</a> and <a href="https://yataobian.com/" class="uri">https://yataobian.com/</a> for the latest developments.</p>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-friston2010free" class="csl-entry" role="listitem">
+Friston, Karl. 2010. <span>“The Free-Energy Principle: A Unified Brain Theory?”</span> <em>Nature Reviews Neuroscience</em> 11 (2): 127–38.
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->
@@ -719,13 +715,13 @@ x \leftarrow x - \eta\, \nabla_x E_\theta(x),
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../chapters/04-min-entropy.html" class="pagination-link" aria-label="Minimum-Entropy Learning">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Minimum-Entropy Learning</span></span>
+      <a href="../chapters/06-energy-reasoning.html" class="pagination-link" aria-label="Energy-Based Reasoning, Guidance, and Refinement">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../chapters/06-ai-for-science.html" class="pagination-link" aria-label="Entropy-Based Learning for Science">
-        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../summary.html" class="pagination-link" aria-label="Summary">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Summary</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

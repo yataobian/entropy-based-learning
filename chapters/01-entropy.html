@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="dcterms.date" content="2026-08-02">
-<meta name="description" content="An introduction to modern entropy- and energy-based learning, spanning the maximum-entropy and minimum-entropy principles, energy-based models, and their applications to scientific and reasoning-oriented AI.">
+<meta name="description" content="An introduction to modern entropy- and energy-based learning, spanning the maximum-entropy, minimum-entropy, and minimax-entropy principles, and their applications to scientific and reasoning-oriented AI.">
 
 <title>2&nbsp; Entropy and the Maximum Entropy Principle – Entropy-Based Learning</title>
 <style>
@@ -224,8 +224,14 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/05-energy-reasoning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></span></a>
+  <a href="../chapters/05-minimax-entropy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Minimax-Entropy Learning</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/06-energy-reasoning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></span></a>
   </div>
 </li>
       </ul>
@@ -241,8 +247,8 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/06-ai-for-science.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></span></a>
+  <a href="../chapters/07-ai-for-science.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></span></a>
   </div>
 </li>
       </ul>
@@ -250,7 +256,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -271,7 +277,8 @@ window.Quarto = {
   <ul>
   <li><a href="#shannon-entropy" id="toc-shannon-entropy" class="nav-link active" data-scroll-target="#shannon-entropy"><span class="header-section-number">2.1</span> Shannon entropy</a></li>
   <li><a href="#the-maximum-entropy-principle" id="toc-the-maximum-entropy-principle" class="nav-link" data-scroll-target="#the-maximum-entropy-principle"><span class="header-section-number">2.2</span> The maximum entropy principle</a></li>
-  <li><a href="#why-it-matters-for-learning" id="toc-why-it-matters-for-learning" class="nav-link" data-scroll-target="#why-it-matters-for-learning"><span class="header-section-number">2.3</span> Why it matters for learning</a></li>
+  <li><a href="#minimum-description-length-and-minimax-entropy" id="toc-minimum-description-length-and-minimax-entropy" class="nav-link" data-scroll-target="#minimum-description-length-and-minimax-entropy"><span class="header-section-number">2.3</span> Minimum description length and minimax entropy</a></li>
+  <li><a href="#why-it-matters-for-learning" id="toc-why-it-matters-for-learning" class="nav-link" data-scroll-target="#why-it-matters-for-learning"><span class="header-section-number">2.4</span> Why it matters for learning</a></li>
   </ul>
 </nav>
     </div>
@@ -325,21 +332,39 @@ H(p) = -\sum_{x} p(x) \log p(x),
 \quad \text{s.t.} \quad
 \sum_x p(x) = 1,\;\; \mathbb{E}_p[f_k(X)] = \mu_k .
 \]</span></p>
-<p>Its solution is the <strong>Gibbs / exponential-family</strong> distribution</p>
+<p>Its solution is the <strong>Gibbs / Boltzmann</strong> distribution</p>
 <p><span class="math display">\[
 p(x) = \frac{1}{Z(\boldsymbol{\lambda})}\,
 \exp\!\Big(\textstyle\sum_k \lambda_k f_k(x)\Big),
 \]</span></p>
-<p>where <span class="math inline">\(\boldsymbol{\lambda}\)</span> are Lagrange multipliers and <span class="math inline">\(Z\)</span> is the partition function. This is the least-biased distribution consistent with what we know.</p>
+<p>where <span class="math inline">\(\boldsymbol{\lambda}\)</span> are Lagrange multipliers and <span class="math inline">\(Z\)</span> is the partition function. This is the least-biased distribution consistent with what we know <span class="citation" data-cites="jaynes1957information">(<a href="../references.html#ref-jaynes1957information" role="doc-biblioref">Jaynes 1957</a>)</span>.</p>
 </section>
-<section id="why-it-matters-for-learning" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="why-it-matters-for-learning"><span class="header-section-number">2.3</span> Why it matters for learning</h2>
+<section id="minimum-description-length-and-minimax-entropy" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="minimum-description-length-and-minimax-entropy"><span class="header-section-number">2.3</span> Minimum description length and minimax entropy</h2>
+<p>The maximum-entropy principle can be <em>derived</em> rather than postulated. Under the <strong>minimum description length</strong> (MDL) view <span class="citation" data-cites="grunwald2007mdl">(<a href="../references.html#ref-grunwald2007mdl" role="doc-biblioref">Grünwald 2007</a>)</span>, a model <span class="math inline">\(P\)</span> encodes each state with a code word of length <span class="math inline">\(-\log P(x)\)</span>, and its description length is the expected code length across all datasets consistent with the measured features. Among models matching those features, description length is minimized by the maximum-entropy model <span class="citation" data-cites="feder1986maximum">(<a href="../references.html#ref-feder1986maximum" role="doc-biblioref">Feder 1986</a>)</span>.</p>
+<p>MDL also poses a question that maximum entropy alone cannot answer: which features should be measured in the first place? For maximum-entropy models the description length coincides with the model’s own entropy,</p>
+<p><span class="math display">\[
+L(P_F) = S(P_F),
+\]</span></p>
+<p>so the best feature set <span class="math inline">\(F\)</span> is the one whose maximum-entropy model has the <em>smallest</em> entropy. This is the <strong>minimax entropy</strong> principle, developed in <a href="05-minimax-entropy.html" class="quarto-xref"><span>Chapter 6</span></a>.</p>
+</section>
+<section id="why-it-matters-for-learning" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="why-it-matters-for-learning"><span class="header-section-number">2.4</span> Why it matters for learning</h2>
 <p>The maximum-entropy principle explains why exponential families are ubiquitous, grounds the Boltzmann machine in statistical physics, and — as developed in <span class="citation" data-cites="bian2022energybased">Bian et al. (<a href="../references.html#ref-bian2022energybased" role="doc-biblioref">2022</a>)</span> — provides a principled basis for defining valuations in machine learning. The next chapter formalizes the energy viewpoint that makes this connection precise.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-bian2022energybased" class="csl-entry" role="listitem">
 Bian, Yatao, Yu Rong, Tingyang Xu, Jiaxiang Wu, Andreas Krause, and Junzhou Huang. 2022. <span>“Energy-Based Learning for Cooperative Games, with Applications to Valuation Problems in Machine Learning.”</span> <em>International Conference on Learning Representations (ICLR)</em>. <a href="https://openreview.net/forum?id=xLfAgCroImw">https://openreview.net/forum?id=xLfAgCroImw</a>.
+</div>
+<div id="ref-feder1986maximum" class="csl-entry" role="listitem">
+Feder, M. 1986. <span>“Maximum Entropy as a Special Case of the Minimum Description Length Criterion.”</span> <em>IEEE Transactions on Information Theory</em> 32: 847–49.
+</div>
+<div id="ref-grunwald2007mdl" class="csl-entry" role="listitem">
+Grünwald, Peter D. 2007. <em>The Minimum Description Length Principle</em>. MIT Press.
+</div>
+<div id="ref-jaynes1957information" class="csl-entry" role="listitem">
+Jaynes, Edwin T. 1957. <span>“Information Theory and Statistical Mechanics.”</span> <em>Physical Review</em> 106: 620.
 </div>
 </div>
 </section>

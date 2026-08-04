@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "Entropy-Based Learning",
     "section": "",
-    "text": "Preface\nWelcome to Entropy-Based Learning. This short book is an introductory, evolving companion to a research program on modern entropy- and energy-based learning, developed at the Blue Whale Lab led by Yatao Bian.\nEntropy is one of the deepest bridges between physics, information theory, and machine learning. Two complementary principles organize the material in this book:\n\nThe Maximum Entropy Principle — among all models consistent with the observed constraints, prefer the one that is maximally noncommittal (highest entropy). This principle underlies statistical physics, Boltzmann machines, and a principled class of game-theoretic valuation methods.\nThe Minimum Entropy Principle — when a model’s own predictions can serve as a training signal, reducing predictive uncertainty can elicit capabilities such as reasoning, without external supervision.\n\nTogether with energy-based models, these principles provide a unified lens for reasoning, guidance, refinement, and scientific intelligence.\n\n\n\n\n\n\nNote\n\n\n\nThis is an early scaffold. Chapters are intentionally concise and will be expanded over time. Feedback and contributions are welcome.\n\n\nTo learn more about the underlying research, visit https://yataobian.com/ and the Blue Whale Lab.",
+    "text": "Preface\nWelcome to Entropy-Based Learning. This short book is an introductory, evolving companion to a research program on modern entropy- and energy-based learning, developed at the Blue Whale Lab led by Yatao Bian.\nEntropy is one of the deepest bridges between physics, information theory, and machine learning. Three complementary principles organize the material in this book:\n\nThe Maximum Entropy Principle — among all models consistent with the observed constraints, prefer the one that is maximally noncommittal (highest entropy). This principle underlies statistical physics, Boltzmann machines, and a principled class of game-theoretic valuation methods.\nThe Minimum Entropy Principle — when a model’s own predictions can serve as a training signal, reducing predictive uncertainty can elicit capabilities such as reasoning, without external supervision.\nThe Minimax Entropy Principle — maximize entropy given the features a model includes, then choose the features that make that entropy as small as possible. This couples the two principles above and turns model selection itself into a well-posed problem (Zhu et al. 1997; Carcamo et al. 2025).\n\nTogether with energy-based models, these principles provide a unified lens for reasoning, guidance, refinement, and scientific intelligence.\n\n\n\n\n\n\nNote\n\n\n\nThis is an early scaffold. Chapters are intentionally concise and will be expanded over time. Feedback and contributions are welcome.\n\n\nTo learn more about the underlying research, visit https://yataobian.com/ and the Blue Whale Lab.\n\n\n\n\nCarcamo, David P., Nicholas J. Weaver, Purushottam D. Dixit, and Christopher W. Lynn. 2025. “Minimax Entropy: The Statistical Physics of Optimal Models.” arXiv Preprint arXiv:2505.01607. https://arxiv.org/abs/2505.01607.\n\n\nZhu, Song Chun, Ying Nian Wu, and David Mumford. 1997. “Minimax Entropy Principle and Its Application to Texture Modeling.” Neural Computation 9: 1627–60.",
     "crumbs": [
       "Preface"
     ]
@@ -14,7 +14,7 @@
     "href": "intro.html",
     "title": "1  Introduction",
     "section": "",
-    "text": "1.1 Why entropy?\nModern machine learning has long been nurtured by scientific disciplines. A canonical example is the Boltzmann machine, rooted in statistical physics and motivated by the Maximum Entropy Principle. This book takes entropy — and its close relative, energy — as the organizing thread for a family of learning methods that are both principled and practically effective.\nWe study two directions that are connected:",
+    "text": "1.1 Why entropy?\nModern machine learning has long been nurtured by scientific disciplines. A canonical example is the Boltzmann machine, rooted in statistical physics and motivated by the Maximum Entropy Principle. This book takes entropy — and its close relative, energy — as the organizing thread for a family of learning methods that are both principled and practically effective.\nWe study three directions that are connected:",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
     ]
@@ -24,7 +24,7 @@
     "href": "intro.html#why-entropy",
     "title": "1  Introduction",
     "section": "",
-    "text": "Maximizing entropy to obtain the least-biased model consistent with given constraints. This yields exponential-family / Gibbs distributions and, as we will see, a principled framework for valuation problems in machine learning (Bian et al. 2022).\nMinimizing entropy to sharpen a model’s own predictions. When applied to large language models in a latent semantic space, this idea enables fully unsupervised elicitation of reasoning capabilities.",
+    "text": "Maximizing entropy to obtain the least-biased model consistent with given constraints. This yields exponential-family / Gibbs distributions and, as we will see, a principled framework for valuation problems in machine learning (Bian et al. 2022).\nMinimizing entropy to sharpen a model’s own predictions. When applied to large language models in a latent semantic space, this idea enables fully unsupervised elicitation of reasoning capabilities.\nMinimaxing entropy to decide which features a model should include at all. The optimal features are those whose maximum-entropy model has the minimum entropy, which makes model selection a well-posed problem (Carcamo et al. 2025).",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
     ]
@@ -34,7 +34,7 @@
     "href": "intro.html#roadmap",
     "title": "1  Introduction",
     "section": "1.2 Roadmap",
-    "text": "1.2 Roadmap\n\nPart I — Foundations introduces entropy, the maximum-entropy principle, and energy-based models.\nPart II — Methods develops maximum-entropy learning, minimum-entropy learning, and energy-based reasoning / guidance / refinement.\nPart III — Applications connects these ideas to scientific foundation models and AI-for-science.\n\n\n\n\n\nBian, Yatao, Yu Rong, Tingyang Xu, Jiaxiang Wu, Andreas Krause, and Junzhou Huang. 2022. “Energy-Based Learning for Cooperative Games, with Applications to Valuation Problems in Machine Learning.” International Conference on Learning Representations (ICLR). https://openreview.net/forum?id=xLfAgCroImw.",
+    "text": "1.2 Roadmap\n\nPart I — Foundations introduces entropy, the maximum-entropy principle, energy-based models, and the minimum-description-length view that leads to minimax entropy.\nPart II — Methods develops maximum-entropy, minimum-entropy, and minimax-entropy learning, together with energy-based reasoning / guidance / refinement.\nPart III — Applications connects these ideas to scientific foundation models and AI-for-science.\n\n\n\n\n\nBian, Yatao, Yu Rong, Tingyang Xu, Jiaxiang Wu, Andreas Krause, and Junzhou Huang. 2022. “Energy-Based Learning for Cooperative Games, with Applications to Valuation Problems in Machine Learning.” International Conference on Learning Representations (ICLR). https://openreview.net/forum?id=xLfAgCroImw.\n\n\nCarcamo, David P., Nicholas J. Weaver, Purushottam D. Dixit, and Christopher W. Lynn. 2025. “Minimax Entropy: The Statistical Physics of Optimal Models.” arXiv Preprint arXiv:2505.01607. https://arxiv.org/abs/2505.01607.",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
     ]
@@ -55,7 +55,18 @@
     "href": "chapters/01-entropy.html#the-maximum-entropy-principle",
     "title": "2  Entropy and the Maximum Entropy Principle",
     "section": "2.2 The maximum entropy principle",
-    "text": "2.2 The maximum entropy principle\nGiven constraints — typically moment constraints of the form \\(\\mathbb{E}_p[f_k(X)] = \\mu_k\\) — the maximum entropy distribution solves\n\\[\n\\max_{p}\\; H(p)\n\\quad \\text{s.t.} \\quad\n\\sum_x p(x) = 1,\\;\\; \\mathbb{E}_p[f_k(X)] = \\mu_k .\n\\]\nIts solution is the Gibbs / exponential-family distribution\n\\[\np(x) = \\frac{1}{Z(\\boldsymbol{\\lambda})}\\,\n\\exp\\!\\Big(\\textstyle\\sum_k \\lambda_k f_k(x)\\Big),\n\\]\nwhere \\(\\boldsymbol{\\lambda}\\) are Lagrange multipliers and \\(Z\\) is the partition function. This is the least-biased distribution consistent with what we know.",
+    "text": "2.2 The maximum entropy principle\nGiven constraints — typically moment constraints of the form \\(\\mathbb{E}_p[f_k(X)] = \\mu_k\\) — the maximum entropy distribution solves\n\\[\n\\max_{p}\\; H(p)\n\\quad \\text{s.t.} \\quad\n\\sum_x p(x) = 1,\\;\\; \\mathbb{E}_p[f_k(X)] = \\mu_k .\n\\]\nIts solution is the Gibbs / Boltzmann distribution\n\\[\np(x) = \\frac{1}{Z(\\boldsymbol{\\lambda})}\\,\n\\exp\\!\\Big(\\textstyle\\sum_k \\lambda_k f_k(x)\\Big),\n\\]\nwhere \\(\\boldsymbol{\\lambda}\\) are Lagrange multipliers and \\(Z\\) is the partition function. This is the least-biased distribution consistent with what we know (Jaynes 1957).",
+    "crumbs": [
+      "Part I — Foundations",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Entropy and the Maximum Entropy Principle</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-entropy.html#minimum-description-length-and-minimax-entropy",
+    "href": "chapters/01-entropy.html#minimum-description-length-and-minimax-entropy",
+    "title": "2  Entropy and the Maximum Entropy Principle",
+    "section": "2.3 Minimum description length and minimax entropy",
+    "text": "2.3 Minimum description length and minimax entropy\nThe maximum-entropy principle can be derived rather than postulated. Under the minimum description length (MDL) view (Grünwald 2007), a model \\(P\\) encodes each state with a code word of length \\(-\\log P(x)\\), and its description length is the expected code length across all datasets consistent with the measured features. Among models matching those features, description length is minimized by the maximum-entropy model (Feder 1986).\nMDL also poses a question that maximum entropy alone cannot answer: which features should be measured in the first place? For maximum-entropy models the description length coincides with the model’s own entropy,\n\\[\nL(P_F) = S(P_F),\n\\]\nso the best feature set \\(F\\) is the one whose maximum-entropy model has the smallest entropy. This is the minimax entropy principle, developed in Chapter 6.",
     "crumbs": [
       "Part I — Foundations",
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Entropy and the Maximum Entropy Principle</span>"
@@ -65,8 +76,8 @@
     "objectID": "chapters/01-entropy.html#why-it-matters-for-learning",
     "href": "chapters/01-entropy.html#why-it-matters-for-learning",
     "title": "2  Entropy and the Maximum Entropy Principle",
-    "section": "2.3 Why it matters for learning",
-    "text": "2.3 Why it matters for learning\nThe maximum-entropy principle explains why exponential families are ubiquitous, grounds the Boltzmann machine in statistical physics, and — as developed in Bian et al. (2022) — provides a principled basis for defining valuations in machine learning. The next chapter formalizes the energy viewpoint that makes this connection precise.\n\n\n\n\nBian, Yatao, Yu Rong, Tingyang Xu, Jiaxiang Wu, Andreas Krause, and Junzhou Huang. 2022. “Energy-Based Learning for Cooperative Games, with Applications to Valuation Problems in Machine Learning.” International Conference on Learning Representations (ICLR). https://openreview.net/forum?id=xLfAgCroImw.",
+    "section": "2.4 Why it matters for learning",
+    "text": "2.4 Why it matters for learning\nThe maximum-entropy principle explains why exponential families are ubiquitous, grounds the Boltzmann machine in statistical physics, and — as developed in Bian et al. (2022) — provides a principled basis for defining valuations in machine learning. The next chapter formalizes the energy viewpoint that makes this connection precise.\n\n\n\n\nBian, Yatao, Yu Rong, Tingyang Xu, Jiaxiang Wu, Andreas Krause, and Junzhou Huang. 2022. “Energy-Based Learning for Cooperative Games, with Applications to Valuation Problems in Machine Learning.” International Conference on Learning Representations (ICLR). https://openreview.net/forum?id=xLfAgCroImw.\n\n\nFeder, M. 1986. “Maximum Entropy as a Special Case of the Minimum Description Length Criterion.” IEEE Transactions on Information Theory 32: 847–49.\n\n\nGrünwald, Peter D. 2007. The Minimum Description Length Principle. MIT Press.\n\n\nJaynes, Edwin T. 1957. “Information Theory and Statistical Mechanics.” Physical Review 106: 620.",
     "crumbs": [
       "Part I — Foundations",
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Entropy and the Maximum Entropy Principle</span>"
@@ -99,7 +110,7 @@
     "href": "chapters/02-energy-models.html#connection-to-this-book",
     "title": "3  Energy-Based Models",
     "section": "3.3 Connection to this book",
-    "text": "3.3 Connection to this book\nEnergy-based modeling is the substrate on which later chapters build:\n\nMaximum-entropy learning (Chapter 4) uses Gibbs distributions to derive game-theoretic valuations (Bian et al. 2022).\nEnergy-based reasoning (Chapter 6) treats an energy landscape as an object to guide, refine, and search over at inference time.\n\n\n\n\n\nBian, Yatao, Yu Rong, Tingyang Xu, Jiaxiang Wu, Andreas Krause, and Junzhou Huang. 2022. “Energy-Based Learning for Cooperative Games, with Applications to Valuation Problems in Machine Learning.” International Conference on Learning Representations (ICLR). https://openreview.net/forum?id=xLfAgCroImw.",
+    "text": "3.3 Connection to this book\nEnergy-based modeling is the substrate on which later chapters build:\n\nMaximum-entropy learning (Chapter 4) uses Gibbs distributions to derive game-theoretic valuations (Bian et al. 2022).\nEnergy-based reasoning (Chapter 7) treats an energy landscape as an object to guide, refine, and search over at inference time.\n\n\n\n\n\nBian, Yatao, Yu Rong, Tingyang Xu, Jiaxiang Wu, Andreas Krause, and Junzhou Huang. 2022. “Energy-Based Learning for Cooperative Games, with Applications to Valuation Problems in Machine Learning.” International Conference on Learning Representations (ICLR). https://openreview.net/forum?id=xLfAgCroImw.",
     "crumbs": [
       "Part I — Foundations",
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Energy-Based Models</span>"
@@ -154,7 +165,7 @@
     "href": "chapters/04-min-entropy.html#empo-unsupervised-elicitation-of-reasoning",
     "title": "5  Minimum-Entropy Learning",
     "section": "5.2 EMPO: unsupervised elicitation of reasoning",
-    "text": "5.2 EMPO: unsupervised elicitation of reasoning\nEMPO (Entropy Minimized Policy Optimization) is an early attempt at fully unsupervised incentivization of large-language-model reasoning, in the spirit of R1-Zero-style training. The key idea:\n\nEnhance reasoning by minimizing the predictive entropy of the LLM in a latent semantic space, requiring no supervised information.\n\nConcretely, instead of rewarding matches against ground-truth answers, EMPO treats semantic self-consistency as the objective. Sampled reasoning trajectories that concentrate probability mass onto a coherent semantic cluster incur low entropy and are reinforced; diffuse, self-inconsistent outputs are penalized.\n\\[\n\\mathcal{L}_{\\text{EMPO}} \\;\\propto\\;\nH\\big(q(\\,\\cdot \\mid x)\\big),\n\\]\nwhere \\(q\\) is the model’s distribution over semantic meanings (not raw tokens) for a prompt \\(x\\), and \\(H\\) is minimized over the policy.",
+    "text": "5.2 EMPO: unsupervised elicitation of reasoning\nEMPO (Entropy Minimized Policy Optimization) is an early attempt at fully unsupervised incentivization of large-language-model reasoning, in the spirit of R1-Zero-style training (Zhang et al. 2025). The key idea:\n\nEnhance reasoning by minimizing the predictive entropy of the LLM in a latent semantic space, requiring no supervised information.\n\nConcretely, instead of rewarding matches against ground-truth answers, EMPO treats semantic self-consistency as the objective. Sampled reasoning trajectories that concentrate probability mass onto a coherent semantic cluster incur low entropy and are reinforced; diffuse, self-inconsistent outputs are penalized.\n\\[\n\\mathcal{L}_{\\text{EMPO}} \\;\\propto\\;\nH\\big(q(\\,\\cdot \\mid x)\\big),\n\\]\nwhere \\(q\\) is the model’s distribution over semantic meanings (not raw tokens) for a prompt \\(x\\), and \\(H\\) is minimized over the policy.",
     "crumbs": [
       "Part II — Methods",
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Minimum-Entropy Learning</span>"
@@ -172,90 +183,156 @@
     ]
   },
   {
-    "objectID": "chapters/04-min-entropy.html#contrast-with-chapter-3",
-    "href": "chapters/04-min-entropy.html#contrast-with-chapter-3",
+    "objectID": "chapters/04-min-entropy.html#contrast-with-the-neighbouring-principles",
+    "href": "chapters/04-min-entropy.html#contrast-with-the-neighbouring-principles",
     "title": "5  Minimum-Entropy Learning",
-    "section": "5.4 Contrast with Chapter 3",
-    "text": "5.4 Contrast with Chapter 3\n\n\n\n\n\n\n\n\nPrinciple\nRegime\nEffect\n\n\n\n\nMaximum entropy (Chapter 4)\nLimited information / constraints\nStay least-biased\n\n\nMinimum entropy (this chapter)\nCapable self-consistent model\nSharpen behavior, elicit reasoning\n\n\n\nThe two principles are not in conflict: they apply at different stages and to different quantities.",
+    "section": "5.4 Contrast with the neighbouring principles",
+    "text": "5.4 Contrast with the neighbouring principles\n\n\n\n\n\n\n\n\nPrinciple\nRegime\nEffect\n\n\n\n\nMaximum entropy (Chapter 4)\nLimited information / constraints\nStay least-biased\n\n\nMinimum entropy (this chapter)\nCapable self-consistent model\nSharpen behavior, elicit reasoning\n\n\nMinimax entropy (Chapter 6)\nChoosing which features to model\nKeep the features that most reduce entropy\n\n\n\nThese principles are not in conflict: they apply at different stages and to different quantities. The next chapter shows how the first two combine into the third.\n\n\n\n\nZhang, Qingyang, Haitao Wu, Changqing Zhang, Peilin Zhao, and Yatao Bian. 2025. “Right Question Is Already Half the Answer: Fully Unsupervised LLM Reasoning Incentivization.” Advances in Neural Information Processing Systems (NeurIPS). https://arxiv.org/abs/2504.05812.",
     "crumbs": [
       "Part II — Methods",
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Minimum-Entropy Learning</span>"
     ]
   },
   {
-    "objectID": "chapters/05-energy-reasoning.html",
-    "href": "chapters/05-energy-reasoning.html",
-    "title": "6  Energy-Based Reasoning, Guidance, and Refinement",
+    "objectID": "chapters/05-minimax-entropy.html",
+    "href": "chapters/05-minimax-entropy.html",
+    "title": "6  Minimax-Entropy Learning",
     "section": "",
-    "text": "6.1 Guidance\nEnergy-based thinking is not only a training paradigm; it is also a powerful inference-time tool. Given an energy function \\(E_\\theta(x)\\) that scores how “good” a candidate solution \\(x\\) is, we can guide, refine, and search at test time.\nAn energy (or a gradient of it) can steer a generative process toward desiderata:\n\\[\nx \\leftarrow x - \\eta\\, \\nabla_x E_\\theta(x),\n\\]\nnudging samples toward lower-energy, higher-quality regions. This is the mechanism behind classifier / energy guidance in diffusion-style generation and, more broadly, behind constraint-aware generation.",
+    "text": "6.1 Which features should a model include?\nMaximum entropy (Chapter 4) answers a precise question: given a set of measured features, which model is least biased? It is silent on a prior question — which features should we measure at all?\nEvery model is a lossy compression that trades complexity against uncertainty. Include too few features and the model stays vague; include too many and it ceases to be a compression. For a fixed budget of features, we want the description that leaves the least uncertainty.",
     "crumbs": [
       "Part II — Methods",
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Energy-Based Reasoning, Guidance, and Refinement</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Minimax-Entropy Learning</span>"
     ]
   },
   {
-    "objectID": "chapters/05-energy-reasoning.html#refinement",
-    "href": "chapters/05-energy-reasoning.html#refinement",
-    "title": "6  Energy-Based Reasoning, Guidance, and Refinement",
-    "section": "6.2 Refinement",
-    "text": "6.2 Refinement\nRather than accepting a single forward pass, we can iteratively refine a candidate by repeatedly lowering its energy — an optimization view of “thinking longer.” Refinement trades extra compute for higher-quality outputs, and connects naturally to the minimum-entropy view of self-consistent reasoning in Chapter 5.",
+    "objectID": "chapters/05-minimax-entropy.html#the-minimax-entropy-principle",
+    "href": "chapters/05-minimax-entropy.html#the-minimax-entropy-principle",
+    "title": "6  Minimax-Entropy Learning",
+    "section": "6.2 The minimax entropy principle",
+    "text": "6.2 The minimax entropy principle\nStarting from the minimum description length (MDL) principle (Grünwald 2007), two results follow in sequence. First, among all models consistent with a feature set \\(F\\), the shortest description is the maximum-entropy model (Feder 1986). Second, for such models the description length equals the model’s own entropy, \\(L(P_F) = S(P_F)\\). Choosing features to minimize description length therefore means choosing them to minimize that entropy.\nThe optimal features are the ones producing the maximum-entropy model with minimum entropy (Carcamo et al. 2025):\n\\[\nF^{*} = \\arg\\min_{F}\\; S(P_F),\n\\qquad\nP_F = \\arg\\max_{P}\\;\\big\\{\\, S(P) \\;:\\;\n\\mathbb{E}_P[f_\\mu] = \\langle f_\\mu \\rangle_{\\exp},\\; f_\\mu \\in F \\,\\big\\}.\n\\]\nThe nesting gives the principle its name: maximize entropy on the inside, minimize it on the outside. The best features are those that maximally constrain our expectations while leaving the model maximally random about everything unobserved. The principle was first proposed for texture modeling in computer vision (Zhu et al. 1997).",
     "crumbs": [
       "Part II — Methods",
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Energy-Based Reasoning, Guidance, and Refinement</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Minimax-Entropy Learning</span>"
     ]
   },
   {
-    "objectID": "chapters/05-energy-reasoning.html#reasoning-as-energy-minimization",
-    "href": "chapters/05-energy-reasoning.html#reasoning-as-energy-minimization",
-    "title": "6  Energy-Based Reasoning, Guidance, and Refinement",
-    "section": "6.3 Reasoning as energy minimization",
-    "text": "6.3 Reasoning as energy minimization\nA unifying perspective:\n\nA reasoning problem defines an (implicit) energy landscape over candidate solution trajectories.\nReasoning is the process of finding low-energy trajectories — via search, guidance, or refinement.\nLearning shapes the landscape so that correct or self-consistent solutions sit at the minima.\n\nThis viewpoint ties together the threads of the book: maximum entropy defines principled landscapes, minimum entropy sharpens them from self-supervision, and energy-based inference navigates them. The next part turns to where these ideas pay off — scientific intelligence.",
+    "objectID": "chapters/05-minimax-entropy.html#three-equivalent-views",
+    "href": "chapters/05-minimax-entropy.html#three-equivalent-views",
+    "title": "6  Minimax-Entropy Learning",
+    "section": "6.3 Three equivalent views",
+    "text": "6.3 Three equivalent views\nMinimizing \\(S(P_F)\\) optimizes three quantities at once:\n\nShortest description. Since \\(L(P_F) = S(P_F)\\), the optimum is the most compressed account of the data.\nClosest to the truth. The entropy gap to the true distribution is exactly a divergence, \\(S(P_F) - S(P_{\\text{true}}) =\nD_{\\mathrm{KL}}(P_{\\text{true}} \\Vert P_F)\\), so the optimum is also the most accurate model.\nMost informative features. The information carried by the selected features, \\(I_F = S(P_{\\text{ind}}) - S(P_F)\\), is maximized at the same point.\n\nCompression, accuracy, and informativeness coincide — a reassuring sign that the criterion is the right one.",
     "crumbs": [
       "Part II — Methods",
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Energy-Based Reasoning, Guidance, and Refinement</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Minimax-Entropy Learning</span>"
     ]
   },
   {
-    "objectID": "chapters/06-ai-for-science.html",
-    "href": "chapters/06-ai-for-science.html",
-    "title": "7  Entropy-Based Learning for Science",
+    "objectID": "chapters/05-minimax-entropy.html#solving-it",
+    "href": "chapters/05-minimax-entropy.html#solving-it",
+    "title": "6  Minimax-Entropy Learning",
+    "section": "6.4 Solving it",
+    "text": "6.4 Solving it\nThe difficulty is combinatorial. Each candidate feature set requires solving a maximum-entropy problem for its parameters, and the number of candidate sets grows super-exponentially, so brute-force search is infeasible beyond small systems (Carcamo et al. 2025). The practical workhorse is a greedy algorithm that repeatedly adds whichever remaining feature reduces the entropy most.\nStructure sometimes restores exactness. For trees of pairwise correlations the entropy reduction decomposes into a sum of mutual informations, the problem becomes a maximum-spanning-tree problem, and greedy is optimal. More generally, if entropy reduction is submodular — diminishing returns as features accumulate — greedy comes within \\(1 - 1/e\\) of the optimum (Nemhauser et al. 1978). Whether the minimax entropy objective is submodular in general remains open; where it is not, guarantees can still be recovered in terms of how far the objective departs from submodularity (Bian et al. 2017).",
+    "crumbs": [
+      "Part II — Methods",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Minimax-Entropy Learning</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05-minimax-entropy.html#takeaway",
+    "href": "chapters/05-minimax-entropy.html#takeaway",
+    "title": "6  Minimax-Entropy Learning",
+    "section": "6.5 Takeaway",
+    "text": "6.5 Takeaway\nMinimax entropy couples the two preceding principles into a single criterion: maximize entropy to model the world, minimize entropy to commit to what matters. Maximum entropy supplies possibility, minimum entropy supplies certainty, and the minimax formulation decides which details deserve to be modelled at all.\nThe principle has recently yielded exactly solvable models of large neuronal populations (Lynn et al. 2024), yet its reach in machine learning is largely untapped. Open directions include scalability and sample complexity in high dimensions, realizations for LLMs, agents, and multimodal models, and the relationship to the free-energy principle (Friston 2010).\n\n\n\n\nBian, Andrew An, Joachim M. Buhmann, Andreas Krause, and Sebastian Tschiatschek. 2017. “Guarantees for Greedy Maximization of Non-Submodular Functions with Applications.” International Conference on Machine Learning (ICML), 498–507.\n\n\nCarcamo, David P., Nicholas J. Weaver, Purushottam D. Dixit, and Christopher W. Lynn. 2025. “Minimax Entropy: The Statistical Physics of Optimal Models.” arXiv Preprint arXiv:2505.01607. https://arxiv.org/abs/2505.01607.\n\n\nFeder, M. 1986. “Maximum Entropy as a Special Case of the Minimum Description Length Criterion.” IEEE Transactions on Information Theory 32: 847–49.\n\n\nFriston, Karl. 2010. “The Free-Energy Principle: A Unified Brain Theory?” Nature Reviews Neuroscience 11 (2): 127–38.\n\n\nGrünwald, Peter D. 2007. The Minimum Description Length Principle. MIT Press.\n\n\nLynn, Christopher W., Qiwei Yu, Rich Pang, Stephanie E. Palmer, and William Bialek. 2024. “Exact Minimax Entropy Models of Large-Scale Neuronal Activity.” arXiv Preprint arXiv:2402.00007. https://arxiv.org/abs/2402.00007.\n\n\nNemhauser, George L., Laurence A. Wolsey, and Marshall L. Fisher. 1978. “An Analysis of Approximations for Maximizing Submodular Set Functions—i.” Mathematical Programming 14: 265–94.\n\n\nZhu, Song Chun, Ying Nian Wu, and David Mumford. 1997. “Minimax Entropy Principle and Its Application to Texture Modeling.” Neural Computation 9: 1627–60.",
+    "crumbs": [
+      "Part II — Methods",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Minimax-Entropy Learning</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06-energy-reasoning.html",
+    "href": "chapters/06-energy-reasoning.html",
+    "title": "7  Energy-Based Reasoning, Guidance, and Refinement",
     "section": "",
-    "text": "7.1 Two synergistic directions\nThe ultimate aim of this research program is scientific intelligence — AI that is not only accurate and robust, but increasingly endowed with reasoning capabilities that enable new modes of scientific inquiry. Entropy- and energy-based learning offer principled tools for this goal.",
+    "text": "7.1 Guidance\nEnergy-based thinking is not only a training paradigm; it is also a powerful inference-time tool. Given an energy function \\(E_\\theta(x)\\) that scores how “good” a candidate solution \\(x\\) is, we can guide, refine, and search at test time.\nAn energy (or a gradient of it) can steer a generative process toward desiderata:\n\\[\nx \\leftarrow x - \\eta\\, \\nabla_x E_\\theta(x),\n\\]\nnudging samples toward lower-energy, higher-quality regions. This is the mechanism behind classifier / energy guidance in diffusion-style generation and, more broadly, behind constraint-aware generation.",
     "crumbs": [
-      "Part III — Applications",
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Entropy-Based Learning for Science</span>"
+      "Part II — Methods",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Energy-Based Reasoning, Guidance, and Refinement</span>"
     ]
   },
   {
-    "objectID": "chapters/06-ai-for-science.html#two-synergistic-directions",
-    "href": "chapters/06-ai-for-science.html#two-synergistic-directions",
-    "title": "7  Entropy-Based Learning for Science",
+    "objectID": "chapters/06-energy-reasoning.html#refinement",
+    "href": "chapters/06-energy-reasoning.html#refinement",
+    "title": "7  Energy-Based Reasoning, Guidance, and Refinement",
+    "section": "7.2 Refinement",
+    "text": "7.2 Refinement\nRather than accepting a single forward pass, we can iteratively refine a candidate by repeatedly lowering its energy — an optimization view of “thinking longer.” Refinement trades extra compute for higher-quality outputs, and connects naturally to the minimum-entropy view of self-consistent reasoning in Chapter 5.",
+    "crumbs": [
+      "Part II — Methods",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Energy-Based Reasoning, Guidance, and Refinement</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06-energy-reasoning.html#reasoning-as-energy-minimization",
+    "href": "chapters/06-energy-reasoning.html#reasoning-as-energy-minimization",
+    "title": "7  Energy-Based Reasoning, Guidance, and Refinement",
+    "section": "7.3 Reasoning as energy minimization",
+    "text": "7.3 Reasoning as energy minimization\nA unifying perspective:\n\nA reasoning problem defines an (implicit) energy landscape over candidate solution trajectories.\nReasoning is the process of finding low-energy trajectories — via search, guidance, or refinement.\nLearning shapes the landscape so that correct or self-consistent solutions sit at the minima.\n\nThis viewpoint ties together the threads of the book: maximum entropy defines principled landscapes, minimum entropy sharpens them from self-supervision, and energy-based inference navigates them. The next part turns to where these ideas pay off — scientific intelligence.",
+    "crumbs": [
+      "Part II — Methods",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Energy-Based Reasoning, Guidance, and Refinement</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/07-ai-for-science.html",
+    "href": "chapters/07-ai-for-science.html",
+    "title": "8  Entropy-Based Learning for Science",
     "section": "",
-    "text": "Advancing AI with Science. Fundamental scientific and mathematical theories — statistical physics, information theory, the maximum-entropy principle — inspire principled AI methodologies. Energy-based games\n\nand entropy-minimized reasoning (Chapter 5) are two examples.\n\nAdvancing Science with AI. The same methods accelerate discovery in the sciences, from molecular representation learning to chemical reasoning.",
+    "text": "8.1 Two synergistic directions\nThe ultimate aim of this research program is scientific intelligence — AI that is not only accurate and robust, but increasingly endowed with reasoning capabilities that enable new modes of scientific inquiry. Entropy- and energy-based learning offer principled tools for this goal.",
     "crumbs": [
       "Part III — Applications",
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Entropy-Based Learning for Science</span>"
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Entropy-Based Learning for Science</span>"
     ]
   },
   {
-    "objectID": "chapters/06-ai-for-science.html#molecular-foundation-models",
-    "href": "chapters/06-ai-for-science.html#molecular-foundation-models",
-    "title": "7  Entropy-Based Learning for Science",
-    "section": "7.2 Molecular foundation models",
-    "text": "7.2 Molecular foundation models\nA concrete thread runs from self-supervised graph transformers for molecular representation learning toward molecule–language models with reasoning capabilities. The trajectory mirrors the broader shift from pretraining–finetuning to LLM-style reasoning, and entropy-based objectives provide label-efficient signals where annotated data are scarce.\nAs the research matures, this book will grow to include worked examples, executable code, and reproducible experiments. See the Blue Whale Lab and https://yataobian.com/ for the latest developments.",
+    "objectID": "chapters/07-ai-for-science.html#two-synergistic-directions",
+    "href": "chapters/07-ai-for-science.html#two-synergistic-directions",
+    "title": "8  Entropy-Based Learning for Science",
+    "section": "",
+    "text": "Advancing AI with Science. Fundamental scientific and mathematical theories — statistical physics, information theory, the maximum-entropy principle — inspire principled AI methodologies. Energy-based games (Chapter 4), entropy-minimized reasoning (Chapter 5), and minimax-entropy model selection (Chapter 6) are three examples.\nAdvancing Science with AI. The same methods accelerate discovery in the sciences, from molecular representation learning to chemical reasoning.",
     "crumbs": [
       "Part III — Applications",
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Entropy-Based Learning for Science</span>"
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Entropy-Based Learning for Science</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/07-ai-for-science.html#molecular-foundation-models",
+    "href": "chapters/07-ai-for-science.html#molecular-foundation-models",
+    "title": "8  Entropy-Based Learning for Science",
+    "section": "8.2 Molecular foundation models",
+    "text": "8.2 Molecular foundation models\nA concrete thread runs from self-supervised graph transformers for molecular representation learning toward molecule–language models with reasoning capabilities. The trajectory mirrors the broader shift from pretraining–finetuning to LLM-style reasoning, and entropy-based objectives provide label-efficient signals where annotated data are scarce.",
+    "crumbs": [
+      "Part III — Applications",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Entropy-Based Learning for Science</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/07-ai-for-science.html#outlook",
+    "href": "chapters/07-ai-for-science.html#outlook",
+    "title": "8  Entropy-Based Learning for Science",
+    "section": "8.3 Outlook",
+    "text": "8.3 Outlook\nA deeper unification may be within reach. The minimax view (Chapter 6) suggests that modelling the world and committing to a decision are two halves of one objective — an idea that echoes the free-energy principle proposed as a unified account of perception and action in the brain (Friston 2010). Making that correspondence precise, and scaling it to LLMs, agents, and multimodal scientific models, is an open and appealing direction.\nAs the research matures, this book will grow to include worked examples, executable code, and reproducible experiments.\nSee the Blue Whale Lab and https://yataobian.com/ for the latest developments.\n\n\n\n\nFriston, Karl. 2010. “The Free-Energy Principle: A Unified Brain Theory?” Nature Reviews Neuroscience 11 (2): 127–38.",
+    "crumbs": [
+      "Part III — Applications",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Entropy-Based Learning for Science</span>"
     ]
   },
   {
     "objectID": "summary.html",
     "href": "summary.html",
-    "title": "8  Summary",
+    "title": "9  Summary",
     "section": "",
-    "text": "This book introduced entropy-based learning through two complementary principles and their shared energy-based substrate:\n\nMaximum entropy yields the least-biased model consistent with given constraints — grounding exponential families, Boltzmann machines, and a principled family of game-theoretic valuations (Bian et al. 2022).\nMinimum entropy sharpens a capable model’s own predictions, enabling unsupervised elicitation of reasoning (EMPO) in a latent semantic space.\n\nThis is an early scaffold; future revisions will add worked examples, code, and experiments. For updates, see https://yataobian.com/ and the Blue Whale Lab.\n\n\n\n\nBian, Yatao, Yu Rong, Tingyang Xu, Jiaxiang Wu, Andreas Krause, and Junzhou Huang. 2022. “Energy-Based Learning for Cooperative Games, with Applications to Valuation Problems in Machine Learning.” International Conference on Learning Representations (ICLR). https://openreview.net/forum?id=xLfAgCroImw.",
+    "text": "This book introduced entropy-based learning through three complementary principles and their shared energy-based substrate:\n\nMaximum entropy yields the least-biased model consistent with given constraints — grounding exponential families, Boltzmann machines, and a principled family of game-theoretic valuations (Bian et al. 2022).\nMinimum entropy sharpens a capable model’s own predictions, enabling unsupervised elicitation of reasoning (EMPO) in a latent semantic space (Zhang et al. 2025).\nMinimax entropy selects the features worth modelling at all: those whose maximum-entropy model carries the least entropy, simultaneously the shortest, most accurate, and most informative description (Carcamo et al. 2025).\n\nThis is an early scaffold; future revisions will add worked examples, code, and experiments. For updates, see https://yataobian.com/ and the Blue Whale Lab.\n\n\n\n\nBian, Yatao, Yu Rong, Tingyang Xu, Jiaxiang Wu, Andreas Krause, and Junzhou Huang. 2022. “Energy-Based Learning for Cooperative Games, with Applications to Valuation Problems in Machine Learning.” International Conference on Learning Representations (ICLR). https://openreview.net/forum?id=xLfAgCroImw.\n\n\nCarcamo, David P., Nicholas J. Weaver, Purushottam D. Dixit, and Christopher W. Lynn. 2025. “Minimax Entropy: The Statistical Physics of Optimal Models.” arXiv Preprint arXiv:2505.01607. https://arxiv.org/abs/2505.01607.\n\n\nZhang, Qingyang, Haitao Wu, Changqing Zhang, Peilin Zhao, and Yatao Bian. 2025. “Right Question Is Already Half the Answer: Fully Unsupervised LLM Reasoning Incentivization.” Advances in Neural Information Processing Systems (NeurIPS). https://arxiv.org/abs/2504.05812.",
     "crumbs": [
-      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Summary</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Summary</span>"
     ]
   },
   {
@@ -263,7 +340,7 @@
     "href": "references.html",
     "title": "References",
     "section": "",
-    "text": "Bian, Yatao, Yu Rong, Tingyang Xu, Jiaxiang Wu, Andreas Krause, and\nJunzhou Huang. 2022. “Energy-Based Learning for Cooperative Games,\nwith Applications to Valuation Problems in Machine Learning.”\nInternational Conference on Learning Representations (ICLR). https://openreview.net/forum?id=xLfAgCroImw.",
+    "text": "Bian, Andrew An, Joachim M. Buhmann, Andreas Krause, and Sebastian\nTschiatschek. 2017. “Guarantees for Greedy Maximization of\nNon-Submodular Functions with Applications.” International\nConference on Machine Learning (ICML), 498–507.\n\n\nBian, Yatao, Yu Rong, Tingyang Xu, Jiaxiang Wu, Andreas Krause, and\nJunzhou Huang. 2022. “Energy-Based Learning for Cooperative Games,\nwith Applications to Valuation Problems in Machine Learning.”\nInternational Conference on Learning Representations (ICLR). https://openreview.net/forum?id=xLfAgCroImw.\n\n\nCarcamo, David P., Nicholas J. Weaver, Purushottam D. Dixit, and\nChristopher W. Lynn. 2025. “Minimax Entropy: The Statistical\nPhysics of Optimal Models.” arXiv Preprint\narXiv:2505.01607. https://arxiv.org/abs/2505.01607.\n\n\nFeder, M. 1986. “Maximum Entropy as a Special Case of the Minimum\nDescription Length Criterion.” IEEE Transactions on\nInformation Theory 32: 847–49.\n\n\nFriston, Karl. 2010. “The Free-Energy Principle: A Unified Brain\nTheory?” Nature Reviews Neuroscience 11 (2): 127–38.\n\n\nGrünwald, Peter D. 2007. The Minimum Description Length\nPrinciple. MIT Press.\n\n\nJaynes, Edwin T. 1957. “Information Theory and Statistical\nMechanics.” Physical Review 106: 620.\n\n\nLynn, Christopher W., Qiwei Yu, Rich Pang, Stephanie E. Palmer, and\nWilliam Bialek. 2024. “Exact Minimax Entropy Models of Large-Scale\nNeuronal Activity.” arXiv Preprint arXiv:2402.00007. https://arxiv.org/abs/2402.00007.\n\n\nNemhauser, George L., Laurence A. Wolsey, and Marshall L. Fisher. 1978.\n“An Analysis of Approximations for Maximizing Submodular Set\nFunctions—i.” Mathematical Programming 14: 265–94.\n\n\nZhang, Qingyang, Haitao Wu, Changqing Zhang, Peilin Zhao, and Yatao\nBian. 2025. “Right Question Is Already Half the Answer: Fully\nUnsupervised LLM Reasoning Incentivization.” Advances in\nNeural Information Processing Systems (NeurIPS). https://arxiv.org/abs/2504.05812.\n\n\nZhu, Song Chun, Ying Nian Wu, and David Mumford. 1997. “Minimax\nEntropy Principle and Its Application to Texture Modeling.”\nNeural Computation 9: 1627–60.",
     "crumbs": [
       "References"
     ]
