@@ -11,7 +11,7 @@ learning*, developed at the [Blue Whale Lab](https://bluewhale.yataobian.com/)
 led by [Yatao Bian](https://yataobian.com/).
 
 Entropy is one of the deepest bridges between physics, information theory, and
-machine learning. Two complementary principles organize the material in this
+machine learning. Three complementary principles organize the material in this
 book:
 
 - **The Maximum Entropy Principle** — among all models consistent with the
@@ -21,6 +21,10 @@ book:
 - **The Minimum Entropy Principle** — when a model's own predictions can serve
   as a training signal, reducing predictive uncertainty can elicit capabilities
   such as reasoning, *without* external supervision.
+- **The Minimax Entropy Principle** — maximize entropy given the features a model
+  includes, then choose the features that make that entropy as small as possible.
+  This couples the two principles above and turns model selection itself into a
+  well-posed problem [@zhu1997minimax; @carcamo2025minimax].
 
 Together with **energy-based models**, these principles provide a unified lens
 for reasoning, guidance, refinement, and scientific intelligence.

@@ -15,8 +15,8 @@ energy-based learning offer principled tools for this goal.
 - **Advancing AI with Science.** Fundamental scientific and mathematical
   theories — statistical physics, information theory, the maximum-entropy
   principle — inspire principled AI methodologies. Energy-based games
-  (@sec-max-entropy) and entropy-minimized reasoning (@sec-min-entropy) are two
-  examples.
+  (@sec-max-entropy), entropy-minimized reasoning (@sec-min-entropy), and
+  minimax-entropy model selection (@sec-minimax-entropy) are three examples.
 - **Advancing Science with AI.** The same methods accelerate discovery in the
   sciences, from molecular representation learning to chemical reasoning.
 
@@ -29,7 +29,18 @@ capabilities. The trajectory mirrors the broader shift from
 provide label-efficient signals where annotated data are scarce.
 
 
+## Outlook
+
+A deeper unification may be within reach. The minimax view
+(@sec-minimax-entropy) suggests that modelling the world and committing to a
+decision are two halves of one objective — an idea that echoes the **free-energy
+principle** proposed as a unified account of perception and action in the brain
+[@friston2010free]. Making that correspondence precise, and scaling it to LLMs,
+agents, and multimodal scientific models, is an open and appealing direction.
+
 As the research matures, this book will grow to include worked examples,
-executable code, and reproducible experiments. See the
+executable code, and reproducible experiments. 
+
+See the
 [Blue Whale Lab](https://bluewhale.yataobian.com/) and
 <https://yataobian.com/> for the latest developments.

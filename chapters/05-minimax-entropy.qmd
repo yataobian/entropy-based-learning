@@ -1,0 +1,91 @@
+---
+date: "2026-08-04"
+date-modified: last-modified
+---
+
+# Minimax-Entropy Learning {#sec-minimax-entropy}
+
+## Which features should a model include?
+
+Maximum entropy (@sec-max-entropy) answers a precise question: given a set of
+measured features, which model is least biased? It is silent on a prior
+question — *which features should we measure at all?*
+
+Every model is a lossy compression that trades complexity against uncertainty.
+Include too few features and the model stays vague; include too many and it
+ceases to be a compression. For a fixed budget of features, we want the
+description that leaves the least uncertainty.
+
+## The minimax entropy principle
+
+Starting from the **minimum description length** (MDL) principle
+[@grunwald2007mdl], two results follow in sequence. First, among all models
+consistent with a feature set $F$, the shortest description is the
+maximum-entropy model [@feder1986maximum]. Second, for such models the
+description length equals the model's own entropy, $L(P_F) = S(P_F)$. Choosing
+features to minimize description length therefore means choosing them to
+minimize that entropy.
+
+The optimal features are the ones producing the maximum-entropy model with
+*minimum* entropy [@carcamo2025minimax]:
+
+$$
+F^{*} = \arg\min_{F}\; S(P_F),
+\qquad
+P_F = \arg\max_{P}\;\big\{\, S(P) \;:\;
+\mathbb{E}_P[f_\mu] = \langle f_\mu \rangle_{\exp},\; f_\mu \in F \,\big\}.
+$$
+
+The nesting gives the principle its name: maximize entropy on the inside,
+minimize it on the outside. The best features are those that maximally
+constrain our expectations while leaving the model maximally random about
+everything unobserved. The principle was first proposed for texture modeling in
+computer vision [@zhu1997minimax].
+
+## Three equivalent views
+
+Minimizing $S(P_F)$ optimizes three quantities at once:
+
+- **Shortest description.** Since $L(P_F) = S(P_F)$, the optimum is the most
+  compressed account of the data.
+- **Closest to the truth.** The entropy gap to the true distribution is exactly
+  a divergence, $S(P_F) - S(P_{\text{true}}) =
+  D_{\mathrm{KL}}(P_{\text{true}} \Vert P_F)$, so the optimum is also the most
+  accurate model.
+- **Most informative features.** The information carried by the selected
+  features, $I_F = S(P_{\text{ind}}) - S(P_F)$, is maximized at the same point.
+
+Compression, accuracy, and informativeness coincide — a reassuring sign that the
+criterion is the right one.
+
+## Solving it
+
+The difficulty is combinatorial. Each candidate feature set requires solving a
+maximum-entropy problem for its parameters, and the number of candidate sets
+grows super-exponentially, so brute-force search is infeasible beyond small
+systems [@carcamo2025minimax]. The practical workhorse is a **greedy**
+algorithm that repeatedly adds whichever remaining feature reduces the entropy
+most.
+
+Structure sometimes restores exactness. For trees of pairwise correlations the
+entropy reduction decomposes into a sum of mutual informations, the problem
+becomes a maximum-spanning-tree problem, and greedy is optimal. More generally,
+if entropy reduction is **submodular** — diminishing returns as features
+accumulate — greedy comes within $1 - 1/e$ of the optimum
+[@nemhauser1978analysis]. Whether the minimax entropy objective is submodular
+in general remains open; where it is not, guarantees can still be recovered in
+terms of how far the objective departs from submodularity [@bian2017guarantees].
+
+## Takeaway
+
+Minimax entropy couples the two preceding principles into a single criterion:
+**maximize entropy to model the world, minimize entropy to commit to what
+matters**. Maximum entropy supplies possibility, minimum entropy supplies
+certainty, and the minimax formulation decides which details deserve to be
+modelled at all.
+
+The principle has recently yielded exactly solvable models of large neuronal
+populations [@lynn2024exact], yet its reach in machine learning is largely
+untapped. Open directions include scalability and sample complexity in high
+dimensions, realizations for LLMs, agents, and multimodal models, and the
+relationship to the free-energy principle [@friston2010free].

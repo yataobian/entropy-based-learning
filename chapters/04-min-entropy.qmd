@@ -17,7 +17,7 @@ labels at all.
 
 **EMPO** (Entropy Minimized Policy Optimization) is an early attempt at *fully
 unsupervised* incentivization of large-language-model reasoning, in the spirit
-of R1-Zero-style training. The key idea:
+of R1-Zero-style training [@zhang2025empo]. The key idea:
 
 > Enhance reasoning by **minimizing the predictive entropy** of the LLM in a
 > **latent semantic space**, requiring no supervised information.
@@ -45,12 +45,14 @@ for a prompt $x$, and $H$ is minimized over the policy.
 - **Complements RLVR.** Minimum-entropy objectives can extend reasoning
   incentivization beyond domains with automatically checkable answers.
 
-## Contrast with Chapter 3
+## Contrast with the neighbouring principles
 
 | Principle | Regime | Effect |
 |---|---|---|
 | Maximum entropy (@sec-max-entropy) | Limited information / constraints | Stay least-biased |
 | Minimum entropy (this chapter) | Capable self-consistent model | Sharpen behavior, elicit reasoning |
+| Minimax entropy (@sec-minimax-entropy) | Choosing which features to model | Keep the features that most reduce entropy |
 
-The two principles are not in conflict: they apply at different stages and to
-different quantities.
+These principles are not in conflict: they apply at different stages and to
+different quantities. The next chapter shows how the first two combine into the
+third.

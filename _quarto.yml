@@ -24,10 +24,11 @@ book:
       chapters:
         - chapters/03-max-entropy.qmd
         - chapters/04-min-entropy.qmd
-        - chapters/05-energy-reasoning.qmd
+        - chapters/05-minimax-entropy.qmd
+        - chapters/06-energy-reasoning.qmd
     - part: "Part III — Applications"
       chapters:
-        - chapters/06-ai-for-science.qmd
+        - chapters/07-ai-for-science.qmd
     - summary.qmd
     - references.qmd
 

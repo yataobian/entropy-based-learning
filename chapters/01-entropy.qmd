@@ -37,7 +37,29 @@ p(x) = \frac{1}{Z(\boldsymbol{\lambda})}\,
 $$
 
 where $\boldsymbol{\lambda}$ are Lagrange multipliers and $Z$ is the partition
-function. This is the least-biased distribution consistent with what we know.
+function. This is the least-biased distribution consistent with what we know
+[@jaynes1957information].
+
+## Minimum description length and minimax entropy
+
+The maximum-entropy principle can be *derived* rather than postulated. Under the
+**minimum description length** (MDL) view [@grunwald2007mdl], a model $P$ encodes
+each state with a code word of length $-\log P(x)$, and its description length is
+the expected code length across all datasets consistent with the measured
+features. Among models matching those features, description length is minimized
+by the maximum-entropy model [@feder1986maximum].
+
+MDL also poses a question that maximum entropy alone cannot answer: which
+features should be measured in the first place? For maximum-entropy models the
+description length coincides with the model's own entropy,
+
+$$
+L(P_F) = S(P_F),
+$$
+
+so the best feature set $F$ is the one whose maximum-entropy model has the
+*smallest* entropy. This is the **minimax entropy** principle, developed in
+@sec-minimax-entropy.
 
 ## Why it matters for learning
 
