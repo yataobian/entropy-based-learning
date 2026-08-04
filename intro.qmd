@@ -27,5 +27,3 @@ We study two directions that are, in a sense, mirror images:
 - **Part III — Applications** connects these ideas to scientific foundation
   models and AI-for-science.
 
-See @knuth84 for a classic discussion of literate programming, the style in
-which this book is written.

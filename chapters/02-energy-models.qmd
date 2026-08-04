@@ -16,6 +16,7 @@ maximum-entropy solution of the previous chapter, now with a learnable energy
 function. EBMs are attractive because they impose no normalization constraint on
 $E_\theta$ and can flexibly express dependencies.
 
+
 ## The challenge: the partition function
 
 The difficulty is the partition function $Z(\theta)$, which is generally
