@@ -1,3 +1,8 @@
+---
+date: "2026-08-02"
+date-modified: last-modified
+---
+
 # Preface {.unnumbered}
 
 Welcome to **Entropy-Based Learning**. This short book is an introductory,

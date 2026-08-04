@@ -1,3 +1,8 @@
+---
+date: "2026-08-02"
+date-modified: last-modified
+---
+
 # Energy-Based Models
 
 ## From energy to probability
@@ -10,6 +15,7 @@ p_\theta(x) = \frac{1}{Z(\theta)}\, e^{-E_\theta(x)},
 \qquad
 Z(\theta) = \sum_x e^{-E_\theta(x)} .
 $$
+
 
 Low-energy configurations are more probable. This is precisely the
 maximum-entropy solution of the previous chapter, now with a learnable energy

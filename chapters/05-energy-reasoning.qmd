@@ -1,3 +1,8 @@
+---
+date: "2026-08-03"
+date-modified: last-modified
+---
+
 # Energy-Based Reasoning, Guidance, and Refinement {#sec-energy-reasoning}
 
 Energy-based thinking is not only a training paradigm; it is also a powerful

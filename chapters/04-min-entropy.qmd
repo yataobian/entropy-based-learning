@@ -1,3 +1,8 @@
+---
+date: "2026-08-03"
+date-modified: last-modified
+---
+
 # Minimum-Entropy Learning {#sec-min-entropy}
 
 ## Turning uncertainty into a training signal

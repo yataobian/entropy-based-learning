@@ -1,14 +1,13 @@
+---
+date: "2026-08-04"
+date-modified: last-modified
+---
+
 # Summary
 
-This book introduced **entropy-based learning** through two complementary
-principles and their shared energy-based substrate:
+This book introduced **entropy-based learning** through two complementary principles and their shared energy-based substrate:
 
-- **Maximum entropy** yields the least-biased model consistent with given
-  constraints — grounding exponential families, Boltzmann machines, and a
-  principled family of game-theoretic valuations [@bian2022energybased].
-- **Minimum entropy** sharpens a capable model's own predictions, enabling
-  *unsupervised* elicitation of reasoning (EMPO) in a latent semantic space.
+- **Maximum entropy** yields the least-biased model consistent with given constraints — grounding exponential families, Boltzmann machines, and a principled family of game-theoretic valuations [@bian2022energybased].
+- **Minimum entropy** sharpens a capable model's own predictions, enabling *unsupervised* elicitation of reasoning (EMPO) in a latent semantic space.
 
-This is an early scaffold; future revisions will add worked examples, code, and
-experiments. For updates, see <https://yataobian.com/> and the
-[Blue Whale Lab](https://bluewhale.yataobian.com/).
+This is an early scaffold; future revisions will add worked examples, code, and experiments. For updates, see <https://yataobian.com/> and the [Blue Whale Lab](https://bluewhale.yataobian.com/).

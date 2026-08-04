@@ -1,29 +1,21 @@
+---
+date: "2026-08-02"
+date-modified: last-modified
+---
+
 # Introduction
 
 ## Why entropy?
 
-Modern machine learning has long been nurtured by scientific disciplines. A
-canonical example is the **Boltzmann machine**, rooted in statistical physics
-and motivated by the *Maximum Entropy Principle*. This book takes entropy — and
-its close relative, energy — as the organizing thread for a family of learning
-methods that are both principled and practically effective.
+Modern machine learning has long been nurtured by scientific disciplines. A canonical example is the **Boltzmann machine**, rooted in statistical physics and motivated by the *Maximum Entropy Principle*. This book takes entropy — and its close relative, energy — as the organizing thread for a family of learning methods that are both principled and practically effective.
 
-We study two directions that are, in a sense, mirror images:
+We study two directions that are connected:
 
-1. **Maximizing entropy** to obtain the least-biased model consistent with
-   given constraints. This yields exponential-family / Gibbs distributions and,
-   as we will see, a principled framework for valuation problems in machine
-   learning [@bian2022energybased].
-2. **Minimizing entropy** to sharpen a model's own predictions. When applied to
-   large language models in a latent semantic space, this idea enables fully
-   *unsupervised* elicitation of reasoning capabilities.
+1.  **Maximizing entropy** to obtain the least-biased model consistent with given constraints. This yields exponential-family / Gibbs distributions and, as we will see, a principled framework for valuation problems in machine learning [@bian2022energybased].
+2.  **Minimizing entropy** to sharpen a model's own predictions. When applied to large language models in a latent semantic space, this idea enables fully *unsupervised* elicitation of reasoning capabilities.
 
 ## Roadmap
 
-- **Part I — Foundations** introduces entropy, the maximum-entropy principle,
-  and energy-based models.
-- **Part II — Methods** develops maximum-entropy learning, minimum-entropy
-  learning, and energy-based reasoning / guidance / refinement.
-- **Part III — Applications** connects these ideas to scientific foundation
-  models and AI-for-science.
-
+- **Part I — Foundations** introduces entropy, the maximum-entropy principle, and energy-based models.
+- **Part II — Methods** develops maximum-entropy learning, minimum-entropy learning, and energy-based reasoning / guidance / refinement.
+- **Part III — Applications** connects these ideas to scientific foundation models and AI-for-science.

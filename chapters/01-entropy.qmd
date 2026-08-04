@@ -1,3 +1,8 @@
+---
+date: "2026-08-02"
+date-modified: last-modified
+---
+
 # Entropy and the Maximum Entropy Principle
 
 ## Shannon entropy

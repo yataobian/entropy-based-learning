@@ -1,3 +1,8 @@
+---
+date: "2026-08-04"
+date-modified: last-modified
+---
+
 # Entropy-Based Learning for Science {#sec-ai-for-science}
 
 The ultimate aim of this research program is **scientific intelligence** —
