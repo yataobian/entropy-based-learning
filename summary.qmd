@@ -1,6 +1,7 @@
 ---
 date: "2026-08-04"
 date-modified: last-modified
+toc: false
 ---
 
 # Summary
