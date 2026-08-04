@@ -14,7 +14,7 @@
     "href": "intro.html",
     "title": "1  Introduction",
     "section": "",
-    "text": "1.1 Why entropy?\nModern machine learning has long been nurtured by scientific disciplines. A canonical example is the Boltzmann machine, rooted in statistical physics and motivated by the Maximum Entropy Principle. This book takes entropy — and its close relative, energy — as the organizing thread for a family of learning methods that are both principled and practically effective.\nWe study two directions that are, in a sense, mirror images:",
+    "text": "1.1 Why entropy?\nModern machine learning has long been nurtured by scientific disciplines. A canonical example is the Boltzmann machine, rooted in statistical physics and motivated by the Maximum Entropy Principle. This book takes entropy — and its close relative, energy — as the organizing thread for a family of learning methods that are both principled and practically effective.\nWe study two directions that are connected:",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
     ]
