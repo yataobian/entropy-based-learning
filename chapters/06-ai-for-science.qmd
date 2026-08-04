@@ -1,0 +1,37 @@
+---
+date: "2026-08-04"
+date-modified: last-modified
+---
+
+# Entropy-Based Learning for Science {#sec-ai-for-science}
+
+The ultimate aim of this research program is **scientific intelligence** —
+AI that is not only accurate and robust, but increasingly endowed with
+reasoning capabilities that enable new modes of scientific inquiry. Entropy- and
+energy-based learning offer principled tools for this goal.
+
+## Two synergistic directions
+
+- **Advancing AI with Science.** Fundamental scientific and mathematical
+  theories — statistical physics, information theory, the maximum-entropy
+  principle — inspire principled AI methodologies. Energy-based games
+  (@sec-max-entropy) and entropy-minimized reasoning (@sec-min-entropy) are two
+  examples.
+- **Advancing Science with AI.** The same methods accelerate discovery in the
+  sciences, from molecular representation learning to chemical reasoning.
+
+## Molecular foundation models
+
+A concrete thread runs from **self-supervised graph transformers** for molecular
+representation learning toward **molecule–language** models with reasoning
+capabilities. The trajectory mirrors the broader shift from
+*pretraining–finetuning* to *LLM-style reasoning*, and entropy-based objectives
+provide label-efficient signals where annotated data are scarce.
+
+
+As the research matures, this book will grow to include worked examples,
+executable code, and reproducible experiments. 
+
+See the
+[Blue Whale Lab](https://bluewhale.yataobian.com/) and
+<https://yataobian.com/> for the latest developments.

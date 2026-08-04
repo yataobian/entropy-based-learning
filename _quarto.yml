@@ -9,7 +9,7 @@ book:
   date: "2026-08-02"
   description: >
     An introduction to modern entropy- and energy-based learning, spanning the
-    maximum-entropy and minimum-entropy principles, energy-based models, and
+    maximum-entropy, minimum-entropy, and minimax-entropy principles, and
     their applications to scientific and reasoning-oriented AI.
   site-url: "https://yataobian.com/"
   repo-url: "https://github.com/yataobian"

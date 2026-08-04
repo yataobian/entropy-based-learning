@@ -29,7 +29,7 @@ $$
 \sum_x p(x) = 1,\;\; \mathbb{E}_p[f_k(X)] = \mu_k .
 $$
 
-Its solution is the **Gibbs / exponential-family** distribution
+Its solution is the **Gibbs /   Boltzmann** distribution
 
 $$
 p(x) = \frac{1}{Z(\boldsymbol{\lambda})}\,
