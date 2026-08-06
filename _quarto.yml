@@ -11,7 +11,7 @@ book:
     An introduction to modern entropy- and energy-based learning, spanning the
     maximum-entropy, minimum-entropy, and minimax-entropy principles, and
     their applications to scientific and reasoning-oriented AI.
-  site-url: "https://yataobian.com/"
+  site-url: "https://yataobian.github.io/entropy-based-learning/"
   repo-url: "https://github.com/yataobian/entropy-based-learning"
   chapters:
     - index.qmd
@@ -34,6 +34,16 @@ book:
     - references.qmd
 
 bibliography: references.bib
+
+citation:
+  id: bian2026entropy
+  type: book
+  title: "Entropy-Based Learning"
+  author: "Yatao Bian"
+  issued: 2026
+  publisher: "Blue Whale Lab"
+  url: "https://yataobian.github.io/entropy-based-learning/"
+google-scholar: true
 
 format:
   html:

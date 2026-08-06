@@ -42,3 +42,20 @@ expanded over time. Feedback and contributions are welcome.
 
 To learn more about the underlying research, visit
 <https://yataobian.com/> and the Blue Whale Lab.
+
+## Citation {.unnumbered}
+
+If you found this book useful, please cite it as:
+
+``` bibtex
+@book{bian2026entropy,
+  title     = {Entropy-Based Learning},
+  author    = {Yatao Bian},
+  year      = {2026},
+  publisher = {Blue Whale Lab},
+  url       = {https://yataobian.github.io/entropy-based-learning/}
+}
+```
+
+Or, for attribution in text: Bian, Yatao. 2026. *Entropy-Based Learning*.
+Blue Whale Lab. <https://yataobian.github.io/entropy-based-learning/>.
