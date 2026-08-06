@@ -97,6 +97,35 @@ div.csl-indent {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -166,8 +195,14 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/02-energy-models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Energy-Based Models</span></span></a>
+  <a href="./chapters/02-free-energy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Energy, Entropy, and Free Energy</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/03-energy-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Energy-Based Models</span></span></a>
   </div>
 </li>
       </ul>
@@ -183,26 +218,26 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/03-max-entropy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Maximum-Entropy Learning</span></span></a>
+  <a href="./chapters/04-max-entropy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Maximum-Entropy Learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/04-min-entropy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Minimum-Entropy Learning</span></span></a>
+  <a href="./chapters/05-min-entropy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Minimum-Entropy Learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/05-minimax-entropy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Minimax-Entropy Learning</span></span></a>
+  <a href="./chapters/06-minimax-entropy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Minimax-Entropy Learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/06-energy-reasoning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></span></a>
+  <a href="./chapters/07-energy-reasoning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></span></a>
   </div>
 </li>
       </ul>
@@ -218,8 +253,8 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/07-ai-for-science.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></span></a>
+  <a href="./chapters/08-ai-for-science.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></span></a>
   </div>
 </li>
       </ul>
@@ -227,7 +262,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -297,7 +332,7 @@ div.csl-indent {
 <li><strong>The Minimum Entropy Principle</strong> — when a model’s own predictions can serve as a training signal, reducing predictive uncertainty can elicit capabilities such as reasoning, <em>without</em> external supervision.</li>
 <li><strong>The Minimax Entropy Principle</strong> — maximize entropy given the features a model includes, then choose the features that make that entropy as small as possible. This couples the two principles above and turns model selection itself into a well-posed problem <span class="citation" data-cites="zhu1997minimax carcamo2025minimax">(<a href="references.html#ref-zhu1997minimax" role="doc-biblioref">Zhu et al. 1997</a>; <a href="references.html#ref-carcamo2025minimax" role="doc-biblioref">Carcamo et al. 2025</a>)</span>.</li>
 </ul>
-<p>Together with <strong>energy-based models</strong>, these principles provide a unified lens for reasoning, guidance, refinement, and scientific intelligence.</p>
+<p>Binding them together is the <strong>free energy</strong> <span class="math inline">\(F = U - TS\)</span>, in which temperature sets the exchange rate between energy and entropy. It is the equation that carried statistical physics into machine learning, and it makes the three principles above three settings of one dial rather than three separate doctrines. Together with <strong>energy-based models</strong>, they provide a unified lens for reasoning, guidance, refinement, and scientific intelligence.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">

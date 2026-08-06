@@ -9,7 +9,7 @@
 <meta name="dcterms.date" content="2026-08-04">
 <meta name="description" content="An introduction to modern entropy- and energy-based learning, spanning the maximum-entropy, minimum-entropy, and minimax-entropy principles, and their applications to scientific and reasoning-oriented AI.">
 
-<title>9&nbsp; Summary – Entropy-Based Learning</title>
+<title>10&nbsp; Summary – Entropy-Based Learning</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -58,7 +58,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./references.html" rel="next">
-<link href="./chapters/07-ai-for-science.html" rel="prev">
+<link href="./chapters/08-ai-for-science.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -97,6 +97,35 @@ div.csl-indent {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -109,7 +138,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./summary.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Summary</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./summary.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Summary</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -166,8 +195,14 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/02-energy-models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Energy-Based Models</span></span></a>
+  <a href="./chapters/02-free-energy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Energy, Entropy, and Free Energy</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/03-energy-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Energy-Based Models</span></span></a>
   </div>
 </li>
       </ul>
@@ -183,26 +218,26 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/03-max-entropy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Maximum-Entropy Learning</span></span></a>
+  <a href="./chapters/04-max-entropy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Maximum-Entropy Learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/04-min-entropy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Minimum-Entropy Learning</span></span></a>
+  <a href="./chapters/05-min-entropy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Minimum-Entropy Learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/05-minimax-entropy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Minimax-Entropy Learning</span></span></a>
+  <a href="./chapters/06-minimax-entropy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Minimax-Entropy Learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/06-energy-reasoning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></span></a>
+  <a href="./chapters/07-energy-reasoning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></span></a>
   </div>
 </li>
       </ul>
@@ -218,8 +253,8 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/07-ai-for-science.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></span></a>
+  <a href="./chapters/08-ai-for-science.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></span></a>
   </div>
 </li>
       </ul>
@@ -227,7 +262,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./summary.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -247,7 +282,7 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Summary</span></h1>
+<h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Summary</span></h1>
 </div>
 
 
@@ -265,7 +300,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">August 4, 2026</p>
+      <p class="date-modified">August 6, 2026</p>
     </div>
   </div>
     
@@ -282,6 +317,7 @@ div.csl-indent {
 <li><strong>Minimum entropy</strong> sharpens a capable model’s own predictions, enabling <em>unsupervised</em> elicitation of reasoning (EMPO) in a latent semantic space <span class="citation" data-cites="zhang2025empo">(<a href="references.html#ref-zhang2025empo" role="doc-biblioref">Zhang et al. 2025</a>)</span>.</li>
 <li><strong>Minimax entropy</strong> selects the features worth modelling at all: those whose maximum-entropy model carries the least entropy, simultaneously the shortest, most accurate, and most informative description <span class="citation" data-cites="carcamo2025minimax">(<a href="references.html#ref-carcamo2025minimax" role="doc-biblioref">Carcamo et al. 2025</a>)</span>.</li>
 </ul>
+<p>Binding the three together is the <strong>free energy</strong> <span class="math inline">\(F = U - TS\)</span>: temperature sets the exchange rate between energy and entropy, so the principles are three settings of one dial rather than three separate doctrines. It is also the equation that carried statistical physics into machine learning, from the Hopfield network and the Boltzmann machine through to the evidence lower bound — a lineage recognized by the 2024 Nobel Prize in Physics <span class="citation" data-cites="nobel2024physics">(<a href="references.html#ref-nobel2024physics" role="doc-biblioref">The Royal Swedish Academy of Sciences 2024</a>)</span>.</p>
 <p>This is an early scaffold; future revisions will add worked examples, code, and experiments. For updates, see <a href="https://yataobian.com/" class="uri">https://yataobian.com/</a> and the <a href="https://bluewhale.yataobian.com/">Blue Whale Lab</a>.</p>
 
 
@@ -291,6 +327,9 @@ Bian, Yatao, Yu Rong, Tingyang Xu, Jiaxiang Wu, Andreas Krause, and Junzhou Huan
 </div>
 <div id="ref-carcamo2025minimax" class="csl-entry" role="listitem">
 Carcamo, David P., Nicholas J. Weaver, Purushottam D. Dixit, and Christopher W. Lynn. 2025. <span>“Minimax Entropy: The Statistical Physics of Optimal Models.”</span> <em>arXiv Preprint arXiv:2505.01607</em>. <a href="https://arxiv.org/abs/2505.01607">https://arxiv.org/abs/2505.01607</a>.
+</div>
+<div id="ref-nobel2024physics" class="csl-entry" role="listitem">
+The Royal Swedish Academy of Sciences. 2024. <em>Scientific Background to the Nobel Prize in Physics 2024: For Foundational Discoveries and Inventions That Enable Machine Learning with Artificial Neural Networks</em>. <a href="https://www.nobelprize.org/prizes/physics/2024/advanced-information/">https://www.nobelprize.org/prizes/physics/2024/advanced-information/</a>.
 </div>
 <div id="ref-zhang2025empo" class="csl-entry" role="listitem">
 Zhang, Qingyang, Haitao Wu, Changqing Zhang, Peilin Zhao, and Yatao Bian. 2025. <span>“Right Question Is Already Half the Answer: Fully Unsupervised LLM Reasoning Incentivization.”</span> <em>Advances in Neural Information Processing Systems (NeurIPS)</em>. <a href="https://arxiv.org/abs/2504.05812">https://arxiv.org/abs/2504.05812</a>.
@@ -700,8 +739,8 @@ Zhang, Qingyang, Haitao Wu, Changqing Zhang, Peilin Zhao, and Yatao Bian. 2025. 
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./chapters/07-ai-for-science.html" class="pagination-link" aria-label="Entropy-Based Learning for Science">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></span>
+      <a href="./chapters/08-ai-for-science.html" class="pagination-link" aria-label="Entropy-Based Learning for Science">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

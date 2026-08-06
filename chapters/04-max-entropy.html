@@ -9,7 +9,7 @@
 <meta name="dcterms.date" content="2026-08-03">
 <meta name="description" content="An introduction to modern entropy- and energy-based learning, spanning the maximum-entropy, minimum-entropy, and minimax-entropy principles, and their applications to scientific and reasoning-oriented AI.">
 
-<title>4&nbsp; Maximum-Entropy Learning – Entropy-Based Learning</title>
+<title>5&nbsp; Maximum-Entropy Learning – Entropy-Based Learning</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -57,8 +57,8 @@ div.csl-indent {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../chapters/04-min-entropy.html" rel="next">
-<link href="../chapters/02-energy-models.html" rel="prev">
+<link href="../chapters/05-min-entropy.html" rel="next">
+<link href="../chapters/03-energy-models.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -138,7 +138,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/03-max-entropy.html">Part II — Methods</a></li><li class="breadcrumb-item"><a href="../chapters/03-max-entropy.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Maximum-Entropy Learning</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/04-max-entropy.html">Part II — Methods</a></li><li class="breadcrumb-item"><a href="../chapters/04-max-entropy.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Maximum-Entropy Learning</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -195,8 +195,14 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/02-energy-models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Energy-Based Models</span></span></a>
+  <a href="../chapters/02-free-energy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Energy, Entropy, and Free Energy</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/03-energy-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Energy-Based Models</span></span></a>
   </div>
 </li>
       </ul>
@@ -212,26 +218,26 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/03-max-entropy.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Maximum-Entropy Learning</span></span></a>
+  <a href="../chapters/04-max-entropy.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Maximum-Entropy Learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/04-min-entropy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Minimum-Entropy Learning</span></span></a>
+  <a href="../chapters/05-min-entropy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Minimum-Entropy Learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/05-minimax-entropy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Minimax-Entropy Learning</span></span></a>
+  <a href="../chapters/06-minimax-entropy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Minimax-Entropy Learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/06-energy-reasoning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></span></a>
+  <a href="../chapters/07-energy-reasoning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></span></a>
   </div>
 </li>
       </ul>
@@ -247,8 +253,8 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/07-ai-for-science.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></span></a>
+  <a href="../chapters/08-ai-for-science.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></span></a>
   </div>
 </li>
       </ul>
@@ -256,7 +262,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -275,18 +281,18 @@ window.Quarto = {
     <h2 id="toc-title">On This Page</h2>
    
   <ul>
-  <li><a href="#energy-based-cooperative-games" id="toc-energy-based-cooperative-games" class="nav-link active" data-scroll-target="#energy-based-cooperative-games"><span class="header-section-number">4.1</span> Energy-based cooperative games</a></li>
-  <li><a href="#why-this-is-useful" id="toc-why-this-is-useful" class="nav-link" data-scroll-target="#why-this-is-useful"><span class="header-section-number">4.2</span> Why this is useful</a></li>
-  <li><a href="#takeaway" id="toc-takeaway" class="nav-link" data-scroll-target="#takeaway"><span class="header-section-number">4.3</span> Takeaway</a></li>
+  <li><a href="#energy-based-cooperative-games" id="toc-energy-based-cooperative-games" class="nav-link active" data-scroll-target="#energy-based-cooperative-games"><span class="header-section-number">5.1</span> Energy-based cooperative games</a></li>
+  <li><a href="#why-this-is-useful" id="toc-why-this-is-useful" class="nav-link" data-scroll-target="#why-this-is-useful"><span class="header-section-number">5.2</span> Why this is useful</a></li>
+  <li><a href="#takeaway" id="toc-takeaway" class="nav-link" data-scroll-target="#takeaway"><span class="header-section-number">5.3</span> Takeaway</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/03-max-entropy.html">Part II — Methods</a></li><li class="breadcrumb-item"><a href="../chapters/03-max-entropy.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Maximum-Entropy Learning</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/04-max-entropy.html">Part II — Methods</a></li><li class="breadcrumb-item"><a href="../chapters/04-max-entropy.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Maximum-Entropy Learning</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="sec-max-entropy" class="quarto-section-identifier"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Maximum-Entropy Learning</span></span></h1>
+<h1 class="title"><span id="sec-max-entropy" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Maximum-Entropy Learning</span></span></h1>
 </div>
 
 
@@ -304,7 +310,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">August 4, 2026</p>
+      <p class="date-modified">August 6, 2026</p>
     </div>
   </div>
     
@@ -315,31 +321,40 @@ window.Quarto = {
 </header>
 
 
-<section id="energy-based-cooperative-games" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="energy-based-cooperative-games"><span class="header-section-number">4.1</span> Energy-based cooperative games</h2>
+<section id="energy-based-cooperative-games" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="energy-based-cooperative-games"><span class="header-section-number">5.1</span> Energy-based cooperative games</h2>
 <p>A striking application of the maximum-entropy principle is to <strong>valuation problems</strong> in machine learning: how much does a feature, data point, or player contribute to an outcome? The classical answer is the <strong>Shapley value</strong> from cooperative game theory, but it is one particular choice among many.</p>
 <p>In <em>Energy-Based Learning for Cooperative Games</em> <span class="citation" data-cites="bian2022energybased">(<a href="../references.html#ref-bian2022energybased" role="doc-biblioref">Bian et al. 2022</a>)</span>, the valuation problem is recast through an energy / maximum-entropy lens. A cooperative game with characteristic function <span class="math inline">\(v(S)\)</span> over coalitions <span class="math inline">\(S \subseteq N\)</span> induces a Gibbs distribution over coalitions,</p>
 <p><span class="math display">\[
 p(S) \propto \exp\big(v(S) / \tau\big),
 \]</span></p>
-<p>where <span class="math inline">\(\tau\)</span> controls the temperature. Applying the maximum-entropy principle to game-theoretic valuations yields a <strong>new class of valuation methods</strong>, of which the Shapley value arises as a special case.</p>
+<p>where <span class="math inline">\(\tau\)</span> is a temperature in exactly the sense of 1: as <span class="math inline">\(\tau \to 0\)</span> the distribution concentrates on the highest-value coalitions, while as <span class="math inline">\(\tau \to \infty\)</span> it flattens towards uniform. Applying the maximum-entropy principle to game-theoretic valuations yields a <strong>new class of valuation methods</strong>, of which the Shapley value arises as a special case.</p>
 </section>
-<section id="why-this-is-useful" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="why-this-is-useful"><span class="header-section-number">4.2</span> Why this is useful</h2>
+<section id="why-this-is-useful" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="why-this-is-useful"><span class="header-section-number">5.2</span> Why this is useful</h2>
 <ul>
 <li><strong>Principled interpretation.</strong> Valuations become the expectation of a well-defined quantity under a maximum-entropy distribution, giving a principled framework for interpreting AI models.</li>
 <li><strong>A family, not a point.</strong> The temperature <span class="math inline">\(\tau\)</span> traces a spectrum of valuation schemes, enabling trade-offs beyond the single Shapley solution.</li>
-<li><strong>Bridges to physics.</strong> The same Gibbs machinery links directly to the statistical-physics origins of the Boltzmann machine.</li>
+<li><strong>Bridges to physics.</strong> The same Gibbs machinery is the one that carried the Ising energy into neural networks in the first place, by way of the Hopfield network <span class="citation" data-cites="hopfield1982">(<a href="../references.html#ref-hopfield1982" role="doc-biblioref">Hopfield 1982</a>)</span> and the Boltzmann machine <span class="citation" data-cites="ackley1985">(<a href="../references.html#ref-ackley1985" role="doc-biblioref">Ackley et al. 1985</a>)</span>; see
+<ol class="example" type="1">
+<li></li>
+</ol></li>
 </ul>
 </section>
-<section id="takeaway" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="takeaway"><span class="header-section-number">4.3</span> Takeaway</h2>
+<section id="takeaway" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="takeaway"><span class="header-section-number">5.3</span> Takeaway</h2>
 <p>Maximizing entropy turns “which valuation should I use?” into “which constraints do I believe?” — a shift that clarifies assumptions and unifies existing methods under one roof.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-ackley1985" class="csl-entry" role="listitem">
+Ackley, David H., Geoffrey E. Hinton, and Terrence J. Sejnowski. 1985. <span>“A Learning Algorithm for Boltzmann Machines.”</span> <em>Cognitive Science</em> 9 (1): 147–69. <a href="https://doi.org/10.1207/s15516709cog0901_7">https://doi.org/10.1207/s15516709cog0901_7</a>.
+</div>
 <div id="ref-bian2022energybased" class="csl-entry" role="listitem">
 Bian, Yatao, Yu Rong, Tingyang Xu, Jiaxiang Wu, Andreas Krause, and Junzhou Huang. 2022. <span>“Energy-Based Learning for Cooperative Games, with Applications to Valuation Problems in Machine Learning.”</span> <em>International Conference on Learning Representations (ICLR)</em>. <a href="https://openreview.net/forum?id=xLfAgCroImw">https://openreview.net/forum?id=xLfAgCroImw</a>.
+</div>
+<div id="ref-hopfield1982" class="csl-entry" role="listitem">
+Hopfield, John J. 1982. <span>“Neural Networks and Physical Systems with Emergent Collective Computational Abilities.”</span> <em>Proceedings of the National Academy of Sciences</em> 79 (8): 2554–58. <a href="https://doi.org/10.1073/pnas.79.8.2554">https://doi.org/10.1073/pnas.79.8.2554</a>.
 </div>
 </div>
 </section>
@@ -747,13 +762,13 @@ Bian, Yatao, Yu Rong, Tingyang Xu, Jiaxiang Wu, Andreas Krause, and Junzhou Huan
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../chapters/02-energy-models.html" class="pagination-link" aria-label="Energy-Based Models">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Energy-Based Models</span></span>
+      <a href="../chapters/03-energy-models.html" class="pagination-link" aria-label="Energy-Based Models">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Energy-Based Models</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../chapters/04-min-entropy.html" class="pagination-link" aria-label="Minimum-Entropy Learning">
-        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Minimum-Entropy Learning</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../chapters/05-min-entropy.html" class="pagination-link" aria-label="Minimum-Entropy Learning">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Minimum-Entropy Learning</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

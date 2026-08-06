@@ -9,7 +9,7 @@
 <meta name="dcterms.date" content="2026-08-03">
 <meta name="description" content="An introduction to modern entropy- and energy-based learning, spanning the maximum-entropy, minimum-entropy, and minimax-entropy principles, and their applications to scientific and reasoning-oriented AI.">
 
-<title>5&nbsp; Minimum-Entropy Learning – Entropy-Based Learning</title>
+<title>8&nbsp; Energy-Based Reasoning, Guidance, and Refinement – Entropy-Based Learning</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -57,8 +57,8 @@ div.csl-indent {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../chapters/05-minimax-entropy.html" rel="next">
-<link href="../chapters/03-max-entropy.html" rel="prev">
+<link href="../chapters/08-ai-for-science.html" rel="next">
+<link href="../chapters/06-minimax-entropy.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -138,7 +138,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/03-max-entropy.html">Part II — Methods</a></li><li class="breadcrumb-item"><a href="../chapters/04-min-entropy.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Minimum-Entropy Learning</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/04-max-entropy.html">Part II — Methods</a></li><li class="breadcrumb-item"><a href="../chapters/07-energy-reasoning.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -195,8 +195,14 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/02-energy-models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Energy-Based Models</span></span></a>
+  <a href="../chapters/02-free-energy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Energy, Entropy, and Free Energy</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/03-energy-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Energy-Based Models</span></span></a>
   </div>
 </li>
       </ul>
@@ -212,26 +218,26 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/03-max-entropy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Maximum-Entropy Learning</span></span></a>
+  <a href="../chapters/04-max-entropy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Maximum-Entropy Learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/04-min-entropy.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Minimum-Entropy Learning</span></span></a>
+  <a href="../chapters/05-min-entropy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Minimum-Entropy Learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/05-minimax-entropy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Minimax-Entropy Learning</span></span></a>
+  <a href="../chapters/06-minimax-entropy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Minimax-Entropy Learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/06-energy-reasoning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></span></a>
+  <a href="../chapters/07-energy-reasoning.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></span></a>
   </div>
 </li>
       </ul>
@@ -247,8 +253,8 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/07-ai-for-science.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></span></a>
+  <a href="../chapters/08-ai-for-science.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></span></a>
   </div>
 </li>
       </ul>
@@ -256,7 +262,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -275,19 +281,18 @@ window.Quarto = {
     <h2 id="toc-title">On This Page</h2>
    
   <ul>
-  <li><a href="#turning-uncertainty-into-a-training-signal" id="toc-turning-uncertainty-into-a-training-signal" class="nav-link active" data-scroll-target="#turning-uncertainty-into-a-training-signal"><span class="header-section-number">5.1</span> Turning uncertainty into a training signal</a></li>
-  <li><a href="#empo-unsupervised-elicitation-of-reasoning" id="toc-empo-unsupervised-elicitation-of-reasoning" class="nav-link" data-scroll-target="#empo-unsupervised-elicitation-of-reasoning"><span class="header-section-number">5.2</span> EMPO: unsupervised elicitation of reasoning</a></li>
-  <li><a href="#why-entropy-in-semantic-space" id="toc-why-entropy-in-semantic-space" class="nav-link" data-scroll-target="#why-entropy-in-semantic-space"><span class="header-section-number">5.3</span> Why entropy in semantic space?</a></li>
-  <li><a href="#contrast-with-the-neighbouring-principles" id="toc-contrast-with-the-neighbouring-principles" class="nav-link" data-scroll-target="#contrast-with-the-neighbouring-principles"><span class="header-section-number">5.4</span> Contrast with the neighbouring principles</a></li>
+  <li><a href="#guidance" id="toc-guidance" class="nav-link active" data-scroll-target="#guidance"><span class="header-section-number">8.1</span> Guidance</a></li>
+  <li><a href="#refinement" id="toc-refinement" class="nav-link" data-scroll-target="#refinement"><span class="header-section-number">8.2</span> Refinement</a></li>
+  <li><a href="#reasoning-as-energy-minimization" id="toc-reasoning-as-energy-minimization" class="nav-link" data-scroll-target="#reasoning-as-energy-minimization"><span class="header-section-number">8.3</span> Reasoning as energy minimization</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/03-max-entropy.html">Part II — Methods</a></li><li class="breadcrumb-item"><a href="../chapters/04-min-entropy.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Minimum-Entropy Learning</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/04-max-entropy.html">Part II — Methods</a></li><li class="breadcrumb-item"><a href="../chapters/07-energy-reasoning.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="sec-min-entropy" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Minimum-Entropy Learning</span></span></h1>
+<h1 class="title"><span id="sec-energy-reasoning" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></span></h1>
 </div>
 
 
@@ -316,74 +321,34 @@ window.Quarto = {
 </header>
 
 
-<section id="turning-uncertainty-into-a-training-signal" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="turning-uncertainty-into-a-training-signal"><span class="header-section-number">5.1</span> Turning uncertainty into a training signal</h2>
-<p>Where the maximum-entropy principle asks us to <em>stay</em> uncertain given limited information, the <strong>minimum-entropy principle</strong> asks the opposite in a different regime: when a capable model’s own predictions are informative, <em>reducing</em> their uncertainty can sharpen useful behavior — sometimes with no external labels at all.</p>
-<p>The impulse is an old one. Living systems have long been described as driven to hold their internal entropy at a manageable level <span class="citation" data-cites="hirsh2012psychological">(<a href="../references.html#ref-hirsh2012psychological" role="doc-biblioref">Hirsh et al. 2012</a>)</span>, as sketched in <a href="01-entropy.html" class="quarto-xref"><span>Chapter 2</span></a>; what follows turns that drive into a training objective.</p>
-</section>
-<section id="empo-unsupervised-elicitation-of-reasoning" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="empo-unsupervised-elicitation-of-reasoning"><span class="header-section-number">5.2</span> EMPO: unsupervised elicitation of reasoning</h2>
-<p><strong>EMPO</strong> (Entropy Minimized Policy Optimization) is an early attempt at <em>fully unsupervised</em> incentivization of large-language-model reasoning, in the spirit of R1-Zero-style training <span class="citation" data-cites="zhang2025empo">(<a href="../references.html#ref-zhang2025empo" role="doc-biblioref">Zhang et al. 2025</a>)</span>. The key idea:</p>
-<blockquote class="blockquote">
-<p>Enhance reasoning by <strong>minimizing the predictive entropy</strong> of the LLM in a <strong>latent semantic space</strong>, requiring no supervised information.</p>
-</blockquote>
-<p>Concretely, instead of rewarding matches against ground-truth answers, EMPO treats <em>semantic self-consistency</em> as the objective. Sampled reasoning trajectories that concentrate probability mass onto a coherent semantic cluster incur low entropy and are reinforced; diffuse, self-inconsistent outputs are penalized.</p>
+<p>Energy-based thinking is not only a training paradigm; it is also a powerful <em>inference-time</em> tool. Given an energy function <span class="math inline">\(E_\theta(x)\)</span> that scores how “good” a candidate solution <span class="math inline">\(x\)</span> is, we can <strong>guide</strong>, <strong>refine</strong>, and <strong>search</strong> at test time.</p>
+<section id="guidance" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="guidance"><span class="header-section-number">8.1</span> Guidance</h2>
+<p>An energy (or a gradient of it) can steer a generative process toward desiderata:</p>
 <p><span class="math display">\[
-\mathcal{L}_{\text{EMPO}} \;\propto\;
-H\big(q(\,\cdot \mid x)\big),
+x \leftarrow x - \eta\, \nabla_x E_\theta(x),
 \]</span></p>
-<p>where <span class="math inline">\(q\)</span> is the model’s distribution over <em>semantic meanings</em> (not raw tokens) for a prompt <span class="math inline">\(x\)</span>, and <span class="math inline">\(H\)</span> is minimized over the policy.</p>
+<p>nudging samples toward lower-energy, higher-quality regions. This is the mechanism behind classifier / energy guidance in diffusion-style generation and, more broadly, behind constraint-aware generation.</p>
+<p>Note that pure descent is the zero-temperature limit of <a href="02-free-energy.html" class="quarto-xref"><span>Chapter 3</span></a>: it consults energy and ignores entropy entirely, and so inherits the classic weakness of getting trapped in local minima. Adding noise and lowering it over the course of the process — annealing <span class="citation" data-cites="kirkpatrick1983">(<a href="../references.html#ref-kirkpatrick1983" role="doc-biblioref">Kirkpatrick et al. 1983</a>)</span> — is the finite-temperature generalization, and it is the same schedule that diffusion samplers implement under a different name.</p>
 </section>
-<section id="why-entropy-in-semantic-space" class="level2" data-number="5.3">
-<h2 data-number="5.3" class="anchored" data-anchor-id="why-entropy-in-semantic-space"><span class="header-section-number">5.3</span> Why entropy in semantic space?</h2>
+<section id="refinement" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="refinement"><span class="header-section-number">8.2</span> Refinement</h2>
+<p>Rather than accepting a single forward pass, we can iteratively <strong>refine</strong> a candidate by repeatedly lowering its energy — an optimization view of “thinking longer.” Refinement trades extra compute for higher-quality outputs, and connects naturally to the minimum-entropy view of self-consistent reasoning in <a href="05-min-entropy.html" class="quarto-xref"><span>Chapter 6</span></a>.</p>
+</section>
+<section id="reasoning-as-energy-minimization" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="reasoning-as-energy-minimization"><span class="header-section-number">8.3</span> Reasoning as energy minimization</h2>
+<p>A unifying perspective:</p>
 <ul>
-<li><strong>No labels needed.</strong> The supervision comes from the model’s own agreement with itself, unlocking data that has no verifiable answers.</li>
-<li><strong>Robust to surface form.</strong> Working in a latent semantic space avoids rewarding superficial token-level repetition and targets meaning.</li>
-<li><strong>Complements RLVR.</strong> Minimum-entropy objectives can extend reasoning incentivization beyond domains with automatically checkable answers.</li>
+<li>A <strong>reasoning problem</strong> defines an (implicit) energy landscape over candidate solution trajectories.</li>
+<li><strong>Reasoning</strong> is the process of finding low-energy trajectories — via search, guidance, or refinement.</li>
+<li><strong>Learning</strong> shapes the landscape so that correct or self-consistent solutions sit at the minima.</li>
 </ul>
-</section>
-<section id="contrast-with-the-neighbouring-principles" class="level2" data-number="5.4">
-<h2 data-number="5.4" class="anchored" data-anchor-id="contrast-with-the-neighbouring-principles"><span class="header-section-number">5.4</span> Contrast with the neighbouring principles</h2>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Principle</th>
-<th>Regime</th>
-<th>Effect</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Maximum entropy (<a href="03-max-entropy.html" class="quarto-xref"><span>Chapter 4</span></a>)</td>
-<td>Limited information / constraints</td>
-<td>Stay least-biased</td>
-</tr>
-<tr class="even">
-<td>Minimum entropy (this chapter)</td>
-<td>Capable self-consistent model</td>
-<td>Sharpen behavior, elicit reasoning</td>
-</tr>
-<tr class="odd">
-<td>Minimax entropy (<a href="05-minimax-entropy.html" class="quarto-xref"><span>Chapter 6</span></a>)</td>
-<td>Choosing which features to model</td>
-<td>Keep the features that most reduce entropy</td>
-</tr>
-</tbody>
-</table>
-<p>These principles are not in conflict: they apply at different stages and to different quantities. The next chapter shows how the first two combine into the third.</p>
+<p>This viewpoint ties together the threads of the book: maximum entropy defines principled landscapes, minimum entropy sharpens them from self-supervision, and energy-based inference navigates them. The next part turns to where these ideas pay off — scientific intelligence.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
-<div id="ref-hirsh2012psychological" class="csl-entry" role="listitem">
-Hirsh, Jacob B., Raymond A. Mar, and Jordan B. Peterson. 2012. <span>“Psychological Entropy: A Framework for Understanding Uncertainty-Related Anxiety.”</span> <em>Psychological Review</em> 119 (2): 304–20. <a href="https://doi.org/10.1037/a0026767">https://doi.org/10.1037/a0026767</a>.
-</div>
-<div id="ref-zhang2025empo" class="csl-entry" role="listitem">
-Zhang, Qingyang, Haitao Wu, Changqing Zhang, Peilin Zhao, and Yatao Bian. 2025. <span>“Right Question Is Already Half the Answer: Fully Unsupervised LLM Reasoning Incentivization.”</span> <em>Advances in Neural Information Processing Systems (NeurIPS)</em>. <a href="https://arxiv.org/abs/2504.05812">https://arxiv.org/abs/2504.05812</a>.
+<div id="ref-kirkpatrick1983" class="csl-entry" role="listitem">
+Kirkpatrick, Scott, C. Daniel Gelatt, and Mario P. Vecchi. 1983. <span>“Optimization by Simulated Annealing.”</span> <em>Science</em> 220 (4598): 671–80. <a href="https://doi.org/10.1126/science.220.4598.671">https://doi.org/10.1126/science.220.4598.671</a>.
 </div>
 </div>
 </section>
@@ -791,13 +756,13 @@ Zhang, Qingyang, Haitao Wu, Changqing Zhang, Peilin Zhao, and Yatao Bian. 2025. 
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../chapters/03-max-entropy.html" class="pagination-link" aria-label="Maximum-Entropy Learning">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Maximum-Entropy Learning</span></span>
+      <a href="../chapters/06-minimax-entropy.html" class="pagination-link" aria-label="Minimax-Entropy Learning">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Minimax-Entropy Learning</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../chapters/05-minimax-entropy.html" class="pagination-link" aria-label="Minimax-Entropy Learning">
-        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Minimax-Entropy Learning</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../chapters/08-ai-for-science.html" class="pagination-link" aria-label="Entropy-Based Learning for Science">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

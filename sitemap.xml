@@ -2,43 +2,47 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://yataobian.com/index.html</loc>
-    <lastmod>2026-08-06T13:07:11.000Z</lastmod>
+    <lastmod>2026-08-06T14:46:29.000Z</lastmod>
   </url>
   <url>
     <loc>https://yataobian.com/intro.html</loc>
-    <lastmod>2026-08-06T13:07:11.000Z</lastmod>
+    <lastmod>2026-08-06T14:46:29.000Z</lastmod>
   </url>
   <url>
     <loc>https://yataobian.com/chapters/01-entropy.html</loc>
-    <lastmod>2026-08-06T13:07:11.000Z</lastmod>
+    <lastmod>2026-08-06T14:46:29.000Z</lastmod>
   </url>
   <url>
-    <loc>https://yataobian.com/chapters/02-energy-models.html</loc>
-    <lastmod>2026-08-04T13:23:03.000Z</lastmod>
+    <loc>https://yataobian.com/chapters/02-free-energy.html</loc>
+    <lastmod>2026-08-06T14:46:29.000Z</lastmod>
   </url>
   <url>
-    <loc>https://yataobian.com/chapters/03-max-entropy.html</loc>
-    <lastmod>2026-08-04T13:23:03.000Z</lastmod>
+    <loc>https://yataobian.com/chapters/03-energy-models.html</loc>
+    <lastmod>2026-08-06T14:46:29.000Z</lastmod>
   </url>
   <url>
-    <loc>https://yataobian.com/chapters/04-min-entropy.html</loc>
-    <lastmod>2026-08-06T13:07:11.000Z</lastmod>
+    <loc>https://yataobian.com/chapters/04-max-entropy.html</loc>
+    <lastmod>2026-08-06T14:46:29.000Z</lastmod>
   </url>
   <url>
-    <loc>https://yataobian.com/chapters/05-minimax-entropy.html</loc>
-    <lastmod>2026-08-04T14:37:59.000Z</lastmod>
+    <loc>https://yataobian.com/chapters/05-min-entropy.html</loc>
+    <lastmod>2026-08-06T14:46:29.000Z</lastmod>
   </url>
   <url>
-    <loc>https://yataobian.com/chapters/06-energy-reasoning.html</loc>
-    <lastmod>2026-08-04T14:37:59.000Z</lastmod>
+    <loc>https://yataobian.com/chapters/06-minimax-entropy.html</loc>
+    <lastmod>2026-08-06T14:46:29.000Z</lastmod>
   </url>
   <url>
-    <loc>https://yataobian.com/chapters/07-ai-for-science.html</loc>
-    <lastmod>2026-08-04T14:37:59.000Z</lastmod>
+    <loc>https://yataobian.com/chapters/07-energy-reasoning.html</loc>
+    <lastmod>2026-08-06T14:46:29.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://yataobian.com/chapters/08-ai-for-science.html</loc>
+    <lastmod>2026-08-06T14:46:29.000Z</lastmod>
   </url>
   <url>
     <loc>https://yataobian.com/summary.html</loc>
-    <lastmod>2026-08-04T14:48:56.000Z</lastmod>
+    <lastmod>2026-08-06T14:46:29.000Z</lastmod>
   </url>
   <url>
     <loc>https://yataobian.com/references.html</loc>

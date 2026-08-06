@@ -6,10 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-08-02">
+<meta name="dcterms.date" content="2026-08-06">
 <meta name="description" content="An introduction to modern entropy- and energy-based learning, spanning the maximum-entropy, minimum-entropy, and minimax-entropy principles, and their applications to scientific and reasoning-oriented AI.">
 
-<title>1&nbsp; Introduction – Entropy-Based Learning</title>
+<title>3&nbsp; Energy, Entropy, and Free Energy – Entropy-Based Learning</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -50,25 +50,25 @@ div.csl-indent {
 }</style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./chapters/01-entropy.html" rel="next">
-<link href="./index.html" rel="prev">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-a277fc7c0b5572c02727048f32503fbf.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-a456556ae57cc6383e8547341bba6ec7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/03-energy-models.html" rel="next">
+<link href="../chapters/01-entropy.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-a277fc7c0b5572c02727048f32503fbf.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-a456556ae57cc6383e8547341bba6ec7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -138,7 +138,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./intro.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/01-entropy.html">Part I — Foundations</a></li><li class="breadcrumb-item"><a href="../chapters/02-free-energy.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Energy, Entropy, and Free Energy</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -153,7 +153,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Entropy-Based Learning</a> 
+      <a href="../">Entropy-Based Learning</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/yataobian/entropy-based-learning" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
@@ -168,13 +168,13 @@ window.Quarto = {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Preface</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro.html" class="sidebar-item-text sidebar-link active">
+  <a href="../intro.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
   </div>
 </li>
@@ -189,19 +189,19 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/01-entropy.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/01-entropy.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Entropy and the Maximum Entropy Principle</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/02-free-energy.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/02-free-energy.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Energy, Entropy, and Free Energy</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/03-energy-models.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/03-energy-models.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Energy-Based Models</span></span></a>
   </div>
 </li>
@@ -218,25 +218,25 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/04-max-entropy.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/04-max-entropy.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Maximum-Entropy Learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/05-min-entropy.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/05-min-entropy.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Minimum-Entropy Learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/06-minimax-entropy.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/06-minimax-entropy.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Minimax-Entropy Learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/07-energy-reasoning.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/07-energy-reasoning.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></span></a>
   </div>
 </li>
@@ -253,7 +253,7 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/08-ai-for-science.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/08-ai-for-science.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></span></a>
   </div>
 </li>
@@ -261,13 +261,13 @@ window.Quarto = {
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./summary.html" class="sidebar-item-text sidebar-link">
+  <a href="../summary.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
 </li>
@@ -281,17 +281,27 @@ window.Quarto = {
     <h2 id="toc-title">On This Page</h2>
    
   <ul>
-  <li><a href="#why-entropy" id="toc-why-entropy" class="nav-link active" data-scroll-target="#why-entropy"><span class="header-section-number">1.1</span> Why entropy?</a></li>
-  <li><a href="#roadmap" id="toc-roadmap" class="nav-link" data-scroll-target="#roadmap"><span class="header-section-number">1.2</span> Roadmap</a></li>
+  <li><a href="#maximum-entropy-with-an-energy-constraint" id="toc-maximum-entropy-with-an-energy-constraint" class="nav-link active" data-scroll-target="#maximum-entropy-with-an-energy-constraint"><span class="header-section-number">3.1</span> Maximum entropy with an energy constraint</a></li>
+  <li><a href="#free-energy" id="toc-free-energy" class="nav-link" data-scroll-target="#free-energy"><span class="header-section-number">3.2</span> Free energy</a></li>
+  <li><a href="#what-entropy-buys-you" id="toc-what-entropy-buys-you" class="nav-link" data-scroll-target="#what-entropy-buys-you"><span class="header-section-number">3.3</span> What entropy buys you</a>
+  <ul class="collapse">
+  <li><a href="#isothermal-expansion-a-process-with-no-energy-change" id="toc-isothermal-expansion-a-process-with-no-energy-change" class="nav-link" data-scroll-target="#isothermal-expansion-a-process-with-no-energy-change"><span class="header-section-number">3.3.1</span> Isothermal expansion: a process with no energy change</a></li>
+  <li><a href="#the-rubber-band-a-force-made-of-entropy" id="toc-the-rubber-band-a-force-made-of-entropy" class="nav-link" data-scroll-target="#the-rubber-band-a-force-made-of-entropy"><span class="header-section-number">3.3.2</span> The rubber band: a force made of entropy</a></li>
+  <li><a href="#melting-where-the-competition-changes-hands" id="toc-melting-where-the-competition-changes-hands" class="nav-link" data-scroll-target="#melting-where-the-competition-changes-hands"><span class="header-section-number">3.3.3</span> Melting: where the competition changes hands</a></li>
+  </ul></li>
+  <li><a href="#from-spins-to-networks" id="toc-from-spins-to-networks" class="nav-link" data-scroll-target="#from-spins-to-networks"><span class="header-section-number">3.4</span> From spins to networks</a></li>
+  <li><a href="#how-this-reached-ai" id="toc-how-this-reached-ai" class="nav-link" data-scroll-target="#how-this-reached-ai"><span class="header-section-number">3.5</span> How this reached AI</a></li>
+  <li><a href="#the-temperature-dial" id="toc-the-temperature-dial" class="nav-link" data-scroll-target="#the-temperature-dial"><span class="header-section-number">3.6</span> The temperature dial</a></li>
+  <li><a href="#why-it-matters-for-learning" id="toc-why-it-matters-for-learning" class="nav-link" data-scroll-target="#why-it-matters-for-learning"><span class="header-section-number">3.7</span> Why it matters for learning</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/01-entropy.html">Part I — Foundations</a></li><li class="breadcrumb-item"><a href="../chapters/02-free-energy.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Energy, Entropy, and Free Energy</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></h1>
+<h1 class="title"><span id="sec-free-energy" class="quarto-section-identifier"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Energy, Entropy, and Free Energy</span></span></h1>
 </div>
 
 
@@ -302,7 +312,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 2, 2026</p>
+      <p class="date">August 6, 2026</p>
     </div>
   </div>
   
@@ -320,38 +330,212 @@ window.Quarto = {
 </header>
 
 
-<section id="why-entropy" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="why-entropy"><span class="header-section-number">1.1</span> Why entropy?</h2>
-<p>Modern machine learning has long been nurtured by scientific disciplines. A canonical example is the <strong>Boltzmann machine</strong>, rooted in statistical physics and motivated by the <em>Maximum Entropy Principle</em>. This book takes entropy — and its close relative, energy — as the organizing thread for a family of learning methods that are both principled and practically effective.</p>
-<p>That lineage is unusually direct. In 1982 John Hopfield borrowed the energy function of a magnetic spin system to build an associative memory <span class="citation" data-cites="hopfield1982">(<a href="references.html#ref-hopfield1982" role="doc-biblioref">Hopfield 1982</a>)</span>; within a year, simulated annealing had turned the competition between energy and entropy into an optimization schedule <span class="citation" data-cites="kirkpatrick1983">(<a href="references.html#ref-kirkpatrick1983" role="doc-biblioref">Kirkpatrick et al. 1983</a>)</span>; and by 1985 the Boltzmann machine placed Hopfield’s network at a finite temperature and learned its couplings from data <span class="citation" data-cites="ackley1985">(<a href="references.html#ref-ackley1985" role="doc-biblioref">Ackley et al. 1985</a>)</span>. The same trade-off resurfaced as the evidence lower bound <span class="citation" data-cites="dayan1995helmholtz neal1998em">(<a href="references.html#ref-dayan1995helmholtz" role="doc-biblioref">Dayan et al. 1995</a>; <a href="references.html#ref-neal1998em" role="doc-biblioref">Neal and Hinton 1998</a>)</span>, as the contrastive objectives of energy-based learning <span class="citation" data-cites="lecun2006tutorial">(<a href="references.html#ref-lecun2006tutorial" role="doc-biblioref">LeCun et al. 2006</a>)</span>, and as the temperature parameter of every language-model decoder. In 2024 the Nobel Prize in Physics was awarded to Hopfield and Hinton for this line of work <span class="citation" data-cites="nobel2024physics">(<a href="references.html#ref-nobel2024physics" role="doc-biblioref">The Royal Swedish Academy of Sciences 2024</a>)</span>. <a href="chapters/02-free-energy.html" class="quarto-xref"><span>Chapter 3</span></a> develops the single equation, <span class="math inline">\(F = U - TS\)</span>, that runs beneath all of it.</p>
-<p>We study three directions that are connected:</p>
-<ol type="1">
-<li><strong>Maximizing entropy</strong> to obtain the least-biased model consistent with given constraints. This yields exponential-family / Gibbs distributions and, as we will see, a principled framework for valuation problems in machine learning <span class="citation" data-cites="bian2022energybased">(<a href="references.html#ref-bian2022energybased" role="doc-biblioref">Bian et al. 2022</a>)</span>.</li>
-<li><strong>Minimizing entropy</strong> to sharpen a model’s own predictions. When applied to large language models in a latent semantic space, this idea enables fully <em>unsupervised</em> elicitation of reasoning capabilities.</li>
-<li><strong>Minimaxing entropy</strong> to decide which features a model should include at all. The optimal features are those whose maximum-entropy model has the <em>minimum</em> entropy, which makes model selection a well-posed problem <span class="citation" data-cites="carcamo2025minimax">(<a href="references.html#ref-carcamo2025minimax" role="doc-biblioref">Carcamo et al. 2025</a>)</span>.</li>
-</ol>
+<p>The previous chapter maximized entropy subject to abstract moment constraints and obtained a Gibbs distribution written in terms of Lagrange multipliers. The next chapter writes probabilities as <span class="math inline">\(p(x) \propto e^{-E(x)}\)</span> and calls the exponent an energy. Something has to connect the two, and that something is one of the most useful equations in science:</p>
+<p><span class="math display">\[
+F = U - TS .
+\]</span></p>
+<p>At a fixed temperature, nature neither minimizes energy nor maximizes entropy. It minimizes a combination of the two, and the temperature is the exchange rate between them. This chapter derives that statement, illustrates it with three classical examples, and follows it into artificial intelligence.</p>
+<section id="maximum-entropy-with-an-energy-constraint" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="maximum-entropy-with-an-energy-constraint"><span class="header-section-number">3.1</span> Maximum entropy with an energy constraint</h2>
+<p>The maximum-entropy problem of <a href="01-entropy.html#sec-maxent-principle" class="quarto-xref"><span>Section 2.2</span></a> was stated for arbitrary features <span class="math inline">\(f_k\)</span>. Historically the original problem had exactly one constraint: the average energy of the system is known to be <span class="math inline">\(U\)</span>. Written out,</p>
+<p><span class="math display">\[
+\max_{p}\; H(p)
+\quad \text{s.t.} \quad
+\sum_x p(x) = 1, \;\; \sum_x p(x)\, E(x) = U ,
+\]</span></p>
+<p>and solved with Lagrange multipliers, it yields the <strong>Boltzmann distribution</strong></p>
+<p><span class="math display">\[
+p(x) = \frac{1}{Z}\, e^{-\beta E(x)},
+\qquad
+Z(\beta) = \sum_x e^{-\beta E(x)} ,
+\]</span></p>
+<p>where the multiplier enforcing the energy constraint is the inverse temperature, <span class="math inline">\(\beta = 1/k_B T\)</span>.</p>
+<p>That identification is worth pausing on, because it is what gives temperature a meaning outside physics. A Lagrange multiplier is a <em>price</em>: it measures how much of the objective must be surrendered to buy one unit of the constrained quantity. Here it measures how much entropy must be given up to raise the expected energy by one unit. Temperature is that price. A system at high temperature buys energy cheaply and stays spread out; a system at low temperature pays dearly for it and concentrates on low-energy states.</p>
+<p>This also settles a notational discrepancy the attentive reader will have noticed. In <a href="01-entropy.html#sec-maxent-principle" class="quarto-xref"><span>Section 2.2</span></a> the solution appeared as <span class="math inline">\(p(x) \propto \exp\big(\sum_k \lambda_k f_k(x)\big)\)</span>, with a plus sign; here it appears as <span class="math inline">\(\exp(-\beta E(x))\)</span>, with a minus. The two are the same object under the correspondence <span class="math inline">\(E = -\sum_k \lambda_k f_k\)</span>. Energy is negative log-probability up to a constant, and the sign convention comes from physics, where stable configurations should sit at <em>low</em> energy. <a href="03-energy-models.html" class="quarto-xref"><span>Chapter 4</span></a> follows the physics convention and absorbs <span class="math inline">\(\beta\)</span> into <span class="math inline">\(E\)</span> by setting <span class="math inline">\(k_B T = 1\)</span>.</p>
 </section>
-<section id="roadmap" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="roadmap"><span class="header-section-number">1.2</span> Roadmap</h2>
-<ul>
-<li><strong>Part I — Foundations</strong> surveys the thermodynamic, information-theoretic, quantum, and psychological notions of entropy, develops the maximum-entropy principle together with the free-energy relationship <span class="math inline">\(F = U - TS\)</span> that connects entropy to energy, and introduces energy-based models and the minimum-description-length view that leads to minimax entropy.</li>
-<li><strong>Part II — Methods</strong> develops maximum-entropy, minimum-entropy, and minimax-entropy learning, together with energy-based reasoning / guidance / refinement.</li>
-<li><strong>Part III — Applications</strong> connects these ideas to scientific foundation models and AI-for-science.</li>
-</ul>
+<section id="free-energy" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="free-energy"><span class="header-section-number">3.2</span> Free energy</h2>
+<p>Given the Boltzmann distribution, the two quantities of interest follow at once: the average energy <span class="math inline">\(U = \langle E \rangle\)</span> and the entropy <span class="math inline">\(S = -k_B \sum_x p(x) \log p(x)\)</span>. The combination that governs equilibrium is the <strong>Helmholtz free energy</strong> <span class="math inline">\(F = U - TS\)</span>, and it has a compact closed form <span class="citation" data-cites="callen1985">(<a href="../references.html#ref-callen1985" role="doc-biblioref">Callen 1985</a>)</span>:</p>
+<p><span class="math display">\[
+F = -k_B T \log Z .
+\]</span></p>
+<p>Free energy is the log partition function. What <a href="03-energy-models.html" class="quarto-xref"><span>Chapter 4</span></a> will present as the central computational obstacle of energy-based modelling is, read from the other side, the central thermodynamic potential of the system.</p>
+<p>The relationship has a third face, and it is the one that matters most for learning. Let <span class="math inline">\(q\)</span> be any distribution over the same states, and define its <strong>variational free energy</strong></p>
+<p><span class="math display">\[
+F(q) = \langle E \rangle_q - T\, S(q) .
+\]</span></p>
+<p>A short calculation relates this to the equilibrium value:</p>
+<p><span class="math display">\[
+F(q) = F + k_B T \cdot \mathrm{KL}\big(q \,\Vert\, p\big) ,
+\]</span></p>
+<p>where <span class="math inline">\(p\)</span> is the Boltzmann distribution. Because the Kullback–Leibler divergence is non-negative, <span class="math inline">\(F(q) \ge F\)</span> with equality exactly when <span class="math inline">\(q = p\)</span>. Equilibrium is therefore not merely <em>described</em> by the Boltzmann distribution, it is <em>characterized</em> by it, as the unique minimizer of a variational objective. Nearly everything in later chapters that goes by the name of a variational bound is this one inequality in disguise.</p>
+</section>
+<section id="what-entropy-buys-you" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="what-entropy-buys-you"><span class="header-section-number">3.3</span> What entropy buys you</h2>
+<p>The trade-off is easiest to believe after seeing cases in which entropy alone decides the outcome.</p>
+<section id="isothermal-expansion-a-process-with-no-energy-change" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="isothermal-expansion-a-process-with-no-energy-change"><span class="header-section-number">3.3.1</span> Isothermal expansion: a process with no energy change</h3>
+<p>An ideal gas of <span class="math inline">\(N\)</span> particles expands from volume <span class="math inline">\(V_1\)</span> to <span class="math inline">\(V_2\)</span> while held at temperature <span class="math inline">\(T\)</span>. The internal energy of an ideal gas depends only on temperature, so <span class="math inline">\(\Delta U = 0\)</span>: not one joule of stored energy is released. The gas expands regardless, because</p>
+<p><span class="math display">\[
+\Delta S = N k_B \log \frac{V_2}{V_1} &gt; 0
+\quad \Longrightarrow \quad
+\Delta F = -T \Delta S &lt; 0 .
+\]</span></p>
+<p>The work extracted, <span class="math inline">\(W = N k_B T \log(V_2 / V_1) = T \Delta S\)</span>, is drawn entirely from the heat bath. An account of this process in terms of energy alone cannot even say which direction it runs.</p>
+</section>
+<section id="the-rubber-band-a-force-made-of-entropy" class="level3" data-number="3.3.2">
+<h3 data-number="3.3.2" class="anchored" data-anchor-id="the-rubber-band-a-force-made-of-entropy"><span class="header-section-number">3.3.2</span> The rubber band: a force made of entropy</h3>
+<p>Stretch a rubber band and it pulls back. The restoring force is not stored in stretched chemical bonds. A polymer chain is a random walk of <span class="math inline">\(N\)</span> segments of length <span class="math inline">\(a\)</span>, and there are vastly more coiled configurations than extended ones, so extending the chain to end-to-end length <span class="math inline">\(L\)</span> costs entropy. The force is the gradient of that cost:</p>
+<p><span class="math display">\[
+f = -T \frac{\partial S}{\partial L} \approx \frac{3 k_B T}{N a^2}\, L .
+\]</span></p>
+<p>The energy landscape here is essentially flat, and yet there is a real force, one measurable with a spring scale. The formula also makes two predictions that run against intuition, and both hold. The force is <em>proportional to temperature</em>, so heating a stretched rubber band makes it contract harder — the opposite of a metal rod, which expands. And stretching a band quickly warms it, an effect readily confirmed by holding one against your lip.</p>
+</section>
+<section id="melting-where-the-competition-changes-hands" class="level3" data-number="3.3.3">
+<h3 data-number="3.3.3" class="anchored" data-anchor-id="melting-where-the-competition-changes-hands"><span class="header-section-number">3.3.3</span> Melting: where the competition changes hands</h3>
+<p>Ice has lower energy than liquid water, since melting must pay <span class="math inline">\(\Delta H &gt; 0\)</span> to break hydrogen bonds; water has the higher entropy. At the melting point the two contributions balance exactly, <span class="math inline">\(\Delta H - T_m \Delta S = 0\)</span>, so</p>
+<p><span class="math display">\[
+T_m = \frac{\Delta H}{\Delta S} .
+\]</span></p>
+<p>Below <span class="math inline">\(T_m\)</span> the energy term dominates and ice is the stable phase; above it the entropy term dominates and water is. A phase transition is precisely the temperature at which the exchange rate tips the competition from one side to the other.</p>
+</section>
+</section>
+<section id="from-spins-to-networks" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="from-spins-to-networks"><span class="header-section-number">3.4</span> From spins to networks</h2>
+<p>The simplest system with an energy is a single two-state variable <span class="math inline">\(s = \pm 1\)</span> with energy <span class="math inline">\(\mp \varepsilon\)</span>. Its partition function and average value are</p>
+<p><span class="math display">\[
+Z = 2 \cosh(\beta \varepsilon),
+\qquad
+\langle s \rangle = \tanh(\beta \varepsilon) ,
+\]</span></p>
+<p>and the temperature limits are exactly what the trade-off predicts: as <span class="math inline">\(T \to 0\)</span> the variable freezes into its low-energy state, and as <span class="math inline">\(T \to \infty\)</span> it becomes a fair coin with entropy <span class="math inline">\(k_B \log 2\)</span>.</p>
+<p>Now couple many such variables together. The <strong>Ising model</strong> assigns to a configuration <span class="math inline">\(s = (s_1, \dots, s_N)\)</span> the energy</p>
+<p><span class="math display">\[
+E(s) = -\sum_{i&lt;j} J_{ij}\, s_i s_j - \sum_i h_i s_i ,
+\]</span></p>
+<p>with <span class="math inline">\(J_{ij}\)</span> the interaction between units <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> and <span class="math inline">\(h_i\)</span> a local bias. When the couplings are disordered, the landscape acquires a large number of local minima and the system is called a <em>spin glass</em>.</p>
+<p>That equation is the hinge of this chapter. It is a model of magnetism, and it is also, term for term, the energy function of a Hopfield network and of a Boltzmann machine. What follows is what happened when physicists noticed.</p>
+</section>
+<section id="how-this-reached-ai" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="how-this-reached-ai"><span class="header-section-number">3.5</span> How this reached AI</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Year</th>
+<th>Contribution</th>
+<th>Role of the entropy–energy trade-off</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1982</td>
+<td>Hopfield network <span class="citation" data-cites="hopfield1982">(<a href="../references.html#ref-hopfield1982" role="doc-biblioref">Hopfield 1982</a>)</span></td>
+<td>The Ising energy becomes an associative memory: stored patterns are local minima and recall is descent. The <span class="math inline">\(T = 0\)</span> limit — energy only</td>
+</tr>
+<tr class="even">
+<td>1983</td>
+<td>Simulated annealing <span class="citation" data-cites="kirkpatrick1983">(<a href="../references.html#ref-kirkpatrick1983" role="doc-biblioref">Kirkpatrick et al. 1983</a>)</span></td>
+<td>Turns the trade-off into a <em>schedule</em>: start hot so entropy drives exploration, then cool so energy drives commitment</td>
+</tr>
+<tr class="odd">
+<td>1985</td>
+<td>Boltzmann machine <span class="citation" data-cites="ackley1985">(<a href="../references.html#ref-ackley1985" role="doc-biblioref">Ackley et al. 1985</a>)</span></td>
+<td>Places the Hopfield network at finite temperature, <span class="math inline">\(p(s) \propto e^{-E(s)/T}\)</span>; learning compares correlations in a clamped and a free phase</td>
+</tr>
+<tr class="even">
+<td>1995–98</td>
+<td>Helmholtz machine <span class="citation" data-cites="dayan1995helmholtz">(<a href="../references.html#ref-dayan1995helmholtz" role="doc-biblioref">Dayan et al. 1995</a>)</span>; free-energy view of EM <span class="citation" data-cites="neal1998em">(<a href="../references.html#ref-neal1998em" role="doc-biblioref">Neal and Hinton 1998</a>)</span></td>
+<td>The evidence lower bound is identified as a negative variational free energy</td>
+</tr>
+<tr class="odd">
+<td>2002</td>
+<td>Contrastive divergence <span class="citation" data-cites="hinton2002cd">(<a href="../references.html#ref-hinton2002cd" role="doc-biblioref">Hinton 2002</a>)</span></td>
+<td>Makes the intractable <span class="math inline">\(\log Z\)</span> gradient practical and revives deep generative models</td>
+</tr>
+<tr class="even">
+<td>2006</td>
+<td>Energy-based learning <span class="citation" data-cites="lecun2006tutorial">(<a href="../references.html#ref-lecun2006tutorial" role="doc-biblioref">LeCun et al. 2006</a>)</span></td>
+<td>Names the log-partition term “the Helmholtz free energy of the ensemble” and unifies probabilistic and non-probabilistic learning</td>
+</tr>
+<tr class="odd">
+<td>2024</td>
+<td>Nobel Prize in Physics <span class="citation" data-cites="nobel2024physics">(<a href="../references.html#ref-nobel2024physics" role="doc-biblioref">The Royal Swedish Academy of Sciences 2024</a>)</span></td>
+<td>Awarded to Hopfield and Hinton; the citation rests on the correspondence between neural networks and spin models in statistical physics</td>
+</tr>
+</tbody>
+</table>
+<p>Two threads in that table deserve to be stated plainly, because the rest of the book leans on them.</p>
+<p>The first is that <strong>the evidence lower bound is a free energy</strong>. Take a latent variable <span class="math inline">\(z\)</span>, set <span class="math inline">\(E(z) = -\log p(x, z)\)</span> and <span class="math inline">\(T = 1\)</span>, and the variational inequality of the previous section reads</p>
+<p><span class="math display">\[
+-\log p(x) \;\le\; \big\langle -\log p(x, z) \big\rangle_{q} - H(q) \;=\; F(q) ,
+\]</span></p>
+<p>with the gap equal to <span class="math inline">\(\mathrm{KL}\big(q \,\Vert\, p(\cdot \mid x)\big)\)</span>. Variational autoencoders, variational inference, and the training objectives of diffusion models are all instances of minimizing <span class="math inline">\(U - TS\)</span> at unit temperature. The physics is not an analogy here; it is the same algebra.</p>
+<p>The second is that <strong>annealing is the trade-off used as a control signal</strong>. Simulated annealing, the noise schedules of Langevin and diffusion samplers, and the practice of decoding a language model at a temperature that falls during generation are one idea: begin where entropy dominates and the search is broad, end where energy dominates and the answer is definite.</p>
+</section>
+<section id="the-temperature-dial" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="the-temperature-dial"><span class="header-section-number">3.6</span> The temperature dial</h2>
+<p>The modern instance is worth making explicit, because it is the version most readers use daily. A language model produces logits <span class="math inline">\(\ell(x)\)</span> and samples</p>
+<p><span class="math display">\[
+p(x) \propto \exp\big(\ell(x) / T\big) ,
+\]</span></p>
+<p>which is the Boltzmann distribution with energy <span class="math inline">\(E = -\ell\)</span>. Greedy decoding is <span class="math inline">\(T \to 0\)</span>; sampling uniformly from the vocabulary is <span class="math inline">\(T \to \infty\)</span>. The <code>temperature</code> field in every inference API is the same <span class="math inline">\(T\)</span> that appears in <span class="math inline">\(F = U - TS\)</span>.</p>
+<p>Read this way, the three principles that organize this book are three settings of a single dial.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Principle</th>
+<th>Where the dial sits</th>
+<th>What it buys</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Maximum entropy (<a href="04-max-entropy.html" class="quarto-xref"><span>Chapter 5</span></a>)</td>
+<td>High: entropy dominates</td>
+<td>Honesty about what the constraints leave undetermined</td>
+</tr>
+<tr class="even">
+<td>Minimum entropy (<a href="05-min-entropy.html" class="quarto-xref"><span>Chapter 6</span></a>)</td>
+<td>Low: energy dominates</td>
+<td>Commitment — sharpened predictions and elicited reasoning</td>
+</tr>
+<tr class="odd">
+<td>Minimax entropy (<a href="06-minimax-entropy.html" class="quarto-xref"><span>Chapter 7</span></a>)</td>
+<td>Both, nested</td>
+<td>Maximize on the inside to model the world, minimize on the outside to choose what to model</td>
+</tr>
+</tbody>
+</table>
+<p>The principles are not competing claims about the right amount of uncertainty. They are claims about <em>when</em> to be uncertain, and the free energy is what makes that question well posed.</p>
+</section>
+<section id="why-it-matters-for-learning" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="why-it-matters-for-learning"><span class="header-section-number">3.7</span> Why it matters for learning</h2>
+<p>The equation <span class="math inline">\(F = U - TS\)</span> supplies three things the rest of this book uses. It explains where the Gibbs form of <a href="03-energy-models.html" class="quarto-xref"><span>Chapter 4</span></a> comes from and why its exponent carries a minus sign. It identifies the partition function — the central computational difficulty of energy-based modelling — as a free energy, which is why variational bounds are the natural way around it. And it gives <em>temperature</em> a precise meaning, so that annealing schedules, decoding parameters, and the coalition temperature <span class="math inline">\(\tau\)</span> of <a href="04-max-entropy.html" class="quarto-xref"><span>Chapter 5</span></a> can all be recognized as one knob rather than three coincidences.</p>
+<p>The next chapter takes the Gibbs distribution as its starting point and asks what happens when the energy function is learned from data.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-ackley1985" class="csl-entry" role="listitem">
 Ackley, David H., Geoffrey E. Hinton, and Terrence J. Sejnowski. 1985. <span>“A Learning Algorithm for Boltzmann Machines.”</span> <em>Cognitive Science</em> 9 (1): 147–69. <a href="https://doi.org/10.1207/s15516709cog0901_7">https://doi.org/10.1207/s15516709cog0901_7</a>.
 </div>
-<div id="ref-bian2022energybased" class="csl-entry" role="listitem">
-Bian, Yatao, Yu Rong, Tingyang Xu, Jiaxiang Wu, Andreas Krause, and Junzhou Huang. 2022. <span>“Energy-Based Learning for Cooperative Games, with Applications to Valuation Problems in Machine Learning.”</span> <em>International Conference on Learning Representations (ICLR)</em>. <a href="https://openreview.net/forum?id=xLfAgCroImw">https://openreview.net/forum?id=xLfAgCroImw</a>.
-</div>
-<div id="ref-carcamo2025minimax" class="csl-entry" role="listitem">
-Carcamo, David P., Nicholas J. Weaver, Purushottam D. Dixit, and Christopher W. Lynn. 2025. <span>“Minimax Entropy: The Statistical Physics of Optimal Models.”</span> <em>arXiv Preprint arXiv:2505.01607</em>. <a href="https://arxiv.org/abs/2505.01607">https://arxiv.org/abs/2505.01607</a>.
+<div id="ref-callen1985" class="csl-entry" role="listitem">
+Callen, Herbert B. 1985. <em>Thermodynamics and an Introduction to Thermostatistics</em>. 2nd ed. Wiley.
 </div>
 <div id="ref-dayan1995helmholtz" class="csl-entry" role="listitem">
 Dayan, Peter, Geoffrey E. Hinton, Radford M. Neal, and Richard S. Zemel. 1995. <span>“The Helmholtz Machine.”</span> <em>Neural Computation</em> 7 (5): 889–904. <a href="https://doi.org/10.1162/neco.1995.7.5.889">https://doi.org/10.1162/neco.1995.7.5.889</a>.
+</div>
+<div id="ref-hinton2002cd" class="csl-entry" role="listitem">
+Hinton, Geoffrey E. 2002. <span>“Training Products of Experts by Minimizing Contrastive Divergence.”</span> <em>Neural Computation</em> 14 (8): 1771–800. <a href="https://doi.org/10.1162/089976602760128018">https://doi.org/10.1162/089976602760128018</a>.
 </div>
 <div id="ref-hopfield1982" class="csl-entry" role="listitem">
 Hopfield, John J. 1982. <span>“Neural Networks and Physical Systems with Emergent Collective Computational Abilities.”</span> <em>Proceedings of the National Academy of Sciences</em> 79 (8): 2554–58. <a href="https://doi.org/10.1073/pnas.79.8.2554">https://doi.org/10.1073/pnas.79.8.2554</a>.
@@ -774,13 +958,13 @@ The Royal Swedish Academy of Sciences. 2024. <em>Scientific Background to the No
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./index.html" class="pagination-link" aria-label="Preface">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Preface</span>
+      <a href="../chapters/01-entropy.html" class="pagination-link" aria-label="Entropy and the Maximum Entropy Principle">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Entropy and the Maximum Entropy Principle</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./chapters/01-entropy.html" class="pagination-link" aria-label="Entropy and the Maximum Entropy Principle">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Entropy and the Maximum Entropy Principle</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../chapters/03-energy-models.html" class="pagination-link" aria-label="Energy-Based Models">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Energy-Based Models</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
