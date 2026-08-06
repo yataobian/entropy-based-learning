@@ -7,9 +7,10 @@ date-modified: last-modified
 
 ## The many faces of entropy
 
-Entropy was invented three separate times — once for heat engines, once for
-telephone lines, once for quantum ensembles — and has been rediscovered many
-times since. The names, the units, and the motivating problems all differ, but
+Entropy was invented three separate times — for heat engines in the 1860s, for
+quantum ensembles in the 1920s, and for telephone lines in the 1940s — and has
+been rediscovered many times since. The names, the units, and the motivating
+problems all differ, but
 each version measures the same thing: given what we have specified about a
 system, how much remains unspecified. This section walks through those notions
 before the rest of the book settles on one of them.
@@ -32,10 +33,11 @@ This functional form is not an arbitrary choice. Shannon showed that three
 requirements — continuity in the probabilities, monotonicity in the number of
 equally likely outcomes, and consistency when outcomes are grouped — determine
 $H$ uniquely up to the base of the logarithm. It also carries a concrete
-operational meaning: $H(p)$ is the shortest expected code length achievable by
-any lossless encoding of samples from $p$. Uncertainty and description length
-are one quantity seen from two sides, a duality that returns in
-@sec-minimax-entropy.
+operational meaning: $H(p)$ is the expected code length of an optimal lossless
+encoding of samples from $p$ — exactly, in the limit of coding long blocks, and
+to within one bit if each symbol must be coded on its own. Uncertainty and
+description length are one quantity seen from two sides, a duality that returns
+in @sec-minimax-entropy.
 
 ### Heat: thermodynamic entropy
 
@@ -93,9 +95,10 @@ for the maximally mixed state.
 
 The quantum case does break the analogy in one instructive place. Classically,
 conditional entropy is never negative: learning $Y$ cannot leave us knowing more
-than everything about $X$. Quantum mechanically it can be, and a negative value
-is a signature of entanglement — the joint state is more sharply specified than
-either of its parts.
+than everything about $X$. Quantum mechanically it can be — the joint state may
+be more sharply specified than either of its parts. A negative value therefore
+certifies entanglement, though the implication runs one way only: entangled
+states with non-negative conditional entropy exist.
 
 ### One knob, a family: Rényi and Tsallis
 

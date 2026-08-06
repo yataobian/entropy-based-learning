@@ -44,7 +44,10 @@ computer vision [@zhu1997minimax].
 
 ## Three equivalent views
 
-Minimizing $S(P_F)$ optimizes three quantities at once:
+Minimizing $S(P_F)$ optimizes three quantities at once. In what follows,
+$P_{\text{true}}$ denotes the distribution that actually generated the data, and
+$P_{\text{ind}}$ the featureless baseline model in which the variables are
+treated as independent.
 
 - **Shortest description.** Since $L(P_F) = S(P_F)$, the optimum is the most
   compressed account of the data.
