@@ -12,7 +12,7 @@ book:
     maximum-entropy, minimum-entropy, and minimax-entropy principles, and
     their applications to scientific and reasoning-oriented AI.
   site-url: "https://yataobian.com/"
-  repo-url: "https://github.com/yataobian"
+  repo-url: "https://github.com/yataobian/entropy-based-learning"
   chapters:
     - index.qmd
     - intro.qmd
