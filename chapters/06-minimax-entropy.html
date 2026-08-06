@@ -342,7 +342,7 @@ P_F = \arg\max_{P}\;\big\{\, S(P) \;:\;
 </section>
 <section id="three-equivalent-views" class="level2" data-number="7.3">
 <h2 data-number="7.3" class="anchored" data-anchor-id="three-equivalent-views"><span class="header-section-number">7.3</span> Three equivalent views</h2>
-<p>Minimizing <span class="math inline">\(S(P_F)\)</span> optimizes three quantities at once:</p>
+<p>Minimizing <span class="math inline">\(S(P_F)\)</span> optimizes three quantities at once. In what follows, <span class="math inline">\(P_{\text{true}}\)</span> denotes the distribution that actually generated the data, and <span class="math inline">\(P_{\text{ind}}\)</span> the featureless baseline model in which the variables are treated as independent.</p>
 <ul>
 <li><strong>Shortest description.</strong> Since <span class="math inline">\(L(P_F) = S(P_F)\)</span>, the optimum is the most compressed account of the data.</li>
 <li><strong>Closest to the truth.</strong> The entropy gap to the true distribution is exactly a divergence, <span class="math inline">\(S(P_F) - S(P_{\text{true}}) =
@@ -359,7 +359,7 @@ D_{\mathrm{KL}}(P_{\text{true}} \Vert P_F)\)</span>, so the optimum is also the 
 <section id="takeaway" class="level2" data-number="7.5">
 <h2 data-number="7.5" class="anchored" data-anchor-id="takeaway"><span class="header-section-number">7.5</span> Takeaway</h2>
 <p>Minimax entropy couples the two preceding principles into a single criterion: <strong>maximize entropy to model the world, minimize entropy to commit to what matters</strong>. Maximum entropy supplies possibility, minimum entropy supplies certainty, and the minimax formulation decides which details deserve to be modelled at all.</p>
-<p>The principle has recently yielded exactly solvable models of large neuronal populations <span class="citation" data-cites="lynn2024exact">(<a href="../references.html#ref-lynn2024exact" role="doc-biblioref">Lynn et al. 2024</a>)</span>, yet its reach in machine learning is largely untapped. Open directions include scalability and sample complexity in high dimensions, realizations for LLMs, agents, and multimodal models, and the relationship to the free-energy principle <span class="citation" data-cites="friston2010free">(<a href="../references.html#ref-friston2010free" role="doc-biblioref">Friston 2010</a>)</span>.</p>
+<p>The principle has recently yielded exactly solvable models of large neuronal populations <span class="citation" data-cites="lynn2024exact">(<a href="../references.html#ref-lynn2024exact" role="doc-biblioref">Lynn et al. 2025</a>)</span>, yet its reach in machine learning is largely untapped. Open directions include scalability and sample complexity in high dimensions, realizations for LLMs, agents, and multimodal models, and the relationship to the free-energy principle <span class="citation" data-cites="friston2010free">(<a href="../references.html#ref-friston2010free" role="doc-biblioref">Friston 2010</a>)</span>.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
@@ -367,7 +367,7 @@ D_{\mathrm{KL}}(P_{\text{true}} \Vert P_F)\)</span>, so the optimum is also the 
 Bian, Andrew An, Joachim M. Buhmann, Andreas Krause, and Sebastian Tschiatschek. 2017. <span>“Guarantees for Greedy Maximization of Non-Submodular Functions with Applications.”</span> <em>International Conference on Machine Learning (ICML)</em>, 498–507.
 </div>
 <div id="ref-carcamo2025minimax" class="csl-entry" role="listitem">
-Carcamo, David P., Nicholas J. Weaver, Purushottam D. Dixit, and Christopher W. Lynn. 2025. <span>“Minimax Entropy: The Statistical Physics of Optimal Models.”</span> <em>arXiv Preprint arXiv:2505.01607</em>. <a href="https://arxiv.org/abs/2505.01607">https://arxiv.org/abs/2505.01607</a>.
+Carcamo, David P., Nicholas J. Weaver, Purushottam D. Dixit, and Christopher W. Lynn. 2025. <span>“Minimax Entropy: The Statistical Physics of Optimal Models.”</span> <em>Physical Review E</em> 112 (6): 061001. <a href="https://doi.org/10.1103/kr9x-q59y">https://doi.org/10.1103/kr9x-q59y</a>.
 </div>
 <div id="ref-feder1986maximum" class="csl-entry" role="listitem">
 Feder, M. 1986. <span>“Maximum Entropy as a Special Case of the Minimum Description Length Criterion.”</span> <em>IEEE Transactions on Information Theory</em> 32: 847–49.
@@ -379,13 +379,13 @@ Friston, Karl. 2010. <span>“The Free-Energy Principle: A Unified Brain Theory?
 Grünwald, Peter D. 2007. <em>The Minimum Description Length Principle</em>. MIT Press.
 </div>
 <div id="ref-lynn2024exact" class="csl-entry" role="listitem">
-Lynn, Christopher W., Qiwei Yu, Rich Pang, Stephanie E. Palmer, and William Bialek. 2024. <span>“Exact Minimax Entropy Models of Large-Scale Neuronal Activity.”</span> <em>arXiv Preprint arXiv:2402.00007</em>. <a href="https://arxiv.org/abs/2402.00007">https://arxiv.org/abs/2402.00007</a>.
+Lynn, Christopher W., Qiwei Yu, Rich Pang, Stephanie E. Palmer, and William Bialek. 2025. <span>“Exact Minimax Entropy Models of Large-Scale Neuronal Activity.”</span> <em>Physical Review E</em> 111 (5): 054411. <a href="https://doi.org/10.1103/PhysRevE.111.054411">https://doi.org/10.1103/PhysRevE.111.054411</a>.
 </div>
 <div id="ref-nemhauser1978analysis" class="csl-entry" role="listitem">
 Nemhauser, George L., Laurence A. Wolsey, and Marshall L. Fisher. 1978. <span>“An Analysis of Approximations for Maximizing Submodular Set Functions—i.”</span> <em>Mathematical Programming</em> 14: 265–94.
 </div>
 <div id="ref-zhu1997minimax" class="csl-entry" role="listitem">
-Zhu, Song Chun, Ying Nian Wu, and David Mumford. 1997. <span>“Minimax Entropy Principle and Its Application to Texture Modeling.”</span> <em>Neural Computation</em> 9: 1627–60.
+Zhu, Song Chun, Ying Nian Wu, and David Mumford. 1997. <span>“Minimax Entropy Principle and Its Application to Texture Modeling.”</span> <em>Neural Computation</em> 9 (8): 1627–60. <a href="https://doi.org/10.1162/neco.1997.9.8.1627">https://doi.org/10.1162/neco.1997.9.8.1627</a>.
 </div>
 </div>
 </section>

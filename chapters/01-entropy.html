@@ -332,7 +332,7 @@ window.Quarto = {
 
 <section id="the-many-faces-of-entropy" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="the-many-faces-of-entropy"><span class="header-section-number">2.1</span> The many faces of entropy</h2>
-<p>Entropy was invented three separate times — once for heat engines, once for telephone lines, once for quantum ensembles — and has been rediscovered many times since. The names, the units, and the motivating problems all differ, but each version measures the same thing: given what we have specified about a system, how much remains unspecified. This section walks through those notions before the rest of the book settles on one of them.</p>
+<p>Entropy was invented three separate times — for heat engines in the 1860s, for quantum ensembles in the 1920s, and for telephone lines in the 1940s — and has been rediscovered many times since. The names, the units, and the motivating problems all differ, but each version measures the same thing: given what we have specified about a system, how much remains unspecified. This section walks through those notions before the rest of the book settles on one of them.</p>
 <section id="information-shannon-entropy" class="level3" data-number="2.1.1">
 <h3 data-number="2.1.1" class="anchored" data-anchor-id="information-shannon-entropy"><span class="header-section-number">2.1.1</span> Information: Shannon entropy</h3>
 <p>For a discrete random variable <span class="math inline">\(X\)</span> with probability mass function <span class="math inline">\(p(x)\)</span>, the <strong>Shannon entropy</strong> is</p>
@@ -340,7 +340,7 @@ window.Quarto = {
 H(p) = -\sum_{x} p(x) \log p(x),
 \]</span></p>
 <p>which quantifies the average uncertainty (in nats or bits) of <span class="math inline">\(X\)</span> <span class="citation" data-cites="shannon1948">(<a href="../references.html#ref-shannon1948" role="doc-biblioref">Shannon 1948</a>)</span>. Entropy is maximized by the uniform distribution, where it equals <span class="math inline">\(\log |\mathcal{X}|\)</span>, and minimized (equal to zero) by a deterministic one.</p>
-<p>This functional form is not an arbitrary choice. Shannon showed that three requirements — continuity in the probabilities, monotonicity in the number of equally likely outcomes, and consistency when outcomes are grouped — determine <span class="math inline">\(H\)</span> uniquely up to the base of the logarithm. It also carries a concrete operational meaning: <span class="math inline">\(H(p)\)</span> is the shortest expected code length achievable by any lossless encoding of samples from <span class="math inline">\(p\)</span>. Uncertainty and description length are one quantity seen from two sides, a duality that returns in <a href="06-minimax-entropy.html" class="quarto-xref"><span>Chapter 7</span></a>.</p>
+<p>This functional form is not an arbitrary choice. Shannon showed that three requirements — continuity in the probabilities, monotonicity in the number of equally likely outcomes, and consistency when outcomes are grouped — determine <span class="math inline">\(H\)</span> uniquely up to the base of the logarithm. It also carries a concrete operational meaning: <span class="math inline">\(H(p)\)</span> is the expected code length of an optimal lossless encoding of samples from <span class="math inline">\(p\)</span> — exactly, in the limit of coding long blocks, and to within one bit if each symbol must be coded on its own. Uncertainty and description length are one quantity seen from two sides, a duality that returns in <a href="06-minimax-entropy.html" class="quarto-xref"><span>Chapter 7</span></a>.</p>
 </section>
 <section id="heat-thermodynamic-entropy" class="level3" data-number="2.1.2">
 <h3 data-number="2.1.2" class="anchored" data-anchor-id="heat-thermodynamic-entropy"><span class="header-section-number">2.1.2</span> Heat: thermodynamic entropy</h3>
@@ -366,7 +366,7 @@ S = -k_B \sum_i p_i \log p_i .
 S(\rho) = -\operatorname{Tr}(\rho \log \rho).
 \]</span></p>
 <p>Written in the eigenbasis of <span class="math inline">\(\rho\)</span>, this reduces to the Shannon entropy of its eigenvalues, so the same functional form reappears with a different argument. It vanishes exactly for pure states, which are completely specified, and is maximal for the maximally mixed state.</p>
-<p>The quantum case does break the analogy in one instructive place. Classically, conditional entropy is never negative: learning <span class="math inline">\(Y\)</span> cannot leave us knowing more than everything about <span class="math inline">\(X\)</span>. Quantum mechanically it can be, and a negative value is a signature of entanglement — the joint state is more sharply specified than either of its parts.</p>
+<p>The quantum case does break the analogy in one instructive place. Classically, conditional entropy is never negative: learning <span class="math inline">\(Y\)</span> cannot leave us knowing more than everything about <span class="math inline">\(X\)</span>. Quantum mechanically it can be — the joint state may be more sharply specified than either of its parts. A negative value therefore certifies entanglement, though the implication runs one way only: entangled states with non-negative conditional entropy exist.</p>
 </section>
 <section id="one-knob-a-family-rényi-and-tsallis" class="level3" data-number="2.1.4">
 <h3 data-number="2.1.4" class="anchored" data-anchor-id="one-knob-a-family-rényi-and-tsallis"><span class="header-section-number">2.1.4</span> One knob, a family: Rényi and Tsallis</h3>
@@ -527,7 +527,7 @@ Jaynes, Edwin T. 1957. <span>“Information Theory and Statistical Mechanics.”
 Neumann, John von. 1927. <span>“Thermodynamik Quantenmechanischer Gesamtheiten.”</span> <em>Nachrichten von Der Gesellschaft Der Wissenschaften Zu Göttingen, Mathematisch-Physikalische Klasse</em> 1927: 273–91.
 </div>
 <div id="ref-renyi1961" class="csl-entry" role="listitem">
-Rényi, Alfréd. 1961. <span>“On Measures of Entropy and Information.”</span> <em>Proceedings of the Fourth Berkeley Symposium on Mathematical Statistics and Probability</em> 1: 547–61.
+Rényi, Alfréd. 1961. <span>“On Measures of Entropy and Information.”</span> <em>Proceedings of the Fourth Berkeley Symposium on Mathematical Statistics and Probability, Volume 1: Contributions to the Theory of Statistics</em>, 547–61.
 </div>
 <div id="ref-schrodinger1944" class="csl-entry" role="listitem">
 Schrödinger, Erwin. 1944. <em>What Is Life? The Physical Aspect of the Living Cell</em>. Cambridge University Press.
