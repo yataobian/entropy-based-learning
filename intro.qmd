@@ -9,6 +9,8 @@ date-modified: last-modified
 
 Modern machine learning has long been nurtured by scientific disciplines. A canonical example is the **Boltzmann machine**, rooted in statistical physics and motivated by the *Maximum Entropy Principle*. This book takes entropy — and its close relative, energy — as the organizing thread for a family of learning methods that are both principled and practically effective.
 
+That lineage is unusually direct. In 1982 John Hopfield borrowed the energy function of a magnetic spin system to build an associative memory [@hopfield1982]; within a year, simulated annealing had turned the competition between energy and entropy into an optimization schedule [@kirkpatrick1983]; and by 1985 the Boltzmann machine placed Hopfield's network at a finite temperature and learned its couplings from data [@ackley1985]. The same trade-off resurfaced as the evidence lower bound [@dayan1995helmholtz; @neal1998em], as the contrastive objectives of energy-based learning [@lecun2006tutorial], and as the temperature parameter of every language-model decoder. In 2024 the Nobel Prize in Physics was awarded to Hopfield and Hinton for this line of work [@nobel2024physics]. @sec-free-energy develops the single equation, $F = U - TS$, that runs beneath all of it.
+
 We study three directions that are connected:
 
 1.  **Maximizing entropy** to obtain the least-biased model consistent with given constraints. This yields exponential-family / Gibbs distributions and, as we will see, a principled framework for valuation problems in machine learning [@bian2022energybased].
@@ -17,6 +19,6 @@ We study three directions that are connected:
 
 ## Roadmap
 
-- **Part I — Foundations** surveys the thermodynamic, information-theoretic, quantum, and psychological notions of entropy, then develops the maximum-entropy principle, energy-based models, and the minimum-description-length view that leads to minimax entropy.
+- **Part I — Foundations** surveys the thermodynamic, information-theoretic, quantum, and psychological notions of entropy, develops the maximum-entropy principle together with the free-energy relationship $F = U - TS$ that connects entropy to energy, and introduces energy-based models and the minimum-description-length view that leads to minimax entropy.
 - **Part II — Methods** develops maximum-entropy, minimum-entropy, and minimax-entropy learning, together with energy-based reasoning / guidance / refinement.
 - **Part III — Applications** connects these ideas to scientific foundation models and AI-for-science.

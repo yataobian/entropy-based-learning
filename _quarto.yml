@@ -19,16 +19,17 @@ book:
     - part: "Part I — Foundations"
       chapters:
         - chapters/01-entropy.qmd
-        - chapters/02-energy-models.qmd
+        - chapters/02-free-energy.qmd
+        - chapters/03-energy-models.qmd
     - part: "Part II — Methods"
       chapters:
-        - chapters/03-max-entropy.qmd
-        - chapters/04-min-entropy.qmd
-        - chapters/05-minimax-entropy.qmd
-        - chapters/06-energy-reasoning.qmd
+        - chapters/04-max-entropy.qmd
+        - chapters/05-min-entropy.qmd
+        - chapters/06-minimax-entropy.qmd
+        - chapters/07-energy-reasoning.qmd
     - part: "Part III — Applications"
       chapters:
-        - chapters/07-ai-for-science.qmd
+        - chapters/08-ai-for-science.qmd
     - summary.qmd
     - references.qmd
 

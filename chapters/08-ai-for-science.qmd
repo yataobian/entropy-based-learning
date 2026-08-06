@@ -35,7 +35,9 @@ A deeper unification may be within reach. The minimax view
 (@sec-minimax-entropy) suggests that modelling the world and committing to a
 decision are two halves of one objective — an idea that echoes the **free-energy
 principle** proposed as a unified account of perception and action in the brain
-[@friston2010free]. Making that correspondence precise, and scaling it to LLMs,
+[@friston2010free]. The quantity that principle asks the brain to minimize is
+the variational free energy of @sec-free-energy, which is what makes the
+correspondence more than a metaphor. Making it precise, and scaling it to LLMs,
 agents, and multimodal scientific models, is an open and appealing direction.
 
 As the research matures, this book will grow to include worked examples,

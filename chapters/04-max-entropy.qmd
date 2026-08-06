@@ -21,9 +21,11 @@ $$
 p(S) \propto \exp\big(v(S) / \tau\big),
 $$
 
-where $\tau$ controls the temperature. Applying the maximum-entropy principle to
-game-theoretic valuations yields a **new class of valuation methods**, of which
-the Shapley value arises as a special case.
+where $\tau$ is a temperature in exactly the sense of @sec-free-energy: as
+$\tau \to 0$ the distribution concentrates on the highest-value coalitions,
+while as $\tau \to \infty$ it flattens towards uniform. Applying the
+maximum-entropy principle to game-theoretic valuations yields a **new class of
+valuation methods**, of which the Shapley value arises as a special case.
 
 ## Why this is useful
 
@@ -32,8 +34,10 @@ the Shapley value arises as a special case.
   principled framework for interpreting AI models.
 - **A family, not a point.** The temperature $\tau$ traces a spectrum of
   valuation schemes, enabling trade-offs beyond the single Shapley solution.
-- **Bridges to physics.** The same Gibbs machinery links directly to the
-  statistical-physics origins of the Boltzmann machine.
+- **Bridges to physics.** The same Gibbs machinery is the one that carried the
+  Ising energy into neural networks in the first place, by way of the Hopfield
+  network [@hopfield1982] and the Boltzmann machine [@ackley1985]; see
+  @sec-free-energy.
 
 ## Takeaway
 

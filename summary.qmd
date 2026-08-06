@@ -12,4 +12,6 @@ This book introduced **entropy-based learning** through three complementary prin
 - **Minimum entropy** sharpens a capable model's own predictions, enabling *unsupervised* elicitation of reasoning (EMPO) in a latent semantic space [@zhang2025empo].
 - **Minimax entropy** selects the features worth modelling at all: those whose maximum-entropy model carries the least entropy, simultaneously the shortest, most accurate, and most informative description [@carcamo2025minimax].
 
+Binding the three together is the **free energy** $F = U - TS$: temperature sets the exchange rate between energy and entropy, so the principles are three settings of one dial rather than three separate doctrines. It is also the equation that carried statistical physics into machine learning, from the Hopfield network and the Boltzmann machine through to the evidence lower bound — a lineage recognized by the 2024 Nobel Prize in Physics [@nobel2024physics].
+
 This is an early scaffold; future revisions will add worked examples, code, and experiments. For updates, see <https://yataobian.com/> and the [Blue Whale Lab](https://bluewhale.yataobian.com/).

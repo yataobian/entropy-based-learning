@@ -1,0 +1,260 @@
+---
+date: "2026-08-06"
+date-modified: last-modified
+---
+
+# Energy, Entropy, and Free Energy {#sec-free-energy}
+
+The previous chapter maximized entropy subject to abstract moment constraints
+and obtained a Gibbs distribution written in terms of Lagrange multipliers. The
+next chapter writes probabilities as $p(x) \propto e^{-E(x)}$ and calls the
+exponent an energy. Something has to connect the two, and that something is one
+of the most useful equations in science:
+
+$$
+F = U - TS .
+$$
+
+At a fixed temperature, nature neither minimizes energy nor maximizes entropy.
+It minimizes a combination of the two, and the temperature is the exchange rate
+between them. This chapter derives that statement, illustrates it with three
+classical examples, and follows it into artificial intelligence.
+
+## Maximum entropy with an energy constraint
+
+The maximum-entropy problem of @sec-maxent-principle was stated for arbitrary
+features $f_k$. Historically the original problem had exactly one constraint:
+the average energy of the system is known to be $U$. Written out,
+
+$$
+\max_{p}\; H(p)
+\quad \text{s.t.} \quad
+\sum_x p(x) = 1, \;\; \sum_x p(x)\, E(x) = U ,
+$$
+
+and solved with Lagrange multipliers, it yields the **Boltzmann distribution**
+
+$$
+p(x) = \frac{1}{Z}\, e^{-\beta E(x)},
+\qquad
+Z(\beta) = \sum_x e^{-\beta E(x)} ,
+$$
+
+where the multiplier enforcing the energy constraint is the inverse temperature,
+$\beta = 1/k_B T$.
+
+That identification is worth pausing on, because it is what gives temperature a
+meaning outside physics. A Lagrange multiplier is a *price*: it measures how
+much of the objective must be surrendered to buy one unit of the constrained
+quantity. Here it measures how much entropy must be given up to raise the
+expected energy by one unit. Temperature is that price. A system at high
+temperature buys energy cheaply and stays spread out; a system at low
+temperature pays dearly for it and concentrates on low-energy states.
+
+This also settles a notational discrepancy the attentive reader will have
+noticed. In @sec-maxent-principle the solution appeared as
+$p(x) \propto \exp\big(\sum_k \lambda_k f_k(x)\big)$, with a plus sign; here it
+appears as $\exp(-\beta E(x))$, with a minus. The two are the same object under
+the correspondence $E = -\sum_k \lambda_k f_k$. Energy is negative
+log-probability up to a constant, and the sign convention comes from physics,
+where stable configurations should sit at *low* energy. @sec-energy-models
+follows the physics convention and absorbs $\beta$ into $E$ by setting
+$k_B T = 1$.
+
+## Free energy
+
+Given the Boltzmann distribution, the two quantities of interest follow at once:
+the average energy $U = \langle E \rangle$ and the entropy
+$S = -k_B \sum_x p(x) \log p(x)$. The combination that governs equilibrium is
+the **Helmholtz free energy** $F = U - TS$, and it has a compact closed form
+[@callen1985]:
+
+$$
+F = -k_B T \log Z .
+$$
+
+Free energy is the log partition function. What @sec-energy-models will present
+as the central computational obstacle of energy-based modelling is, read from
+the other side, the central thermodynamic potential of the system.
+
+The relationship has a third face, and it is the one that matters most for
+learning. Let $q$ be any distribution over the same states, and define its
+**variational free energy**
+
+$$
+F(q) = \langle E \rangle_q - T\, S(q) .
+$$
+
+A short calculation relates this to the equilibrium value:
+
+$$
+F(q) = F + k_B T \cdot \mathrm{KL}\big(q \,\Vert\, p\big) ,
+$$
+
+where $p$ is the Boltzmann distribution. Because the Kullback–Leibler divergence
+is non-negative, $F(q) \ge F$ with equality exactly when $q = p$. Equilibrium is
+therefore not merely *described* by the Boltzmann distribution, it is
+*characterized* by it, as the unique minimizer of a variational objective.
+Nearly everything in later chapters that goes by the name of a variational bound
+is this one inequality in disguise.
+
+## What entropy buys you
+
+The trade-off is easiest to believe after seeing cases in which entropy alone
+decides the outcome.
+
+### Isothermal expansion: a process with no energy change
+
+An ideal gas of $N$ particles expands from volume $V_1$ to $V_2$ while held at
+temperature $T$. The internal energy of an ideal gas depends only on
+temperature, so $\Delta U = 0$: not one joule of stored energy is released. The
+gas expands regardless, because
+
+$$
+\Delta S = N k_B \log \frac{V_2}{V_1} > 0
+\quad \Longrightarrow \quad
+\Delta F = -T \Delta S < 0 .
+$$
+
+The work extracted, $W = N k_B T \log(V_2 / V_1) = T \Delta S$, is drawn
+entirely from the heat bath. An account of this process in terms of energy alone
+cannot even say which direction it runs.
+
+### The rubber band: a force made of entropy
+
+Stretch a rubber band and it pulls back. The restoring force is not stored in
+stretched chemical bonds. A polymer chain is a random walk of $N$ segments of
+length $a$, and there are vastly more coiled configurations than extended ones,
+so extending the chain to end-to-end length $L$ costs entropy. The force is the
+gradient of that cost:
+
+$$
+f = -T \frac{\partial S}{\partial L} \approx \frac{3 k_B T}{N a^2}\, L .
+$$
+
+The energy landscape here is essentially flat, and yet there is a real force,
+one measurable with a spring scale. The formula also makes two predictions that
+run against intuition, and both hold. The force is *proportional to
+temperature*, so heating a stretched rubber band makes it contract harder — the
+opposite of a metal rod, which expands. And stretching a band quickly warms it,
+an effect readily confirmed by holding one against your lip.
+
+### Melting: where the competition changes hands
+
+Ice has lower energy than liquid water, since melting must pay $\Delta H > 0$ to
+break hydrogen bonds; water has the higher entropy. At the melting point the two
+contributions balance exactly, $\Delta H - T_m \Delta S = 0$, so
+
+$$
+T_m = \frac{\Delta H}{\Delta S} .
+$$
+
+Below $T_m$ the energy term dominates and ice is the stable phase; above it the
+entropy term dominates and water is. A phase transition is precisely the
+temperature at which the exchange rate tips the competition from one side to the
+other.
+
+## From spins to networks
+
+The simplest system with an energy is a single two-state variable $s = \pm 1$
+with energy $\mp \varepsilon$. Its partition function and average value are
+
+$$
+Z = 2 \cosh(\beta \varepsilon),
+\qquad
+\langle s \rangle = \tanh(\beta \varepsilon) ,
+$$
+
+and the temperature limits are exactly what the trade-off predicts: as
+$T \to 0$ the variable freezes into its low-energy state, and as $T \to \infty$
+it becomes a fair coin with entropy $k_B \log 2$.
+
+Now couple many such variables together. The **Ising model** assigns to a
+configuration $s = (s_1, \dots, s_N)$ the energy
+
+$$
+E(s) = -\sum_{i<j} J_{ij}\, s_i s_j - \sum_i h_i s_i ,
+$$
+
+with $J_{ij}$ the interaction between units $i$ and $j$ and $h_i$ a local bias.
+When the couplings are disordered, the landscape acquires a large number of
+local minima and the system is called a *spin glass*.
+
+That equation is the hinge of this chapter. It is a model of magnetism, and it
+is also, term for term, the energy function of a Hopfield network and of a
+Boltzmann machine. What follows is what happened when physicists noticed.
+
+## How this reached AI
+
+| Year | Contribution | Role of the entropy–energy trade-off |
+|---|---|---|
+| 1982 | Hopfield network [@hopfield1982] | The Ising energy becomes an associative memory: stored patterns are local minima and recall is descent. The $T = 0$ limit — energy only |
+| 1983 | Simulated annealing [@kirkpatrick1983] | Turns the trade-off into a *schedule*: start hot so entropy drives exploration, then cool so energy drives commitment |
+| 1985 | Boltzmann machine [@ackley1985] | Places the Hopfield network at finite temperature, $p(s) \propto e^{-E(s)/T}$; learning compares correlations in a clamped and a free phase |
+| 1995–98 | Helmholtz machine [@dayan1995helmholtz]; free-energy view of EM [@neal1998em] | The evidence lower bound is identified as a negative variational free energy |
+| 2002 | Contrastive divergence [@hinton2002cd] | Makes the intractable $\log Z$ gradient practical and revives deep generative models |
+| 2006 | Energy-based learning [@lecun2006tutorial] | Names the log-partition term "the Helmholtz free energy of the ensemble" and unifies probabilistic and non-probabilistic learning |
+| 2024 | Nobel Prize in Physics [@nobel2024physics] | Awarded to Hopfield and Hinton; the citation rests on the correspondence between neural networks and spin models in statistical physics |
+
+Two threads in that table deserve to be stated plainly, because the rest of the
+book leans on them.
+
+The first is that **the evidence lower bound is a free energy**. Take a latent
+variable $z$, set $E(z) = -\log p(x, z)$ and $T = 1$, and the variational
+inequality of the previous section reads
+
+$$
+-\log p(x) \;\le\; \big\langle -\log p(x, z) \big\rangle_{q} - H(q) \;=\; F(q) ,
+$$
+
+with the gap equal to $\mathrm{KL}\big(q \,\Vert\, p(\cdot \mid x)\big)$.
+Variational autoencoders, variational inference, and the training objectives of
+diffusion models are all instances of minimizing $U - TS$ at unit temperature.
+The physics is not an analogy here; it is the same algebra.
+
+The second is that **annealing is the trade-off used as a control signal**.
+Simulated annealing, the noise schedules of Langevin and diffusion samplers, and
+the practice of decoding a language model at a temperature that falls during
+generation are one idea: begin where entropy dominates and the search is broad,
+end where energy dominates and the answer is definite.
+
+## The temperature dial
+
+The modern instance is worth making explicit, because it is the version most
+readers use daily. A language model produces logits $\ell(x)$ and samples
+
+$$
+p(x) \propto \exp\big(\ell(x) / T\big) ,
+$$
+
+which is the Boltzmann distribution with energy $E = -\ell$. Greedy decoding is
+$T \to 0$; sampling uniformly from the vocabulary is $T \to \infty$. The
+`temperature` field in every inference API is the same $T$ that appears in
+$F = U - TS$.
+
+Read this way, the three principles that organize this book are three settings
+of a single dial.
+
+| Principle | Where the dial sits | What it buys |
+|---|---|---|
+| Maximum entropy (@sec-max-entropy) | High: entropy dominates | Honesty about what the constraints leave undetermined |
+| Minimum entropy (@sec-min-entropy) | Low: energy dominates | Commitment — sharpened predictions and elicited reasoning |
+| Minimax entropy (@sec-minimax-entropy) | Both, nested | Maximize on the inside to model the world, minimize on the outside to choose what to model |
+
+The principles are not competing claims about the right amount of uncertainty.
+They are claims about *when* to be uncertain, and the free energy is what makes
+that question well posed.
+
+## Why it matters for learning
+
+The equation $F = U - TS$ supplies three things the rest of this book uses. It
+explains where the Gibbs form of @sec-energy-models comes from and why its
+exponent carries a minus sign. It identifies the partition function — the
+central computational difficulty of energy-based modelling — as a free energy,
+which is why variational bounds are the natural way around it. And it gives
+*temperature* a precise meaning, so that annealing schedules, decoding
+parameters, and the coalition temperature $\tau$ of @sec-max-entropy can all be
+recognized as one knob rather than three coincidences.
+
+The next chapter takes the Gibbs distribution as its starting point and asks
+what happens when the energy function is learned from data.

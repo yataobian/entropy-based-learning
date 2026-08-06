@@ -3,7 +3,7 @@ date: "2026-08-02"
 date-modified: last-modified
 ---
 
-# Energy-Based Models
+# Energy-Based Models {#sec-energy-models}
 
 ## From energy to probability
 
@@ -17,20 +17,25 @@ Z(\theta) = \sum_x e^{-E_\theta(x)} .
 $$
 
 
-Low-energy configurations are more probable. This is precisely the
-maximum-entropy solution of the previous chapter, now with a learnable energy
-function. EBMs are attractive because they impose no normalization constraint on
-$E_\theta$ and can flexibly express dependencies.
+Low-energy configurations are more probable. This is the Boltzmann distribution
+derived in @sec-free-energy, at unit temperature and with a learnable energy
+function in place of a physical one. EBMs are attractive because they impose no
+normalization constraint on $E_\theta$ and can flexibly express dependencies.
 
 
 ## The challenge: the partition function
 
 The difficulty is the partition function $Z(\theta)$, which is generally
-intractable. Learning and inference therefore rely on techniques such as:
+intractable. Equivalently — and this is the more useful way to see it — the
+quantity we cannot compute is the free energy $-\log Z$. Learning and inference
+therefore rely on techniques such as:
 
 - **Sampling** (MCMC, Langevin dynamics) to approximate expectations,
-- **Score matching** and **contrastive** objectives that avoid computing $Z$,
-- **Variational** bounds.
+- **Score matching** and **contrastive** objectives that avoid computing $Z$
+  [@hinton2002cd],
+- **Variational** bounds, which are exactly the free-energy inequality
+  $F(q) \ge F$ of @sec-free-energy applied to a tractable family of $q$
+  [@lecun2006tutorial].
 
 ## Connection to this book
 

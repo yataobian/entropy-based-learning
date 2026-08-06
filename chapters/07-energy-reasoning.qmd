@@ -23,6 +23,13 @@ nudging samples toward lower-energy, higher-quality regions. This is the
 mechanism behind classifier / energy guidance in diffusion-style generation and,
 more broadly, behind constraint-aware generation.
 
+Note that pure descent is the zero-temperature limit of @sec-free-energy: it
+consults energy and ignores entropy entirely, and so inherits the classic
+weakness of getting trapped in local minima. Adding noise and lowering it over
+the course of the process — annealing [@kirkpatrick1983] — is the
+finite-temperature generalization, and it is the same schedule that diffusion
+samplers implement under a different name.
+
 ## Refinement
 
 Rather than accepting a single forward pass, we can iteratively **refine** a

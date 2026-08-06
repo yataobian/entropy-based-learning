@@ -215,6 +215,11 @@ where $\boldsymbol{\lambda}$ are Lagrange multipliers and $Z$ is the partition
 function. This is the least-biased distribution consistent with what we know
 [@jaynes1957information].
 
+The single most important instance of this framework is the one in which the
+constrained feature is the energy of a physical system. That case, worked out in
+@sec-free-energy, is what turns the multipliers above into a temperature and
+connects the whole construction to thermodynamics.
+
 ## Minimum description length and minimax entropy
 
 The maximum-entropy principle can be *derived* rather than postulated. Under the
@@ -241,5 +246,6 @@ so the best feature set $F$ is the one whose maximum-entropy model has the
 The maximum-entropy principle explains why exponential families are ubiquitous,
 grounds the Boltzmann machine in statistical physics, and — as developed in
 @bian2022energybased — provides a principled basis for defining valuations in
-machine learning. The next chapter formalizes the energy viewpoint that makes
-this connection precise.
+machine learning. The next chapter supplies the missing half of the picture:
+what happens when entropy is traded off against energy, and what the exchange
+rate between them turns out to be.
