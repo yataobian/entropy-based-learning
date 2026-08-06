@@ -17,6 +17,6 @@ We study three directions that are connected:
 
 ## Roadmap
 
-- **Part I — Foundations** introduces entropy, the maximum-entropy principle, energy-based models, and the minimum-description-length view that leads to minimax entropy.
+- **Part I — Foundations** surveys the thermodynamic, information-theoretic, quantum, and psychological notions of entropy, then develops the maximum-entropy principle, energy-based models, and the minimum-description-length view that leads to minimax entropy.
 - **Part II — Methods** develops maximum-entropy, minimum-entropy, and minimax-entropy learning, together with energy-based reasoning / guidance / refinement.
 - **Part III — Applications** connects these ideas to scientific foundation models and AI-for-science.

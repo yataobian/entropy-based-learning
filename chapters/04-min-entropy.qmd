@@ -13,6 +13,11 @@ regime: when a capable model's own predictions are informative, *reducing*
 their uncertainty can sharpen useful behavior — sometimes with no external
 labels at all.
 
+The impulse is an old one. Living systems have long been described as driven to
+hold their internal entropy at a manageable level [@hirsh2012psychological], as
+sketched in @sec-entropy; what follows turns that drive into a training
+objective.
+
 ## EMPO: unsupervised elicitation of reasoning
 
 **EMPO** (Entropy Minimized Policy Optimization) is an early attempt at *fully

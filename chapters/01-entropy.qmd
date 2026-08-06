@@ -3,9 +3,18 @@ date: "2026-08-02"
 date-modified: last-modified
 ---
 
-# Entropy and the Maximum Entropy Principle
+# Entropy and the Maximum Entropy Principle {#sec-entropy}
 
-## Shannon entropy
+## The many faces of entropy
+
+Entropy was invented three separate times — once for heat engines, once for
+telephone lines, once for quantum ensembles — and has been rediscovered many
+times since. The names, the units, and the motivating problems all differ, but
+each version measures the same thing: given what we have specified about a
+system, how much remains unspecified. This section walks through those notions
+before the rest of the book settles on one of them.
+
+### Information: Shannon entropy
 
 For a discrete random variable $X$ with probability mass function $p(x)$, the
 **Shannon entropy** is
@@ -14,11 +23,177 @@ $$
 H(p) = -\sum_{x} p(x) \log p(x),
 $$
 
-which quantifies the average uncertainty (in nats or bits) of $X$. Entropy is
-maximized by the uniform distribution and minimized (equal to zero) by a
-deterministic one.
+which quantifies the average uncertainty (in nats or bits) of $X$
+[@shannon1948]. Entropy is maximized by the uniform distribution, where it
+equals $\log |\mathcal{X}|$, and minimized (equal to zero) by a deterministic
+one.
 
-## The maximum entropy principle
+This functional form is not an arbitrary choice. Shannon showed that three
+requirements — continuity in the probabilities, monotonicity in the number of
+equally likely outcomes, and consistency when outcomes are grouped — determine
+$H$ uniquely up to the base of the logarithm. It also carries a concrete
+operational meaning: $H(p)$ is the shortest expected code length achievable by
+any lossless encoding of samples from $p$. Uncertainty and description length
+are one quantity seen from two sides, a duality that returns in
+@sec-minimax-entropy.
+
+### Heat: thermodynamic entropy
+
+The original entropy is older and, on its face, unrelated to information.
+Studying the irreversibility of heat flow, Clausius defined a state function
+whose differential along a reversible path is
+
+$$
+dS = \frac{\delta Q_{\text{rev}}}{T},
+$$
+
+and named it from the Greek *τροπή*, transformation, deliberately shaping the
+word to rhyme with *energy* because the two quantities seemed to him so closely
+related [@clausius1865]. That 1865 paper closes with the two sentences that
+became the standard statement of the laws of thermodynamics: the energy of the
+universe is constant, and its entropy tends towards a maximum.
+
+Boltzmann supplied the microscopic reading. A macrostate — a temperature, a
+pressure — is compatible with an enormous number $W$ of microstates, and entropy
+simply counts them [@boltzmann1877]:
+
+$$
+S = k_B \log W .
+$$
+
+Gibbs then generalized the count to microstates that are not equally likely
+[@gibbs1902]:
+
+$$
+S = -k_B \sum_i p_i \log p_i .
+$$
+
+The Gibbs expression and the Shannon expression are the same formula, separated
+only by the constant $k_B$ that carries the physical units. The coincidence is
+not accidental, and Jaynes turned it into the argument developed in
+@sec-maxent-principle: thermodynamic entropy is the Shannon entropy of our
+ignorance about the microstate, which makes equilibrium statistical mechanics a
+problem of inference rather than of mechanics [@jaynes1957information].
+
+### Quantum states: von Neumann entropy
+
+Quantum mechanics replaces a probability distribution with a density matrix
+$\rho$, a positive semidefinite operator of unit trace. Von Neumann extended
+entropy to this setting in 1927, two decades before Shannon
+[@vonneumann1927]:
+
+$$
+S(\rho) = -\operatorname{Tr}(\rho \log \rho).
+$$
+
+Written in the eigenbasis of $\rho$, this reduces to the Shannon entropy of its
+eigenvalues, so the same functional form reappears with a different argument. It
+vanishes exactly for pure states, which are completely specified, and is maximal
+for the maximally mixed state.
+
+The quantum case does break the analogy in one instructive place. Classically,
+conditional entropy is never negative: learning $Y$ cannot leave us knowing more
+than everything about $X$. Quantum mechanically it can be, and a negative value
+is a signature of entanglement — the joint state is more sharply specified than
+either of its parts.
+
+### One knob, a family: Rényi and Tsallis
+
+Shannon's requirements can be relaxed, and each relaxation produces a
+one-parameter family. Rényi kept additivity over independent systems but dropped
+the requirement that entropy be a linear average of $-\log p$ [@renyi1961]:
+
+$$
+H_\alpha(p) = \frac{1}{1-\alpha} \log \sum_x p(x)^\alpha ,
+\qquad \alpha > 0, \; \alpha \neq 1 .
+$$
+
+The order $\alpha$ is a knob controlling how much weight rare outcomes receive.
+The limit $\alpha \to 1$ recovers Shannon entropy; $\alpha = 0$ gives the Hartley
+entropy $\log|\operatorname{supp} p|$, which counts possibilities and ignores
+their probabilities; and $\alpha \to \infty$ gives the **min-entropy**
+
+$$
+H_\infty(p) = -\log \max_x p(x),
+$$
+
+the worst-case measure used in cryptography, where what matters is not average
+uncertainty but the chance that an adversary guesses right on the first try.
+
+Tsallis relaxed the other requirement, giving up additivity itself
+[@tsallis1988]:
+
+$$
+S_q(p) = \frac{1}{q-1}\Big(1 - \sum_x p(x)^q\Big).
+$$
+
+Here $q \to 1$ again recovers the Boltzmann–Gibbs form, but for $q \neq 1$ two
+independent systems combine as
+$S_q(A,B) = S_q(A) + S_q(B) + (1-q)\,S_q(A)\,S_q(B)$. This *non-extensivity* was
+introduced to describe systems with long-range interactions and multifractal
+structure, where the usual assumption that entropy scales with system size
+fails.
+
+Both families are useful in their own domains, and both make the same point by
+contrast: Shannon entropy is the unique member satisfying the full set of
+Shannon–Khinchin axioms, including the chain rule that makes conditional entropy
+and mutual information well behaved. That is why it is the form used throughout
+the remainder of this book.
+
+### Minds: psychological entropy
+
+The most surprising reappearance is in psychology. Hirsh, Mar, and Peterson
+propose the **entropy model of uncertainty**, which applies Shannon's formula
+directly to the human information system [@hirsh2012psychological]. At any
+moment an organism faces a set of competing *affordances*: possible
+interpretations of the sensory input, and possible actions to take. The model
+treats these as a subjectively weighted probability distribution and defines
+**psychological entropy** as its Shannon entropy.
+
+The reading is unusually literal. A familiar situation places nearly all the
+weight on one dominant affordance, giving low entropy and a fast habitual
+response. An unfamiliar or ambiguous one spreads the weight across many
+competing frames, giving high entropy and sustained neural competition — which,
+the authors argue, is what anxiety *is* subjectively, with anterior cingulate
+activity and noradrenaline release as its physiological correlates.
+
+Two features of the account matter for what follows. First, goals act as
+constraints: adopting a goal reweights the distribution towards the actions that
+serve it, and thereby lowers entropy. This is structurally the same move as
+imposing moment constraints in @sec-maxent-principle, since a constraint is
+whatever narrows the space of live possibilities. Second, the model makes
+entropy reduction a *drive* rather than a calculation. That idea runs from
+Schrödinger's argument that organisms persist by exporting entropy to their
+environment [@schrodinger1944] through to the free-energy principle
+[@friston2010free], and it is the biological precedent for the minimum-entropy
+learning objectives of @sec-min-entropy.
+
+### One form, many readings
+
+| Notion | Probabilities over | Definition | Origin |
+|---|---|---|---|
+| Thermodynamic | no explicit distribution | $dS = \delta Q_{\text{rev}} / T$ | Clausius, 1865 |
+| Statistical | microstates, equally likely | $k_B \log W$ | Boltzmann, 1877 |
+| Gibbs | microstates, unequally likely | $-k_B \sum_i p_i \log p_i$ | Gibbs, 1902 |
+| Information | a random variable or message source | $-\sum_x p(x) \log p(x)$ | Shannon, 1948 |
+| Quantum | eigenvalues of a density matrix | $-\operatorname{Tr}(\rho \log \rho)$ | von Neumann, 1927 |
+| Rényi | any distribution, at order $\alpha$ | $\frac{1}{1-\alpha} \log \sum_x p(x)^\alpha$ | Rényi, 1961 |
+| Tsallis | non-extensive systems, at order $q$ | $\frac{1}{q-1}(1 - \sum_x p(x)^q)$ | Tsallis, 1988 |
+| Psychological | competing perceptions and actions | $-\sum_x p(x) \log p(x)$ | Hirsh et al., 2012 |
+
+Two observations follow. The first is mathematical: almost every row is the same
+functional $-\sum p \log p$, differing only in what the probabilities range over
+and what constant multiplies the result. Entropy is less a family of analogies
+than a single quantity applied to different objects.
+
+The second is interpretive, and it is the one that does work in this book. The
+same number reads as dispersal of energy to a physicist, as expected code length
+to an engineer, and as felt uncertainty to a psychologist. Those readings are
+what make the two principles that follow feel necessary rather than arbitrary:
+maximizing entropy is being honest about what we have not specified, and
+minimizing it is committing to what we have.
+
+## The maximum entropy principle {#sec-maxent-principle}
 
 Given constraints — typically moment constraints of the form
 $\mathbb{E}_p[f_k(X)] = \mu_k$ — the **maximum entropy** distribution solves
