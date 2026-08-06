@@ -275,8 +275,16 @@ window.Quarto = {
     <h2 id="toc-title">On This Page</h2>
    
   <ul>
-  <li><a href="#shannon-entropy" id="toc-shannon-entropy" class="nav-link active" data-scroll-target="#shannon-entropy"><span class="header-section-number">2.1</span> Shannon entropy</a></li>
-  <li><a href="#the-maximum-entropy-principle" id="toc-the-maximum-entropy-principle" class="nav-link" data-scroll-target="#the-maximum-entropy-principle"><span class="header-section-number">2.2</span> The maximum entropy principle</a></li>
+  <li><a href="#the-many-faces-of-entropy" id="toc-the-many-faces-of-entropy" class="nav-link active" data-scroll-target="#the-many-faces-of-entropy"><span class="header-section-number">2.1</span> The many faces of entropy</a>
+  <ul class="collapse">
+  <li><a href="#information-shannon-entropy" id="toc-information-shannon-entropy" class="nav-link" data-scroll-target="#information-shannon-entropy"><span class="header-section-number">2.1.1</span> Information: Shannon entropy</a></li>
+  <li><a href="#heat-thermodynamic-entropy" id="toc-heat-thermodynamic-entropy" class="nav-link" data-scroll-target="#heat-thermodynamic-entropy"><span class="header-section-number">2.1.2</span> Heat: thermodynamic entropy</a></li>
+  <li><a href="#quantum-states-von-neumann-entropy" id="toc-quantum-states-von-neumann-entropy" class="nav-link" data-scroll-target="#quantum-states-von-neumann-entropy"><span class="header-section-number">2.1.3</span> Quantum states: von Neumann entropy</a></li>
+  <li><a href="#one-knob-a-family-rényi-and-tsallis" id="toc-one-knob-a-family-rényi-and-tsallis" class="nav-link" data-scroll-target="#one-knob-a-family-rényi-and-tsallis"><span class="header-section-number">2.1.4</span> One knob, a family: Rényi and Tsallis</a></li>
+  <li><a href="#minds-psychological-entropy" id="toc-minds-psychological-entropy" class="nav-link" data-scroll-target="#minds-psychological-entropy"><span class="header-section-number">2.1.5</span> Minds: psychological entropy</a></li>
+  <li><a href="#one-form-many-readings" id="toc-one-form-many-readings" class="nav-link" data-scroll-target="#one-form-many-readings"><span class="header-section-number">2.1.6</span> One form, many readings</a></li>
+  </ul></li>
+  <li><a href="#sec-maxent-principle" id="toc-sec-maxent-principle" class="nav-link" data-scroll-target="#sec-maxent-principle"><span class="header-section-number">2.2</span> The maximum entropy principle</a></li>
   <li><a href="#minimum-description-length-and-minimax-entropy" id="toc-minimum-description-length-and-minimax-entropy" class="nav-link" data-scroll-target="#minimum-description-length-and-minimax-entropy"><span class="header-section-number">2.3</span> Minimum description length and minimax entropy</a></li>
   <li><a href="#why-it-matters-for-learning" id="toc-why-it-matters-for-learning" class="nav-link" data-scroll-target="#why-it-matters-for-learning"><span class="header-section-number">2.4</span> Why it matters for learning</a></li>
   </ul>
@@ -287,7 +295,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/01-entropy.html">Part I — Foundations</a></li><li class="breadcrumb-item"><a href="../chapters/01-entropy.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Entropy and the Maximum Entropy Principle</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Entropy and the Maximum Entropy Principle</span></h1>
+<h1 class="title"><span id="sec-entropy" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Entropy and the Maximum Entropy Principle</span></span></h1>
 </div>
 
 
@@ -305,7 +313,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">August 4, 2026</p>
+      <p class="date-modified">August 6, 2026</p>
     </div>
   </div>
     
@@ -316,16 +324,143 @@ window.Quarto = {
 </header>
 
 
-<section id="shannon-entropy" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="shannon-entropy"><span class="header-section-number">2.1</span> Shannon entropy</h2>
+<section id="the-many-faces-of-entropy" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="the-many-faces-of-entropy"><span class="header-section-number">2.1</span> The many faces of entropy</h2>
+<p>Entropy was invented three separate times — once for heat engines, once for telephone lines, once for quantum ensembles — and has been rediscovered many times since. The names, the units, and the motivating problems all differ, but each version measures the same thing: given what we have specified about a system, how much remains unspecified. This section walks through those notions before the rest of the book settles on one of them.</p>
+<section id="information-shannon-entropy" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="information-shannon-entropy"><span class="header-section-number">2.1.1</span> Information: Shannon entropy</h3>
 <p>For a discrete random variable <span class="math inline">\(X\)</span> with probability mass function <span class="math inline">\(p(x)\)</span>, the <strong>Shannon entropy</strong> is</p>
 <p><span class="math display">\[
 H(p) = -\sum_{x} p(x) \log p(x),
 \]</span></p>
-<p>which quantifies the average uncertainty (in nats or bits) of <span class="math inline">\(X\)</span>. Entropy is maximized by the uniform distribution and minimized (equal to zero) by a deterministic one.</p>
+<p>which quantifies the average uncertainty (in nats or bits) of <span class="math inline">\(X\)</span> <span class="citation" data-cites="shannon1948">(<a href="../references.html#ref-shannon1948" role="doc-biblioref">Shannon 1948</a>)</span>. Entropy is maximized by the uniform distribution, where it equals <span class="math inline">\(\log |\mathcal{X}|\)</span>, and minimized (equal to zero) by a deterministic one.</p>
+<p>This functional form is not an arbitrary choice. Shannon showed that three requirements — continuity in the probabilities, monotonicity in the number of equally likely outcomes, and consistency when outcomes are grouped — determine <span class="math inline">\(H\)</span> uniquely up to the base of the logarithm. It also carries a concrete operational meaning: <span class="math inline">\(H(p)\)</span> is the shortest expected code length achievable by any lossless encoding of samples from <span class="math inline">\(p\)</span>. Uncertainty and description length are one quantity seen from two sides, a duality that returns in <a href="05-minimax-entropy.html" class="quarto-xref"><span>Chapter 6</span></a>.</p>
 </section>
-<section id="the-maximum-entropy-principle" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="the-maximum-entropy-principle"><span class="header-section-number">2.2</span> The maximum entropy principle</h2>
+<section id="heat-thermodynamic-entropy" class="level3" data-number="2.1.2">
+<h3 data-number="2.1.2" class="anchored" data-anchor-id="heat-thermodynamic-entropy"><span class="header-section-number">2.1.2</span> Heat: thermodynamic entropy</h3>
+<p>The original entropy is older and, on its face, unrelated to information. Studying the irreversibility of heat flow, Clausius defined a state function whose differential along a reversible path is</p>
+<p><span class="math display">\[
+dS = \frac{\delta Q_{\text{rev}}}{T},
+\]</span></p>
+<p>and named it from the Greek <em>τροπή</em>, transformation, deliberately shaping the word to rhyme with <em>energy</em> because the two quantities seemed to him so closely related <span class="citation" data-cites="clausius1865">(<a href="../references.html#ref-clausius1865" role="doc-biblioref">Clausius 1865</a>)</span>. That 1865 paper closes with the two sentences that became the standard statement of the laws of thermodynamics: the energy of the universe is constant, and its entropy tends towards a maximum.</p>
+<p>Boltzmann supplied the microscopic reading. A macrostate — a temperature, a pressure — is compatible with an enormous number <span class="math inline">\(W\)</span> of microstates, and entropy simply counts them <span class="citation" data-cites="boltzmann1877">(<a href="../references.html#ref-boltzmann1877" role="doc-biblioref">Boltzmann 1877</a>)</span>:</p>
+<p><span class="math display">\[
+S = k_B \log W .
+\]</span></p>
+<p>Gibbs then generalized the count to microstates that are not equally likely <span class="citation" data-cites="gibbs1902">(<a href="../references.html#ref-gibbs1902" role="doc-biblioref">Gibbs 1902</a>)</span>:</p>
+<p><span class="math display">\[
+S = -k_B \sum_i p_i \log p_i .
+\]</span></p>
+<p>The Gibbs expression and the Shannon expression are the same formula, separated only by the constant <span class="math inline">\(k_B\)</span> that carries the physical units. The coincidence is not accidental, and Jaynes turned it into the argument developed in <a href="#sec-maxent-principle" class="quarto-xref"><span>Section 2.2</span></a>: thermodynamic entropy is the Shannon entropy of our ignorance about the microstate, which makes equilibrium statistical mechanics a problem of inference rather than of mechanics <span class="citation" data-cites="jaynes1957information">(<a href="../references.html#ref-jaynes1957information" role="doc-biblioref">Jaynes 1957</a>)</span>.</p>
+</section>
+<section id="quantum-states-von-neumann-entropy" class="level3" data-number="2.1.3">
+<h3 data-number="2.1.3" class="anchored" data-anchor-id="quantum-states-von-neumann-entropy"><span class="header-section-number">2.1.3</span> Quantum states: von Neumann entropy</h3>
+<p>Quantum mechanics replaces a probability distribution with a density matrix <span class="math inline">\(\rho\)</span>, a positive semidefinite operator of unit trace. Von Neumann extended entropy to this setting in 1927, two decades before Shannon <span class="citation" data-cites="vonneumann1927">(<a href="../references.html#ref-vonneumann1927" role="doc-biblioref">Neumann 1927</a>)</span>:</p>
+<p><span class="math display">\[
+S(\rho) = -\operatorname{Tr}(\rho \log \rho).
+\]</span></p>
+<p>Written in the eigenbasis of <span class="math inline">\(\rho\)</span>, this reduces to the Shannon entropy of its eigenvalues, so the same functional form reappears with a different argument. It vanishes exactly for pure states, which are completely specified, and is maximal for the maximally mixed state.</p>
+<p>The quantum case does break the analogy in one instructive place. Classically, conditional entropy is never negative: learning <span class="math inline">\(Y\)</span> cannot leave us knowing more than everything about <span class="math inline">\(X\)</span>. Quantum mechanically it can be, and a negative value is a signature of entanglement — the joint state is more sharply specified than either of its parts.</p>
+</section>
+<section id="one-knob-a-family-rényi-and-tsallis" class="level3" data-number="2.1.4">
+<h3 data-number="2.1.4" class="anchored" data-anchor-id="one-knob-a-family-rényi-and-tsallis"><span class="header-section-number">2.1.4</span> One knob, a family: Rényi and Tsallis</h3>
+<p>Shannon’s requirements can be relaxed, and each relaxation produces a one-parameter family. Rényi kept additivity over independent systems but dropped the requirement that entropy be a linear average of <span class="math inline">\(-\log p\)</span> <span class="citation" data-cites="renyi1961">(<a href="../references.html#ref-renyi1961" role="doc-biblioref">Rényi 1961</a>)</span>:</p>
+<p><span class="math display">\[
+H_\alpha(p) = \frac{1}{1-\alpha} \log \sum_x p(x)^\alpha ,
+\qquad \alpha &gt; 0, \; \alpha \neq 1 .
+\]</span></p>
+<p>The order <span class="math inline">\(\alpha\)</span> is a knob controlling how much weight rare outcomes receive. The limit <span class="math inline">\(\alpha \to 1\)</span> recovers Shannon entropy; <span class="math inline">\(\alpha = 0\)</span> gives the Hartley entropy <span class="math inline">\(\log|\operatorname{supp} p|\)</span>, which counts possibilities and ignores their probabilities; and <span class="math inline">\(\alpha \to \infty\)</span> gives the <strong>min-entropy</strong></p>
+<p><span class="math display">\[
+H_\infty(p) = -\log \max_x p(x),
+\]</span></p>
+<p>the worst-case measure used in cryptography, where what matters is not average uncertainty but the chance that an adversary guesses right on the first try.</p>
+<p>Tsallis relaxed the other requirement, giving up additivity itself <span class="citation" data-cites="tsallis1988">(<a href="../references.html#ref-tsallis1988" role="doc-biblioref">Tsallis 1988</a>)</span>:</p>
+<p><span class="math display">\[
+S_q(p) = \frac{1}{q-1}\Big(1 - \sum_x p(x)^q\Big).
+\]</span></p>
+<p>Here <span class="math inline">\(q \to 1\)</span> again recovers the Boltzmann–Gibbs form, but for <span class="math inline">\(q \neq 1\)</span> two independent systems combine as <span class="math inline">\(S_q(A,B) = S_q(A) + S_q(B) + (1-q)\,S_q(A)\,S_q(B)\)</span>. This <em>non-extensivity</em> was introduced to describe systems with long-range interactions and multifractal structure, where the usual assumption that entropy scales with system size fails.</p>
+<p>Both families are useful in their own domains, and both make the same point by contrast: Shannon entropy is the unique member satisfying the full set of Shannon–Khinchin axioms, including the chain rule that makes conditional entropy and mutual information well behaved. That is why it is the form used throughout the remainder of this book.</p>
+</section>
+<section id="minds-psychological-entropy" class="level3" data-number="2.1.5">
+<h3 data-number="2.1.5" class="anchored" data-anchor-id="minds-psychological-entropy"><span class="header-section-number">2.1.5</span> Minds: psychological entropy</h3>
+<p>The most surprising reappearance is in psychology. Hirsh, Mar, and Peterson propose the <strong>entropy model of uncertainty</strong>, which applies Shannon’s formula directly to the human information system <span class="citation" data-cites="hirsh2012psychological">(<a href="../references.html#ref-hirsh2012psychological" role="doc-biblioref">Hirsh et al. 2012</a>)</span>. At any moment an organism faces a set of competing <em>affordances</em>: possible interpretations of the sensory input, and possible actions to take. The model treats these as a subjectively weighted probability distribution and defines <strong>psychological entropy</strong> as its Shannon entropy.</p>
+<p>The reading is unusually literal. A familiar situation places nearly all the weight on one dominant affordance, giving low entropy and a fast habitual response. An unfamiliar or ambiguous one spreads the weight across many competing frames, giving high entropy and sustained neural competition — which, the authors argue, is what anxiety <em>is</em> subjectively, with anterior cingulate activity and noradrenaline release as its physiological correlates.</p>
+<p>Two features of the account matter for what follows. First, goals act as constraints: adopting a goal reweights the distribution towards the actions that serve it, and thereby lowers entropy. This is structurally the same move as imposing moment constraints in <a href="#sec-maxent-principle" class="quarto-xref"><span>Section 2.2</span></a>, since a constraint is whatever narrows the space of live possibilities. Second, the model makes entropy reduction a <em>drive</em> rather than a calculation. That idea runs from Schrödinger’s argument that organisms persist by exporting entropy to their environment <span class="citation" data-cites="schrodinger1944">(<a href="../references.html#ref-schrodinger1944" role="doc-biblioref">Schrödinger 1944</a>)</span> through to the free-energy principle <span class="citation" data-cites="friston2010free">(<a href="../references.html#ref-friston2010free" role="doc-biblioref">Friston 2010</a>)</span>, and it is the biological precedent for the minimum-entropy learning objectives of <a href="04-min-entropy.html" class="quarto-xref"><span>Chapter 5</span></a>.</p>
+</section>
+<section id="one-form-many-readings" class="level3" data-number="2.1.6">
+<h3 data-number="2.1.6" class="anchored" data-anchor-id="one-form-many-readings"><span class="header-section-number">2.1.6</span> One form, many readings</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Notion</th>
+<th>Probabilities over</th>
+<th>Definition</th>
+<th>Origin</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Thermodynamic</td>
+<td>no explicit distribution</td>
+<td><span class="math inline">\(dS = \delta Q_{\text{rev}} / T\)</span></td>
+<td>Clausius, 1865</td>
+</tr>
+<tr class="even">
+<td>Statistical</td>
+<td>microstates, equally likely</td>
+<td><span class="math inline">\(k_B \log W\)</span></td>
+<td>Boltzmann, 1877</td>
+</tr>
+<tr class="odd">
+<td>Gibbs</td>
+<td>microstates, unequally likely</td>
+<td><span class="math inline">\(-k_B \sum_i p_i \log p_i\)</span></td>
+<td>Gibbs, 1902</td>
+</tr>
+<tr class="even">
+<td>Information</td>
+<td>a random variable or message source</td>
+<td><span class="math inline">\(-\sum_x p(x) \log p(x)\)</span></td>
+<td>Shannon, 1948</td>
+</tr>
+<tr class="odd">
+<td>Quantum</td>
+<td>eigenvalues of a density matrix</td>
+<td><span class="math inline">\(-\operatorname{Tr}(\rho \log \rho)\)</span></td>
+<td>von Neumann, 1927</td>
+</tr>
+<tr class="even">
+<td>Rényi</td>
+<td>any distribution, at order <span class="math inline">\(\alpha\)</span></td>
+<td><span class="math inline">\(\frac{1}{1-\alpha} \log \sum_x p(x)^\alpha\)</span></td>
+<td>Rényi, 1961</td>
+</tr>
+<tr class="odd">
+<td>Tsallis</td>
+<td>non-extensive systems, at order <span class="math inline">\(q\)</span></td>
+<td><span class="math inline">\(\frac{1}{q-1}(1 - \sum_x p(x)^q)\)</span></td>
+<td>Tsallis, 1988</td>
+</tr>
+<tr class="even">
+<td>Psychological</td>
+<td>competing perceptions and actions</td>
+<td><span class="math inline">\(-\sum_x p(x) \log p(x)\)</span></td>
+<td>Hirsh et al., 2012</td>
+</tr>
+</tbody>
+</table>
+<p>Two observations follow. The first is mathematical: almost every row is the same functional <span class="math inline">\(-\sum p \log p\)</span>, differing only in what the probabilities range over and what constant multiplies the result. Entropy is less a family of analogies than a single quantity applied to different objects.</p>
+<p>The second is interpretive, and it is the one that does work in this book. The same number reads as dispersal of energy to a physicist, as expected code length to an engineer, and as felt uncertainty to a psychologist. Those readings are what make the two principles that follow feel necessary rather than arbitrary: maximizing entropy is being honest about what we have not specified, and minimizing it is committing to what we have.</p>
+</section>
+</section>
+<section id="sec-maxent-principle" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="sec-maxent-principle"><span class="header-section-number">2.2</span> The maximum entropy principle</h2>
 <p>Given constraints — typically moment constraints of the form <span class="math inline">\(\mathbb{E}_p[f_k(X)] = \mu_k\)</span> — the <strong>maximum entropy</strong> distribution solves</p>
 <p><span class="math display">\[
 \max_{p}\; H(p)
@@ -357,14 +492,44 @@ L(P_F) = S(P_F),
 <div id="ref-bian2022energybased" class="csl-entry" role="listitem">
 Bian, Yatao, Yu Rong, Tingyang Xu, Jiaxiang Wu, Andreas Krause, and Junzhou Huang. 2022. <span>“Energy-Based Learning for Cooperative Games, with Applications to Valuation Problems in Machine Learning.”</span> <em>International Conference on Learning Representations (ICLR)</em>. <a href="https://openreview.net/forum?id=xLfAgCroImw">https://openreview.net/forum?id=xLfAgCroImw</a>.
 </div>
+<div id="ref-boltzmann1877" class="csl-entry" role="listitem">
+Boltzmann, Ludwig. 1877. <span>“Über Die Beziehung Zwischen Dem Zweiten Hauptsatze Der Mechanischen Wärmetheorie Und Der Wahrscheinlichkeitsrechnung Respektive Den Sätzen Über Das Wärmegleichgewicht.”</span> <em>Sitzungsberichte Der Kaiserlichen Akademie Der Wissenschaften in Wien</em> 76: 373–435.
+</div>
+<div id="ref-clausius1865" class="csl-entry" role="listitem">
+Clausius, Rudolf. 1865. <span>“Über Verschiedene Für Die Anwendung Bequeme Formen Der Hauptgleichungen Der Mechanischen Wärmetheorie.”</span> <em>Annalen Der Physik Und Chemie</em> 125: 353–400.
+</div>
 <div id="ref-feder1986maximum" class="csl-entry" role="listitem">
 Feder, M. 1986. <span>“Maximum Entropy as a Special Case of the Minimum Description Length Criterion.”</span> <em>IEEE Transactions on Information Theory</em> 32: 847–49.
+</div>
+<div id="ref-friston2010free" class="csl-entry" role="listitem">
+Friston, Karl. 2010. <span>“The Free-Energy Principle: A Unified Brain Theory?”</span> <em>Nature Reviews Neuroscience</em> 11 (2): 127–38.
+</div>
+<div id="ref-gibbs1902" class="csl-entry" role="listitem">
+Gibbs, Josiah Willard. 1902. <em>Elementary Principles in Statistical Mechanics</em>. Charles Scribner’s Sons.
 </div>
 <div id="ref-grunwald2007mdl" class="csl-entry" role="listitem">
 Grünwald, Peter D. 2007. <em>The Minimum Description Length Principle</em>. MIT Press.
 </div>
+<div id="ref-hirsh2012psychological" class="csl-entry" role="listitem">
+Hirsh, Jacob B., Raymond A. Mar, and Jordan B. Peterson. 2012. <span>“Psychological Entropy: A Framework for Understanding Uncertainty-Related Anxiety.”</span> <em>Psychological Review</em> 119 (2): 304–20. <a href="https://doi.org/10.1037/a0026767">https://doi.org/10.1037/a0026767</a>.
+</div>
 <div id="ref-jaynes1957information" class="csl-entry" role="listitem">
 Jaynes, Edwin T. 1957. <span>“Information Theory and Statistical Mechanics.”</span> <em>Physical Review</em> 106: 620.
+</div>
+<div id="ref-vonneumann1927" class="csl-entry" role="listitem">
+Neumann, John von. 1927. <span>“Thermodynamik Quantenmechanischer Gesamtheiten.”</span> <em>Nachrichten von Der Gesellschaft Der Wissenschaften Zu Göttingen, Mathematisch-Physikalische Klasse</em> 1927: 273–91.
+</div>
+<div id="ref-renyi1961" class="csl-entry" role="listitem">
+Rényi, Alfréd. 1961. <span>“On Measures of Entropy and Information.”</span> <em>Proceedings of the Fourth Berkeley Symposium on Mathematical Statistics and Probability</em> 1: 547–61.
+</div>
+<div id="ref-schrodinger1944" class="csl-entry" role="listitem">
+Schrödinger, Erwin. 1944. <em>What Is Life? The Physical Aspect of the Living Cell</em>. Cambridge University Press.
+</div>
+<div id="ref-shannon1948" class="csl-entry" role="listitem">
+Shannon, Claude E. 1948. <span>“A Mathematical Theory of Communication.”</span> <em>Bell System Technical Journal</em> 27 (3): 379–423.
+</div>
+<div id="ref-tsallis1988" class="csl-entry" role="listitem">
+Tsallis, Constantino. 1988. <span>“Possible Generalization of Boltzmann–Gibbs Statistics.”</span> <em>Journal of Statistical Physics</em> 52 (1–2): 479–87.
 </div>
 </div>
 </section>
