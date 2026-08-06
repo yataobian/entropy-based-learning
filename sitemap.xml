@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://yataobian.com/index.html</loc>
+    <loc>https://yataobian.github.io/entropy-based-learning/index.html</loc>
+    <lastmod>2026-08-06T14:54:53.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://yataobian.github.io/entropy-based-learning/intro.html</loc>
     <lastmod>2026-08-06T14:46:29.000Z</lastmod>
   </url>
   <url>
-    <loc>https://yataobian.com/intro.html</loc>
-    <lastmod>2026-08-06T14:46:29.000Z</lastmod>
-  </url>
-  <url>
-    <loc>https://yataobian.com/chapters/01-entropy.html</loc>
+    <loc>https://yataobian.github.io/entropy-based-learning/chapters/01-entropy.html</loc>
     <lastmod>2026-08-06T14:47:01.000Z</lastmod>
   </url>
   <url>
-    <loc>https://yataobian.com/chapters/02-free-energy.html</loc>
+    <loc>https://yataobian.github.io/entropy-based-learning/chapters/02-free-energy.html</loc>
     <lastmod>2026-08-06T14:46:29.000Z</lastmod>
   </url>
   <url>
-    <loc>https://yataobian.com/chapters/03-energy-models.html</loc>
+    <loc>https://yataobian.github.io/entropy-based-learning/chapters/03-energy-models.html</loc>
     <lastmod>2026-08-06T14:46:29.000Z</lastmod>
   </url>
   <url>
-    <loc>https://yataobian.com/chapters/04-max-entropy.html</loc>
+    <loc>https://yataobian.github.io/entropy-based-learning/chapters/04-max-entropy.html</loc>
     <lastmod>2026-08-06T14:46:29.000Z</lastmod>
   </url>
   <url>
-    <loc>https://yataobian.com/chapters/05-min-entropy.html</loc>
+    <loc>https://yataobian.github.io/entropy-based-learning/chapters/05-min-entropy.html</loc>
     <lastmod>2026-08-06T14:46:29.000Z</lastmod>
   </url>
   <url>
-    <loc>https://yataobian.com/chapters/06-minimax-entropy.html</loc>
+    <loc>https://yataobian.github.io/entropy-based-learning/chapters/06-minimax-entropy.html</loc>
     <lastmod>2026-08-06T14:47:01.000Z</lastmod>
   </url>
   <url>
-    <loc>https://yataobian.com/chapters/07-energy-reasoning.html</loc>
+    <loc>https://yataobian.github.io/entropy-based-learning/chapters/07-energy-reasoning.html</loc>
     <lastmod>2026-08-06T14:46:29.000Z</lastmod>
   </url>
   <url>
-    <loc>https://yataobian.com/chapters/08-ai-for-science.html</loc>
+    <loc>https://yataobian.github.io/entropy-based-learning/chapters/08-ai-for-science.html</loc>
     <lastmod>2026-08-06T14:46:29.000Z</lastmod>
   </url>
   <url>
-    <loc>https://yataobian.com/summary.html</loc>
+    <loc>https://yataobian.github.io/entropy-based-learning/summary.html</loc>
     <lastmod>2026-08-06T14:46:29.000Z</lastmod>
   </url>
   <url>
-    <loc>https://yataobian.com/references.html</loc>
+    <loc>https://yataobian.github.io/entropy-based-learning/references.html</loc>
     <lastmod>2026-08-02T16:43:55.000Z</lastmod>
   </url>
 </urlset>
