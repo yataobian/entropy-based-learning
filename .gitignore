@@ -1,5 +1,6 @@
 /.quarto/
 /_book/
+/site_libs/
 .DS_Store
 CLAUDE.local.md
 **/*.quarto_ipynb
