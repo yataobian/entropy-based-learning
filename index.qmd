@@ -6,8 +6,7 @@ toc: false
 
 # Preface {.unnumbered}
 
-Welcome to **Entropy-Based Learning**. This short book is an introductory,
-evolving companion to a research program on *modern entropy- and energy-based
+Welcome to **Entropy-Based Learning**. This short book is an introductory, evolving companion to a research program on *modern entropy- and energy-based
 learning*, developed at the [Blue Whale Lab](https://bluewhale.yataobian.com/)
 led by [Yatao Bian](https://yataobian.com/).
 
@@ -28,12 +27,12 @@ Three complementary principles organize the material in this book:
   This couples the two principles above and turns model selection itself into a
   well-posed problem [@zhu1997minimax; @carcamo2025minimax].
 
-Binding them together is the **free energy** $F = U - TS$, in which temperature
+Binding them together is the **free energy** $F = U - TS$, in which temperature $T$ 
 sets the exchange rate between energy and entropy. It is the equation that
-carried statistical physics into machine learning, and it makes the three
+carried statistical physics into machine learning, 
+and it makes the three
 principles above three settings of one dial rather than three separate
-doctrines. Together with **energy-based models**, they provide a unified lens
-for reasoning, guidance, refinement, and scientific intelligence.
+doctrines. 
 
 ::: {.callout-note}
 This is an early scaffold. Chapters are intentionally concise and will be
