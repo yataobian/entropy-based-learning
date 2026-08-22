@@ -34,10 +34,28 @@ and it makes the three
 principles above three settings of one dial rather than three separate
 doctrines. 
 
-::: {.callout-note}
-This is an early scaffold. Chapters are intentionally concise and will be
-expanded over time. Feedback and contributions are welcome.
+## How complete is this draft? {.unnumbered}
+
+:::{.callout-warning title="Work in Progress"}
+This book is an ongoing project, released early so you can follow its development. Most chapters are incomplete. The table below shows the current status of each chapter. Please keep this in mind before quoting or citing any part of the text, or before judging drafts that are still being written.
 :::
+
+| Chapter | Status |
+|---|---|
+| 1 — Introduction | early draft |
+| 2 — Entropy and the Maximum Entropy Principle | **mostly complete** |
+| 3 — Energy, Entropy, and Free Energy | **mostly complete** |
+| 4 — Energy-Based Models | early draft |
+| 5 — Maximum-Entropy Learning | early draft |
+| 6 — Minimum-Entropy Learning | **mostly complete** |
+| 7 — Minimax-Entropy Learning | early draft |
+| 8 — Energy-Based Reasoning, Guidance, and Refinement | early draft |
+| 9 — Entropy-Based Learning for Science | early draft |
+| 10 — Summary | early draft |
+
+"Mostly complete" means the argument is in place and has been checked, though details may still move. "Early draft" means little more than a
+scaffold. The table will be updated as chapters mature. Feedback and contributions are
+welcome at any stage.
 
 To learn more about the underlying research, visit
 <https://yataobian.com/> and the Blue Whale Lab.

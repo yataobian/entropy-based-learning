@@ -100,7 +100,7 @@ be more sharply specified than either of its parts. A negative value therefore
 certifies entanglement, though the implication runs one way only: entangled
 states with non-negative conditional entropy exist.
 
-### One knob, a family: Rényi and Tsallis
+### One knob, a family: Rényi and Tsallis {#sec-entropy-renyi}
 
 Shannon's requirements can be relaxed, and each relaxation produces a
 one-parameter family. Rényi kept additivity over independent systems but dropped
@@ -114,7 +114,15 @@ $$
 The order $\alpha$ is a knob controlling how much weight rare outcomes receive.
 The limit $\alpha \to 1$ recovers Shannon entropy; $\alpha = 0$ gives the Hartley
 entropy $\log|\operatorname{supp} p|$, which counts possibilities and ignores
-their probabilities; and $\alpha \to \infty$ gives the **min-entropy**
+their probabilities; $\alpha = 2$ gives the **collision entropy**
+
+$$
+H_2(p) = -\log \sum_x p(x)^2 ,
+$$
+
+whose argument $\sum_x p(x)^2$ is the probability that two independent draws
+coincide — a quantity that returns as a training objective in
+@sec-min-what-optimised; and $\alpha \to \infty$ gives the **min-entropy**
 
 $$
 H_\infty(p) = -\log \max_x p(x),
@@ -122,6 +130,15 @@ $$
 
 the worst-case measure used in cryptography, where what matters is not average
 uncertainty but the chance that an adversary guesses right on the first try.
+
+A warning about that last name, since both readings appear later in this book.
+The min-entropy $H_\infty$ is a *specific functional*, the most pessimistic
+member of the Rényi family. It should not be confused with the
+**minimum-entropy principle** of @sec-min-entropy, which is not a functional at
+all but a class of learning *objectives* that reduce the entropy — usually the
+Shannon or the collision entropy — of a model's predictive distribution. The
+two are unrelated, and the shared prefix is an accident of terminology in two
+literatures that developed apart.
 
 Tsallis relaxed the other requirement, giving up additivity itself
 [@tsallis1988]:
@@ -241,8 +258,8 @@ L(P_F) = S(P_F),
 $$
 
 so the best feature set $F$ is the one whose maximum-entropy model has the
-*smallest* entropy. This is the **minimax entropy** principle, developed in
-@sec-minimax-entropy.
+*smallest* entropy. This is the **minimax entropy** principle, developed
+in @sec-minimax-entropy.
 
 ## Why it matters for learning
 

@@ -35,6 +35,10 @@ book:
 
 bibliography: references.bib
 
+language:
+  title-block-published: "Released"
+  title-block-modified: "Last updated"
+
 citation:
   id: bian2026entropy
   type: book

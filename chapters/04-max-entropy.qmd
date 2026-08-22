@@ -36,8 +36,8 @@ valuation methods**, of which the Shapley value arises as a special case.
   valuation schemes, enabling trade-offs beyond the single Shapley solution.
 - **Bridges to physics.** The same Gibbs machinery is the one that carried the
   Ising energy into neural networks in the first place, by way of the Hopfield
-  network [@hopfield1982] and the Boltzmann machine [@ackley1985]; see
-  @sec-free-energy.
+  network [@hopfield1982] and the Boltzmann machine [@ackley1985];
+  see @sec-free-energy.
 
 ## Takeaway
 
