@@ -6,10 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-08-02">
+<meta name="dcterms.date" content="2026-08-04">
 <meta name="description" content="An introduction to modern entropy- and energy-based learning, spanning the maximum-entropy, minimum-entropy, and minimax-entropy principles, and their applications to scientific and reasoning-oriented AI.">
 
-<title>1&nbsp; Introduction – Entropy-Based Learning</title>
+<title>7&nbsp; Minimax-Entropy Learning – Entropy-Based Learning</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -50,25 +50,25 @@ div.csl-indent {
 }</style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./chapters/01-entropy.html" rel="next">
-<link href="./index.html" rel="prev">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-a277fc7c0b5572c02727048f32503fbf.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-a07a8ce6c212e556d88f404427394078.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/08-energy-reasoning.html" rel="next">
+<link href="../chapters/06-min-entropy.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-a277fc7c0b5572c02727048f32503fbf.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-a07a8ce6c212e556d88f404427394078.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -132,7 +132,7 @@ window.Quarto = {
 <meta name="citation_publication_date" content="2026">
 <meta name="citation_cover_date" content="2026">
 <meta name="citation_year" content="2026">
-<meta name="citation_online_date" content="2026-08-02">
+<meta name="citation_online_date" content="2026-08-04">
 <meta name="citation_fulltext_html_url" content="https://yataobian.github.io/entropy-based-learning/">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=Energy-based learning for cooperative games, with applications to valuation problems in machine learning;,citation_author=Yatao Bian;,citation_author=Yu Rong;,citation_author=Tingyang Xu;,citation_author=Jiaxiang Wu;,citation_author=Andreas Krause;,citation_author=Junzhou Huang;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_fulltext_html_url=https://openreview.net/forum?id=xLfAgCroImw;,citation_conference_title=International conference on learning representations (ICLR);">
@@ -228,7 +228,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./intro.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/05-max-entropy.html">Part II — Methods</a></li><li class="breadcrumb-item"><a href="../chapters/07-minimax-entropy.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Minimax-Entropy Learning</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -243,7 +243,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Entropy-Based Learning</a> 
+      <a href="../">Entropy-Based Learning</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/yataobian/entropy-based-learning" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
@@ -258,13 +258,13 @@ window.Quarto = {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Preface</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro.html" class="sidebar-item-text sidebar-link active">
+  <a href="../01-intro.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
   </div>
 </li>
@@ -279,19 +279,19 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/01-entropy.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/02-entropy.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Entropy and the Maximum Entropy Principle</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/02-free-energy.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/03-free-energy.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Energy, Entropy, and Free Energy</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/03-energy-models.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/04-energy-models.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Energy-Based Models</span></span></a>
   </div>
 </li>
@@ -308,25 +308,25 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/04-max-entropy.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/05-max-entropy.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Maximum-Entropy Learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/05-min-entropy.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/06-min-entropy.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Minimum-Entropy Learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/06-minimax-entropy.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/07-minimax-entropy.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Minimax-Entropy Learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/07-energy-reasoning.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/08-energy-reasoning.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></span></a>
   </div>
 </li>
@@ -343,7 +343,7 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapters/08-ai-for-science.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/09-ai-for-science.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></span></a>
   </div>
 </li>
@@ -351,13 +351,13 @@ window.Quarto = {
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./summary.html" class="sidebar-item-text sidebar-link">
+  <a href="../summary.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
 </li>
@@ -371,17 +371,20 @@ window.Quarto = {
     <h2 id="toc-title">On This Page</h2>
    
   <ul>
-  <li><a href="#why-entropy" id="toc-why-entropy" class="nav-link active" data-scroll-target="#why-entropy"><span class="header-section-number">1.1</span> Why entropy?</a></li>
-  <li><a href="#roadmap" id="toc-roadmap" class="nav-link" data-scroll-target="#roadmap"><span class="header-section-number">1.2</span> Roadmap</a></li>
+  <li><a href="#which-features-should-a-model-include" id="toc-which-features-should-a-model-include" class="nav-link active" data-scroll-target="#which-features-should-a-model-include"><span class="header-section-number">7.1</span> Which features should a model include?</a></li>
+  <li><a href="#the-minimax-entropy-principle" id="toc-the-minimax-entropy-principle" class="nav-link" data-scroll-target="#the-minimax-entropy-principle"><span class="header-section-number">7.2</span> The minimax entropy principle</a></li>
+  <li><a href="#three-equivalent-views" id="toc-three-equivalent-views" class="nav-link" data-scroll-target="#three-equivalent-views"><span class="header-section-number">7.3</span> Three equivalent views</a></li>
+  <li><a href="#solving-it" id="toc-solving-it" class="nav-link" data-scroll-target="#solving-it"><span class="header-section-number">7.4</span> Solving it</a></li>
+  <li><a href="#takeaway" id="toc-takeaway" class="nav-link" data-scroll-target="#takeaway"><span class="header-section-number">7.5</span> Takeaway</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/05-max-entropy.html">Part II — Methods</a></li><li class="breadcrumb-item"><a href="../chapters/07-minimax-entropy.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Minimax-Entropy Learning</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></h1>
+<h1 class="title"><span id="sec-minimax-entropy" class="quarto-section-identifier"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Minimax-Entropy Learning</span></span></h1>
 </div>
 
 
@@ -392,14 +395,14 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Released</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 2, 2026</p>
+      <p class="date">August 4, 2026</p>
     </div>
   </div>
   
     <div>
     <div class="quarto-title-meta-heading">Last updated</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">August 6, 2026</p>
+      <p class="date-modified">August 22, 2026</p>
     </div>
   </div>
     
@@ -410,53 +413,69 @@ window.Quarto = {
 </header>
 
 
-<section id="why-entropy" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="why-entropy"><span class="header-section-number">1.1</span> Why entropy?</h2>
-<p>Modern machine learning has long been nurtured by scientific disciplines. A canonical example is the <strong>Boltzmann machine</strong>, rooted in statistical physics and motivated by the <em>Maximum Entropy Principle</em>. This book takes entropy — and its close relative, energy — as the organizing thread for a family of learning methods that are both principled and practically effective.</p>
-<p>That lineage is unusually direct. In 1982 John Hopfield borrowed the energy function of a magnetic spin system to build an associative memory <span class="citation" data-cites="hopfield1982">(<a href="references.html#ref-hopfield1982" role="doc-biblioref">Hopfield 1982</a>)</span>; within a year, simulated annealing had turned the competition between energy and entropy into an optimization schedule <span class="citation" data-cites="kirkpatrick1983">(<a href="references.html#ref-kirkpatrick1983" role="doc-biblioref">Kirkpatrick et al. 1983</a>)</span>; and by 1985 the Boltzmann machine placed Hopfield’s network at a finite temperature and learned its couplings from data <span class="citation" data-cites="ackley1985">(<a href="references.html#ref-ackley1985" role="doc-biblioref">Ackley et al. 1985</a>)</span>. The same trade-off resurfaced as the evidence lower bound <span class="citation" data-cites="dayan1995helmholtz neal1998em">(<a href="references.html#ref-dayan1995helmholtz" role="doc-biblioref">Dayan et al. 1995</a>; <a href="references.html#ref-neal1998em" role="doc-biblioref">Neal and Hinton 1998</a>)</span>, as the contrastive objectives of energy-based learning <span class="citation" data-cites="lecun2006tutorial">(<a href="references.html#ref-lecun2006tutorial" role="doc-biblioref">LeCun et al. 2006</a>)</span>, and as the temperature parameter of every language-model decoder. In 2024 the Nobel Prize in Physics was awarded to Hopfield and Hinton for this line of work <span class="citation" data-cites="nobel2024physics">(<a href="references.html#ref-nobel2024physics" role="doc-biblioref">The Royal Swedish Academy of Sciences 2024</a>)</span>. <a href="chapters/02-free-energy.html" class="quarto-xref"><span>Chapter 3</span></a> develops the single equation, <span class="math inline">\(F = U - TS\)</span>, that runs beneath all of it.</p>
-<p>We study three directions that are connected:</p>
-<ol type="1">
-<li><strong>Maximizing entropy</strong> to obtain the least-biased model consistent with given constraints. This yields exponential-family / Gibbs distributions and, as we will see, a principled framework for valuation problems in machine learning <span class="citation" data-cites="bian2022energybased">(<a href="references.html#ref-bian2022energybased" role="doc-biblioref">Bian et al. 2022</a>)</span>.</li>
-<li><strong>Minimizing entropy</strong> to sharpen a model’s own predictions. When applied to large language models in a latent semantic space, this idea enables fully <em>unsupervised</em> elicitation of reasoning capabilities.</li>
-<li><strong>Minimaxing entropy</strong> to decide which features a model should include at all. The optimal features are those whose maximum-entropy model has the <em>minimum</em> entropy, which makes model selection a well-posed problem <span class="citation" data-cites="carcamo2025minimax">(<a href="references.html#ref-carcamo2025minimax" role="doc-biblioref">Carcamo et al. 2025</a>)</span>.</li>
-</ol>
+<section id="which-features-should-a-model-include" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="which-features-should-a-model-include"><span class="header-section-number">7.1</span> Which features should a model include?</h2>
+<p>Maximum entropy (<a href="05-max-entropy.html" class="quarto-xref"><span>Chapter 5</span></a>) answers a precise question: given a set of measured features, which model is least biased? It is silent on a prior question — <em>which features should we measure at all?</em></p>
+<p>Every model is a lossy compression that trades complexity against uncertainty. Include too few features and the model stays vague; include too many and it ceases to be a compression. For a fixed budget of features, we want the description that leaves the least uncertainty.</p>
 </section>
-<section id="roadmap" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="roadmap"><span class="header-section-number">1.2</span> Roadmap</h2>
+<section id="the-minimax-entropy-principle" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="the-minimax-entropy-principle"><span class="header-section-number">7.2</span> The minimax entropy principle</h2>
+<p>Starting from the <strong>minimum description length</strong> (MDL) principle <span class="citation" data-cites="grunwald2007mdl">(<a href="../references.html#ref-grunwald2007mdl" role="doc-biblioref">Grünwald 2007</a>)</span>, two results follow in sequence. First, among all models consistent with a feature set <span class="math inline">\(F\)</span>, the shortest description is the maximum-entropy model <span class="citation" data-cites="feder1986maximum">(<a href="../references.html#ref-feder1986maximum" role="doc-biblioref">Feder 1986</a>)</span>. Second, for such models the description length equals the model’s own entropy, <span class="math inline">\(L(P_F) = S(P_F)\)</span>. Choosing features to minimize description length therefore means choosing them to minimize that entropy.</p>
+<p>The optimal features are the ones producing the maximum-entropy model with <em>minimum</em> entropy <span class="citation" data-cites="carcamo2025minimax">(<a href="../references.html#ref-carcamo2025minimax" role="doc-biblioref">Carcamo et al. 2025</a>)</span>:</p>
+<p><span class="math display">\[
+F^{*} = \arg\min_{F}\; S(P_F),
+\qquad
+P_F = \arg\max_{P}\;\big\{\, S(P) \;:\;
+\mathbb{E}_P[f_\mu] = \langle f_\mu \rangle_{\exp},\; f_\mu \in F \,\big\}.
+\]</span></p>
+<p>The nesting gives the principle its name: maximize entropy on the inside, minimize it on the outside. The best features are those that maximally constrain our expectations while leaving the model maximally random about everything unobserved. The principle was first proposed for texture modeling in computer vision <span class="citation" data-cites="zhu1997minimax">(<a href="../references.html#ref-zhu1997minimax" role="doc-biblioref">Zhu et al. 1997</a>)</span>.</p>
+</section>
+<section id="three-equivalent-views" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="three-equivalent-views"><span class="header-section-number">7.3</span> Three equivalent views</h2>
+<p>Minimizing <span class="math inline">\(S(P_F)\)</span> optimizes three quantities at once. In what follows, <span class="math inline">\(P_{\text{true}}\)</span> denotes the distribution that actually generated the data, and <span class="math inline">\(P_{\text{ind}}\)</span> the featureless baseline model in which the variables are treated as independent.</p>
 <ul>
-<li><strong>Part I — Foundations</strong> surveys the thermodynamic, information-theoretic, quantum, and psychological notions of entropy, develops the maximum-entropy principle together with the free-energy relationship <span class="math inline">\(F = U - TS\)</span> that connects entropy to energy, and introduces energy-based models and the minimum-description-length view that leads to minimax entropy.</li>
-<li><strong>Part II — Methods</strong> develops maximum-entropy, minimum-entropy, and minimax-entropy learning, together with energy-based reasoning / guidance / refinement.</li>
-<li><strong>Part III — Applications</strong> connects these ideas to scientific foundation models and AI-for-science.</li>
+<li><strong>Shortest description.</strong> Since <span class="math inline">\(L(P_F) = S(P_F)\)</span>, the optimum is the most compressed account of the data.</li>
+<li><strong>Closest to the truth.</strong> The entropy gap to the true distribution is exactly a divergence, <span class="math inline">\(S(P_F) - S(P_{\text{true}}) =
+D_{\mathrm{KL}}(P_{\text{true}} \Vert P_F)\)</span>, so the optimum is also the most accurate model.</li>
+<li><strong>Most informative features.</strong> The information carried by the selected features, <span class="math inline">\(I_F = S(P_{\text{ind}}) - S(P_F)\)</span>, is maximized at the same point.</li>
 </ul>
+<p>Compression, accuracy, and informativeness coincide — a reassuring sign that the criterion is the right one.</p>
+</section>
+<section id="solving-it" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="solving-it"><span class="header-section-number">7.4</span> Solving it</h2>
+<p>The difficulty is combinatorial. Each candidate feature set requires solving a maximum-entropy problem for its parameters, and the number of candidate sets grows super-exponentially, so brute-force search is infeasible beyond small systems <span class="citation" data-cites="carcamo2025minimax">(<a href="../references.html#ref-carcamo2025minimax" role="doc-biblioref">Carcamo et al. 2025</a>)</span>. The practical workhorse is a <strong>greedy</strong> algorithm that repeatedly adds whichever remaining feature reduces the entropy most.</p>
+<p>Structure sometimes restores exactness. For trees of pairwise correlations the entropy reduction decomposes into a sum of mutual informations, the problem becomes a maximum-spanning-tree problem, and greedy is optimal. More generally, if entropy reduction is <strong>submodular</strong> — diminishing returns as features accumulate — greedy comes within <span class="math inline">\(1 - 1/e\)</span> of the optimum <span class="citation" data-cites="nemhauser1978analysis">(<a href="../references.html#ref-nemhauser1978analysis" role="doc-biblioref">Nemhauser et al. 1978</a>)</span>. Whether the minimax entropy objective is submodular in general remains open; where it is not, guarantees can still be recovered in terms of how far the objective departs from submodularity <span class="citation" data-cites="bian2017guarantees">(<a href="../references.html#ref-bian2017guarantees" role="doc-biblioref">Bian et al. 2017</a>)</span>.</p>
+</section>
+<section id="takeaway" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="takeaway"><span class="header-section-number">7.5</span> Takeaway</h2>
+<p>Minimax entropy couples the two preceding principles into a single criterion: <strong>maximize entropy to model the world, minimize entropy to commit to what matters</strong>. Maximum entropy supplies possibility, minimum entropy supplies certainty, and the minimax formulation decides which details deserve to be modelled at all.</p>
+<p>The principle has recently yielded exactly solvable models of large neuronal populations <span class="citation" data-cites="lynn2024exact">(<a href="../references.html#ref-lynn2024exact" role="doc-biblioref">Lynn et al. 2025</a>)</span>, yet its reach in machine learning is largely untapped. Open directions include scalability and sample complexity in high dimensions, realizations for LLMs, agents, and multimodal models, and the relationship to the free-energy principle <span class="citation" data-cites="friston2010free">(<a href="../references.html#ref-friston2010free" role="doc-biblioref">Friston 2010</a>)</span>.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
-<div id="ref-ackley1985" class="csl-entry" role="listitem">
-Ackley, David H., Geoffrey E. Hinton, and Terrence J. Sejnowski. 1985. <span>“A Learning Algorithm for Boltzmann Machines.”</span> <em>Cognitive Science</em> 9 (1): 147–69. <a href="https://doi.org/10.1207/s15516709cog0901_7">https://doi.org/10.1207/s15516709cog0901_7</a>.
-</div>
-<div id="ref-bian2022energybased" class="csl-entry" role="listitem">
-Bian, Yatao, Yu Rong, Tingyang Xu, Jiaxiang Wu, Andreas Krause, and Junzhou Huang. 2022. <span>“Energy-Based Learning for Cooperative Games, with Applications to Valuation Problems in Machine Learning.”</span> <em>International Conference on Learning Representations (ICLR)</em>. <a href="https://openreview.net/forum?id=xLfAgCroImw">https://openreview.net/forum?id=xLfAgCroImw</a>.
+<div id="ref-bian2017guarantees" class="csl-entry" role="listitem">
+Bian, Andrew An, Joachim M. Buhmann, Andreas Krause, and Sebastian Tschiatschek. 2017. <span>“Guarantees for Greedy Maximization of Non-Submodular Functions with Applications.”</span> <em>International Conference on Machine Learning (ICML)</em>, 498–507.
 </div>
 <div id="ref-carcamo2025minimax" class="csl-entry" role="listitem">
 Carcamo, David P., Nicholas J. Weaver, Purushottam D. Dixit, and Christopher W. Lynn. 2025. <span>“Minimax Entropy: The Statistical Physics of Optimal Models.”</span> <em>Physical Review E</em> 112 (6): 061001. <a href="https://doi.org/10.1103/kr9x-q59y">https://doi.org/10.1103/kr9x-q59y</a>.
 </div>
-<div id="ref-dayan1995helmholtz" class="csl-entry" role="listitem">
-Dayan, Peter, Geoffrey E. Hinton, Radford M. Neal, and Richard S. Zemel. 1995. <span>“The Helmholtz Machine.”</span> <em>Neural Computation</em> 7 (5): 889–904. <a href="https://doi.org/10.1162/neco.1995.7.5.889">https://doi.org/10.1162/neco.1995.7.5.889</a>.
+<div id="ref-feder1986maximum" class="csl-entry" role="listitem">
+Feder, M. 1986. <span>“Maximum Entropy as a Special Case of the Minimum Description Length Criterion.”</span> <em>IEEE Transactions on Information Theory</em> 32: 847–49.
 </div>
-<div id="ref-hopfield1982" class="csl-entry" role="listitem">
-Hopfield, John J. 1982. <span>“Neural Networks and Physical Systems with Emergent Collective Computational Abilities.”</span> <em>Proceedings of the National Academy of Sciences</em> 79 (8): 2554–58. <a href="https://doi.org/10.1073/pnas.79.8.2554">https://doi.org/10.1073/pnas.79.8.2554</a>.
+<div id="ref-friston2010free" class="csl-entry" role="listitem">
+Friston, Karl. 2010. <span>“The Free-Energy Principle: A Unified Brain Theory?”</span> <em>Nature Reviews Neuroscience</em> 11 (2): 127–38.
 </div>
-<div id="ref-kirkpatrick1983" class="csl-entry" role="listitem">
-Kirkpatrick, Scott, C. Daniel Gelatt, and Mario P. Vecchi. 1983. <span>“Optimization by Simulated Annealing.”</span> <em>Science</em> 220 (4598): 671–80. <a href="https://doi.org/10.1126/science.220.4598.671">https://doi.org/10.1126/science.220.4598.671</a>.
+<div id="ref-grunwald2007mdl" class="csl-entry" role="listitem">
+Grünwald, Peter D. 2007. <em>The Minimum Description Length Principle</em>. MIT Press.
 </div>
-<div id="ref-lecun2006tutorial" class="csl-entry" role="listitem">
-LeCun, Yann, Sumit Chopra, Raia Hadsell, Marc’Aurelio Ranzato, and Fu Jie Huang. 2006. <span>“A Tutorial on Energy-Based Learning.”</span> In <em>Predicting Structured Data</em>, edited by Gökhan Bakir, Thomas Hofmann, Bernhard Schölkopf, Alexander J. Smola, and Ben Taskar. MIT Press.
+<div id="ref-lynn2024exact" class="csl-entry" role="listitem">
+Lynn, Christopher W., Qiwei Yu, Rich Pang, Stephanie E. Palmer, and William Bialek. 2025. <span>“Exact Minimax Entropy Models of Large-Scale Neuronal Activity.”</span> <em>Physical Review E</em> 111 (5): 054411. <a href="https://doi.org/10.1103/PhysRevE.111.054411">https://doi.org/10.1103/PhysRevE.111.054411</a>.
 </div>
-<div id="ref-neal1998em" class="csl-entry" role="listitem">
-Neal, Radford M., and Geoffrey E. Hinton. 1998. <span>“A View of the EM Algorithm That Justifies Incremental, Sparse, and Other Variants.”</span> In <em>Learning in Graphical Models</em>, edited by Michael I. Jordan. Kluwer Academic Publishers.
+<div id="ref-nemhauser1978analysis" class="csl-entry" role="listitem">
+Nemhauser, George L., Laurence A. Wolsey, and Marshall L. Fisher. 1978. <span>“An Analysis of Approximations for Maximizing Submodular Set Functions—i.”</span> <em>Mathematical Programming</em> 14: 265–94.
 </div>
-<div id="ref-nobel2024physics" class="csl-entry" role="listitem">
-The Royal Swedish Academy of Sciences. 2024. <em>Scientific Background to the Nobel Prize in Physics 2024: For Foundational Discoveries and Inventions That Enable Machine Learning with Artificial Neural Networks</em>. <a href="https://www.nobelprize.org/prizes/physics/2024/advanced-information/">https://www.nobelprize.org/prizes/physics/2024/advanced-information/</a>.
+<div id="ref-zhu1997minimax" class="csl-entry" role="listitem">
+Zhu, Song Chun, Ying Nian Wu, and David Mumford. 1997. <span>“Minimax Entropy Principle and Its Application to Texture Modeling.”</span> <em>Neural Computation</em> 9 (8): 1627–60. <a href="https://doi.org/10.1162/neco.1997.9.8.1627">https://doi.org/10.1162/neco.1997.9.8.1627</a>.
 </div>
 </div>
 </section>
@@ -864,13 +883,13 @@ The Royal Swedish Academy of Sciences. 2024. <em>Scientific Background to the No
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./index.html" class="pagination-link" aria-label="Preface">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Preface</span>
+      <a href="../chapters/06-min-entropy.html" class="pagination-link" aria-label="Minimum-Entropy Learning">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Minimum-Entropy Learning</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./chapters/01-entropy.html" class="pagination-link" aria-label="Entropy and the Maximum Entropy Principle">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Entropy and the Maximum Entropy Principle</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../chapters/08-energy-reasoning.html" class="pagination-link" aria-label="Energy-Based Reasoning, Guidance, and Refinement">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
