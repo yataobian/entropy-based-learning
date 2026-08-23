@@ -15,8 +15,10 @@ format:
       - numbers=noenddot
       - fontsize=11pt
     pdf-engine: lualatex
-    toc: true
-    toc-depth: 2
+    # The detailed Contents page is contents.qmd (also included in
+    # the preface and the introduction). Do not also emit a generated TOC.
+    toc: false
+    toc-depth: 3
     lot: false
     lof: false
     number-sections: true

@@ -46,6 +46,15 @@
 \usepackage{enumitem}
 \setlist{itemsep=0.28em, topsep=0.4em, parsep=0pt}
 
+% Detailed Contents page (`::: {.book-contents}` in contents.qmd).
+% Section numbers (2.1, 3.2.1) are written in the list text, so drop bullets.
+\newenvironment{book-contents}{%
+  \par\small
+  \setlist{label={}, itemsep=0.10em, topsep=0.22em, parsep=0pt, leftmargin=1.15em}%
+}{%
+  \par
+}
+
 % Callouts should read as margin notes, not alert boxes.
 \AtBeginDocument{%
   \setlength{\parskip}{0.42em}%

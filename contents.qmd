@@ -1,0 +1,9 @@
+---
+date: "2026-08-02"
+date-modified: last-modified
+toc: false
+---
+
+# Contents {.unnumbered}
+
+{{< include _contents-list.qmd >}}

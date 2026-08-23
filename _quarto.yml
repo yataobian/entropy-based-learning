@@ -21,6 +21,7 @@ book:
   downloads: [pdf]
   chapters:
     - index.qmd
+    - contents.qmd
     - 01-intro.qmd
     - part: "Part I — Foundations"
       chapters:
