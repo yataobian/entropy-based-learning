@@ -56,11 +56,27 @@ if ! command -v lualatex >/dev/null 2>&1; then
   exit 1
 fi
 
-# Rebuild Matplotlib figures so the PDF sibling is font-complete.
-if [[ -f code/min-entropy-phase-diagram.py ]]; then
-  echo "regenerating figures/min-entropy-phase.pdf ..."
-  MPLCONFIGDIR="${MPLCONFIGDIR:-/tmp/mpl-ebm}" \
-    /usr/bin/python3 code/min-entropy-phase-diagram.py >/dev/null
+# Rebuild the phase diagram only when the script is newer than the
+# committed products, or when a product is missing. The figure is
+# generated once and reused; ImageMagick must not rewrite the PDF
+# from the SVG (it drops math glyphs).
+need_phase_figure=0
+PHASE_PY="code/min-entropy-phase-diagram.py"
+if [[ -f $PHASE_PY ]]; then
+  for ext in pdf svg png; do
+    out="figures/min-entropy-phase.$ext"
+    if [[ ! -f $out || $PHASE_PY -nt $out ]]; then
+      need_phase_figure=1
+      break
+    fi
+  done
+  if [[ $need_phase_figure -eq 1 ]]; then
+    echo "regenerating figures/min-entropy-phase.{pdf,svg,png} ..."
+    MPLCONFIGDIR="${MPLCONFIGDIR:-/tmp/mpl-ebm}" \
+      /usr/bin/python3 "$PHASE_PY" >/dev/null
+  else
+    echo "using existing figures/min-entropy-phase.{pdf,svg,png}"
+  fi
 fi
 
 # SVG figures need a PDF sibling for the Lua filter.
@@ -83,6 +99,12 @@ for svg in figures/*.svg; do
   svg_to_pdf "$svg"
 done
 shopt -u nullglob
+
+# Title-page mark; the tex looks in _book-pdf/ and the book root.
+if [[ -f $ROOT/cover.png ]]; then
+  mkdir -p "$ROOT/_book-pdf"
+  cp -f "$ROOT/cover.png" "$ROOT/_book-pdf/cover.png"
+fi
 
 echo "rendering PDF (profile=pdf) ..."
 if [[ $KEEP_TEX -eq 1 ]]; then

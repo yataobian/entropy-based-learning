@@ -3,6 +3,8 @@
 
 project:
   output-dir: _book-pdf
+  resources:
+    - cover.png
 
 format:
   pdf:
@@ -38,5 +40,6 @@ format:
       - filters/svg-to-pdf.lua
     include-in-header:
       - tex/book-pdf-header.tex
+      - tex/book-pdf-titlepage.tex
     header-includes:
       - \usepackage{float}

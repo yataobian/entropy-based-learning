@@ -1,0 +1,77 @@
+% Custom title page for the print PDF.
+% Loaded only by the `pdf` Quarto profile (after book-pdf-header.tex).
+
+\usepackage{graphicx}
+
+\definecolor{dategray}{HTML}{8A9098}
+
+% Book-level release, matching `_quarto.yml` / `date:`.
+% The updated stamp is the day this PDF is compiled (LuaTeX).
+\newcommand{\bookreleasedate}{August 2, 2026}
+\newcommand{\bookupdatedate}{%
+  \directlua{
+    local t = os.date("*t")
+    local months = {
+      "January","February","March","April","May","June",
+      "July","August","September","October","November","December"
+    }
+    tex.sprint(months[t.month] .. " " .. tostring(t.day) .. ", " .. tostring(t.year))
+  }%
+}
+
+\newcommand{\bookcoverlogofile}{}
+\IfFileExists{cover.png}{\renewcommand{\bookcoverlogofile}{cover.png}}{}
+\IfFileExists{../cover.png}{\renewcommand{\bookcoverlogofile}{../cover.png}}{}
+
+\newcommand{\bookcoverlogoblock}{%
+  \ifx\bookcoverlogofile\empty
+  \else
+    \includegraphics[width=3.1cm]{\bookcoverlogofile}%
+  \fi
+}
+
+\newcommand{\bookdatestamp}[2]{%
+  {\sffamily\fontsize{7.4}{9}\selectfont\color{dategray}%
+   \MakeUppercase{#1}\par}%
+  \vspace{0.28em}%
+  {\rmfamily\color{ink}#2\par}%
+}
+
+\newcommand{\bookreleasedates}{%
+  \begin{minipage}{0.62\textwidth}
+    \centering
+    \begin{minipage}[t]{0.46\textwidth}
+      \centering
+      \bookdatestamp{Released}{\bookreleasedate}
+    \end{minipage}%
+    \hspace{1.4em}%
+    \begin{minipage}[t]{0.46\textwidth}
+      \centering
+      \bookdatestamp{Last updated}{\bookupdatedate}
+    \end{minipage}
+  \end{minipage}%
+}
+
+\makeatletter
+\renewcommand{\maketitle}{%
+  \begin{titlepage}
+    \thispagestyle{empty}
+    \centering
+    \vspace*{22mm}
+    {\usekomafont{title}\huge\bfseries\color{ink}\@title\par}
+    \vspace{0.55em}
+    {\ifx\@subtitle\@empty\else
+       \usekomafont{subtitle}\large\color{ink}\@subtitle\par
+     \fi}
+    \vspace{9mm}
+    {\usekomafont{author}\large\color{ink}\@author\par}
+    \vspace{14mm}
+    \bookreleasedates\par
+    \vfill
+    \bookcoverlogoblock\par
+    \vfill
+    {\sffamily\fontsize{8.2}{10}\selectfont\color{dategray}Blue Whale Lab\par}
+    \vspace*{8mm}
+  \end{titlepage}%
+}
+\makeatother
