@@ -30,6 +30,16 @@
     ]
   },
   {
+    "objectID": "contents.html",
+    "href": "contents.html",
+    "title": "Contents",
+    "section": "",
+    "text": "1. Introduction\n\n1.1 Why entropy?\n1.2 Roadmap\n\n\nPart I — Foundations\n\n2. Entropy and the Maximum Entropy Principle\n\n2.1 The many faces of entropy\n\n2.1.1 Information: Shannon entropy\n2.1.2 Heat: thermodynamic entropy\n2.1.3 Quantum states: von Neumann entropy\n2.1.4 One knob, a family: Rényi and Tsallis\n2.1.5 Minds: psychological entropy\n2.1.6 One form, many readings\n\n2.2 The maximum entropy principle\n2.3 Minimum description length and minimax entropy\n2.4 Why it matters for learning\n\n3. Energy, Entropy, and Free Energy\n\n3.1 Maximum entropy with an energy constraint\n3.2 Free energy\n3.3 What entropy buys you\n\n3.3.1 Isothermal expansion\n3.3.2 The rubber band\n3.3.3 Melting\n\n3.4 From spins to networks\n3.5 How this reached AI\n3.6 The temperature dial\n3.7 Why it matters for learning\n\n4. Energy-Based Models\n\n4.1 The energy view of inference\n4.2 Why learn an energy at all?\n4.3 Learning is shaping a landscape\n4.4 Strategy one: sample the pull-up\n4.5 Strategy two: match slopes, not heights\n4.6 Strategy three: learn by telling things apart\n4.7 One family, three estimators\n4.8 Latent variables, and the free energy again\n4.9 The modern landscape\n4.10 Where this sits in the book\n4.11 Takeaway\n\n\nPart II — Methods\n\n5. Maximum-Entropy Learning\n\n5.1 Graphical models as an explanatory family\n5.2 A worked example: energy-based cooperative games\n\n5.2.1 Why this is useful\n\n5.3 Takeaway\n\n6. Minimum-Entropy Learning\n\n6.1 Two regimes, and a warning about the name\n6.2 From word-level to meaning-level uncertainty\n6.3 Entropy minimisation as an objective: a short history\n6.4 EMPO: reward agreement, not correctness\n6.5 What “reward agreement” actually optimises\n6.6 The free-energy view, and why entropy collapses\n6.7 The information ceiling\n6.8 Schrödinger, read carefully\n6.9 Prigogine, and an analogy that does not hold\n6.10 So why call it minimum-entropy learning?\n6.11 When agreement means truth, and when it does not\n6.12 Takeaway\n\n7. Minimax-Entropy Learning\n\n7.1 Which features should a model include?\n7.2 The minimax entropy principle\n7.3 Three equivalent views\n7.4 Solving it\n7.5 Takeaway\n\n8. Energy-Based Reasoning, Guidance, and Refinement\n\n8.1 Guidance\n8.2 Refinement\n8.3 Reasoning as energy minimization\n\n\nPart III — Applications\n\n9. Entropy-Based Learning for Science\n\n9.1 Two synergistic directions\n9.2 Molecular foundation models\n9.3 Outlook\n\n10. Summary\nReferences",
+    "crumbs": [
+      "Contents"
+    ]
+  },
+  {
     "objectID": "01-intro.html",
     "href": "01-intro.html",
     "title": "1  Introduction",

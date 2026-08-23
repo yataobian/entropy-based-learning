@@ -9,7 +9,7 @@
 <meta name="dcterms.date" content="2026-08-02">
 <meta name="description" content="An introduction to modern entropy- and energy-based learning, spanning the maximum-entropy, minimum-entropy, and minimax-entropy principles, and their applications to scientific and reasoning-oriented AI.">
 
-<title>2&nbsp; Entropy and the Maximum Entropy Principle – Entropy-Based Learning</title>
+<title>Contents – Entropy-Based Learning</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -28,47 +28,28 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="../chapters/03-free-energy.html" rel="next">
-<link href="../01-intro.html" rel="prev">
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-a277fc7c0b5572c02727048f32503fbf.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-c4ced60c6fab49a59b86e80ad97f72ca.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./01-intro.html" rel="next">
+<link href="./index.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-a277fc7c0b5572c02727048f32503fbf.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-c4ced60c6fab49a59b86e80ad97f72ca.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -97,35 +78,6 @@ div.csl-indent {
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <meta name="citation_title" content="Entropy-Based Learning">
 <meta name="citation_author" content="Yatao Bian">
@@ -260,7 +212,7 @@ window.Quarto = {
 <meta name="citation_reference" content="citation_title=Conditional random fields: Probabilistic models for segmenting and labeling sequence data;,citation_author=John Lafferty;,citation_author=Andrew McCallum;,citation_author=Fernando Pereira;,citation_publication_date=2001;,citation_cover_date=2001;,citation_year=2001;,citation_conference_title=International conference on machine learning (ICML);">
 </head>
 
-<body class="nav-sidebar floating quarto-light">
+<body class="nav-sidebar floating fullcontent quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -269,7 +221,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/02-entropy.html">Part I — Foundations</a></li><li class="breadcrumb-item"><a href="../chapters/02-entropy.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Entropy and the Maximum Entropy Principle</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./contents.html">Contents</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -284,10 +236,10 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="../">Entropy-Based Learning</a> 
+      <a href="./">Entropy-Based Learning</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/yataobian/entropy-based-learning" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-    <a href="../Entropy-Based-Learning.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+    <a href="./Entropy-Based-Learning.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
 </div>
     </div>
       </div>
@@ -300,19 +252,19 @@ window.Quarto = {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../index.html" class="sidebar-item-text sidebar-link">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Preface</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../contents.html" class="sidebar-item-text sidebar-link">
+  <a href="./contents.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Contents</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../01-intro.html" class="sidebar-item-text sidebar-link">
+  <a href="./01-intro.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
   </div>
 </li>
@@ -327,19 +279,19 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/02-entropy.html" class="sidebar-item-text sidebar-link active">
+  <a href="./chapters/02-entropy.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Entropy and the Maximum Entropy Principle</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/03-free-energy.html" class="sidebar-item-text sidebar-link">
+  <a href="./chapters/03-free-energy.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Energy, Entropy, and Free Energy</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/04-energy-models.html" class="sidebar-item-text sidebar-link">
+  <a href="./chapters/04-energy-models.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Energy-Based Models</span></span></a>
   </div>
 </li>
@@ -356,25 +308,25 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/05-max-entropy.html" class="sidebar-item-text sidebar-link">
+  <a href="./chapters/05-max-entropy.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Maximum-Entropy Learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/06-min-entropy.html" class="sidebar-item-text sidebar-link">
+  <a href="./chapters/06-min-entropy.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Minimum-Entropy Learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/07-minimax-entropy.html" class="sidebar-item-text sidebar-link">
+  <a href="./chapters/07-minimax-entropy.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Minimax-Entropy Learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/08-energy-reasoning.html" class="sidebar-item-text sidebar-link">
+  <a href="./chapters/08-energy-reasoning.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></span></a>
   </div>
 </li>
@@ -391,7 +343,7 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/09-ai-for-science.html" class="sidebar-item-text sidebar-link">
+  <a href="./chapters/09-ai-for-science.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></span></a>
   </div>
 </li>
@@ -399,13 +351,13 @@ window.Quarto = {
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../summary.html" class="sidebar-item-text sidebar-link">
+  <a href="./summary.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../references.html" class="sidebar-item-text sidebar-link">
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
 </li>
@@ -414,32 +366,13 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On This Page</h2>
-   
-  <ul>
-  <li><a href="#the-many-faces-of-entropy" id="toc-the-many-faces-of-entropy" class="nav-link active" data-scroll-target="#the-many-faces-of-entropy"><span class="header-section-number">2.1</span> The many faces of entropy</a>
-  <ul class="collapse">
-  <li><a href="#information-shannon-entropy" id="toc-information-shannon-entropy" class="nav-link" data-scroll-target="#information-shannon-entropy"><span class="header-section-number">2.1.1</span> Information: Shannon entropy</a></li>
-  <li><a href="#heat-thermodynamic-entropy" id="toc-heat-thermodynamic-entropy" class="nav-link" data-scroll-target="#heat-thermodynamic-entropy"><span class="header-section-number">2.1.2</span> Heat: thermodynamic entropy</a></li>
-  <li><a href="#quantum-states-von-neumann-entropy" id="toc-quantum-states-von-neumann-entropy" class="nav-link" data-scroll-target="#quantum-states-von-neumann-entropy"><span class="header-section-number">2.1.3</span> Quantum states: von Neumann entropy</a></li>
-  <li><a href="#sec-entropy-renyi" id="toc-sec-entropy-renyi" class="nav-link" data-scroll-target="#sec-entropy-renyi"><span class="header-section-number">2.1.4</span> One knob, a family: Rényi and Tsallis</a></li>
-  <li><a href="#minds-psychological-entropy" id="toc-minds-psychological-entropy" class="nav-link" data-scroll-target="#minds-psychological-entropy"><span class="header-section-number">2.1.5</span> Minds: psychological entropy</a></li>
-  <li><a href="#one-form-many-readings" id="toc-one-form-many-readings" class="nav-link" data-scroll-target="#one-form-many-readings"><span class="header-section-number">2.1.6</span> One form, many readings</a></li>
-  </ul></li>
-  <li><a href="#sec-maxent-principle" id="toc-sec-maxent-principle" class="nav-link" data-scroll-target="#sec-maxent-principle"><span class="header-section-number">2.2</span> The maximum entropy principle</a></li>
-  <li><a href="#minimum-description-length-and-minimax-entropy" id="toc-minimum-description-length-and-minimax-entropy" class="nav-link" data-scroll-target="#minimum-description-length-and-minimax-entropy"><span class="header-section-number">2.3</span> Minimum description length and minimax entropy</a></li>
-  <li><a href="#why-it-matters-for-learning" id="toc-why-it-matters-for-learning" class="nav-link" data-scroll-target="#why-it-matters-for-learning"><span class="header-section-number">2.4</span> Why it matters for learning</a></li>
-  </ul>
-</nav>
-    </div>
+    
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/02-entropy.html">Part I — Foundations</a></li><li class="breadcrumb-item"><a href="../chapters/02-entropy.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Entropy and the Maximum Entropy Principle</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-entropy" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Entropy and the Maximum Entropy Principle</span></span></h1>
+<h1 class="title">Contents</h1>
 </div>
 
 
@@ -457,7 +390,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Last updated</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">August 22, 2026</p>
+      <p class="date-modified">August 23, 2026</p>
     </div>
   </div>
     
@@ -468,221 +401,116 @@ window.Quarto = {
 </header>
 
 
-<section id="the-many-faces-of-entropy" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="the-many-faces-of-entropy"><span class="header-section-number">2.1</span> The many faces of entropy</h2>
-<p>Entropy was invented three separate times — for heat engines in the 1860s, for quantum ensembles in the 1920s, and for telephone lines in the 1940s — and has been rediscovered many times since. The names, the units, and the motivating problems all differ, but each version measures the same thing: given what we have specified about a system, how much remains unspecified. This section walks through those notions before the rest of the book settles on one of them.</p>
-<section id="information-shannon-entropy" class="level3" data-number="2.1.1">
-<h3 data-number="2.1.1" class="anchored" data-anchor-id="information-shannon-entropy"><span class="header-section-number">2.1.1</span> Information: Shannon entropy</h3>
-<p>For a discrete random variable <span class="math inline">\(X\)</span> with probability mass function <span class="math inline">\(p(x)\)</span>, the <strong>Shannon entropy</strong> is</p>
-<p><span class="math display">\[
-H(p) = -\sum_{x} p(x) \log p(x),
-\]</span></p>
-<p>which quantifies the average uncertainty (in nats or bits) of <span class="math inline">\(X\)</span> <span class="citation" data-cites="shannon1948">(<a href="../references.html#ref-shannon1948" role="doc-biblioref">Shannon 1948</a>)</span>. Entropy is maximized by the uniform distribution, where it equals <span class="math inline">\(\log |\mathcal{X}|\)</span>, and minimized (equal to zero) by a deterministic one.</p>
-<p>This functional form is not an arbitrary choice. Shannon showed that three requirements — continuity in the probabilities, monotonicity in the number of equally likely outcomes, and consistency when outcomes are grouped — determine <span class="math inline">\(H\)</span> uniquely up to the base of the logarithm. It also carries a concrete operational meaning: <span class="math inline">\(H(p)\)</span> is the expected code length of an optimal lossless encoding of samples from <span class="math inline">\(p\)</span> — exactly, in the limit of coding long blocks, and to within one bit if each symbol must be coded on its own. Uncertainty and description length are one quantity seen from two sides, a duality that returns in <a href="07-minimax-entropy.html" class="quarto-xref"><span>Chapter 7</span></a>.</p>
-</section>
-<section id="heat-thermodynamic-entropy" class="level3" data-number="2.1.2">
-<h3 data-number="2.1.2" class="anchored" data-anchor-id="heat-thermodynamic-entropy"><span class="header-section-number">2.1.2</span> Heat: thermodynamic entropy</h3>
-<p>The original entropy is older and, on its face, unrelated to information. Studying the irreversibility of heat flow, Clausius defined a state function whose differential along a reversible path is</p>
-<p><span class="math display">\[
-dS = \frac{\delta Q_{\text{rev}}}{T},
-\]</span></p>
-<p>and named it from the Greek <em>τροπή</em>, transformation, deliberately shaping the word to rhyme with <em>energy</em> because the two quantities seemed to him so closely related <span class="citation" data-cites="clausius1865">(<a href="../references.html#ref-clausius1865" role="doc-biblioref">Clausius 1865</a>)</span>. That 1865 paper closes with the two sentences that became the standard statement of the laws of thermodynamics: the energy of the universe is constant, and its entropy tends towards a maximum.</p>
-<p>Boltzmann supplied the microscopic reading. A macrostate — a temperature, a pressure — is compatible with an enormous number <span class="math inline">\(W\)</span> of microstates, and entropy simply counts them <span class="citation" data-cites="boltzmann1877">(<a href="../references.html#ref-boltzmann1877" role="doc-biblioref">Boltzmann 1877</a>)</span>:</p>
-<p><span class="math display">\[
-S = k_B \log W .
-\]</span></p>
-<p>Gibbs then generalized the count to microstates that are not equally likely <span class="citation" data-cites="gibbs1902">(<a href="../references.html#ref-gibbs1902" role="doc-biblioref">Gibbs 1902</a>)</span>:</p>
-<p><span class="math display">\[
-S = -k_B \sum_i p_i \log p_i .
-\]</span></p>
-<p>The Gibbs expression and the Shannon expression are the same formula, separated only by the constant <span class="math inline">\(k_B\)</span> that carries the physical units. The coincidence is not accidental, and Jaynes turned it into the argument developed in <a href="#sec-maxent-principle" class="quarto-xref"><span>Section 2.2</span></a>: thermodynamic entropy is the Shannon entropy of our ignorance about the microstate, which makes equilibrium statistical mechanics a problem of inference rather than of mechanics <span class="citation" data-cites="jaynes1957information">(<a href="../references.html#ref-jaynes1957information" role="doc-biblioref">Jaynes 1957</a>)</span>.</p>
-</section>
-<section id="quantum-states-von-neumann-entropy" class="level3" data-number="2.1.3">
-<h3 data-number="2.1.3" class="anchored" data-anchor-id="quantum-states-von-neumann-entropy"><span class="header-section-number">2.1.3</span> Quantum states: von Neumann entropy</h3>
-<p>Quantum mechanics replaces a probability distribution with a density matrix <span class="math inline">\(\rho\)</span>, a positive semidefinite operator of unit trace. Von Neumann extended entropy to this setting in 1927, two decades before Shannon <span class="citation" data-cites="vonneumann1927">(<a href="../references.html#ref-vonneumann1927" role="doc-biblioref">Neumann 1927</a>)</span>:</p>
-<p><span class="math display">\[
-S(\rho) = -\operatorname{Tr}(\rho \log \rho).
-\]</span></p>
-<p>Written in the eigenbasis of <span class="math inline">\(\rho\)</span>, this reduces to the Shannon entropy of its eigenvalues, so the same functional form reappears with a different argument. It vanishes exactly for pure states, which are completely specified, and is maximal for the maximally mixed state.</p>
-<p>The quantum case does break the analogy in one instructive place. Classically, conditional entropy is never negative: learning <span class="math inline">\(Y\)</span> cannot leave us knowing more than everything about <span class="math inline">\(X\)</span>. Quantum mechanically it can be — the joint state may be more sharply specified than either of its parts. A negative value therefore certifies entanglement, though the implication runs one way only: entangled states with non-negative conditional entropy exist.</p>
-</section>
-<section id="sec-entropy-renyi" class="level3" data-number="2.1.4">
-<h3 data-number="2.1.4" class="anchored" data-anchor-id="sec-entropy-renyi"><span class="header-section-number">2.1.4</span> One knob, a family: Rényi and Tsallis</h3>
-<p>Shannon’s requirements can be relaxed, and each relaxation produces a one-parameter family. Rényi kept additivity over independent systems but dropped the requirement that entropy be a linear average of <span class="math inline">\(-\log p\)</span> <span class="citation" data-cites="renyi1961">(<a href="../references.html#ref-renyi1961" role="doc-biblioref">Rényi 1961</a>)</span>:</p>
-<p><span class="math display">\[
-H_\alpha(p) = \frac{1}{1-\alpha} \log \sum_x p(x)^\alpha ,
-\qquad \alpha &gt; 0, \; \alpha \neq 1 .
-\]</span></p>
-<p>The order <span class="math inline">\(\alpha\)</span> is a knob controlling how much weight rare outcomes receive. The limit <span class="math inline">\(\alpha \to 1\)</span> recovers Shannon entropy; <span class="math inline">\(\alpha = 0\)</span> gives the Hartley entropy <span class="math inline">\(\log|\operatorname{supp} p|\)</span>, which counts possibilities and ignores their probabilities; <span class="math inline">\(\alpha = 2\)</span> gives the <strong>collision entropy</strong></p>
-<p><span class="math display">\[
-H_2(p) = -\log \sum_x p(x)^2 ,
-\]</span></p>
-<p>whose argument <span class="math inline">\(\sum_x p(x)^2\)</span> is the probability that two independent draws coincide — a quantity that returns as a training objective in <a href="06-min-entropy.html#sec-min-what-optimised" class="quarto-xref"><span>Section 6.5</span></a>; and <span class="math inline">\(\alpha \to \infty\)</span> gives the <strong>min-entropy</strong></p>
-<p><span class="math display">\[
-H_\infty(p) = -\log \max_x p(x),
-\]</span></p>
-<p>the worst-case measure used in cryptography, where what matters is not average uncertainty but the chance that an adversary guesses right on the first try.</p>
-<p>A warning about that last name, since both readings appear later in this book. The min-entropy <span class="math inline">\(H_\infty\)</span> is a <em>specific functional</em>, the most pessimistic member of the Rényi family. It should not be confused with the <strong>minimum-entropy principle</strong> of <a href="06-min-entropy.html" class="quarto-xref"><span>Chapter 6</span></a>, which is not a functional at all but a class of learning <em>objectives</em> that reduce the entropy — usually the Shannon or the collision entropy — of a model’s predictive distribution. The two are unrelated, and the shared prefix is an accident of terminology in two literatures that developed apart.</p>
-<p>Tsallis relaxed the other requirement, giving up additivity itself <span class="citation" data-cites="tsallis1988">(<a href="../references.html#ref-tsallis1988" role="doc-biblioref">Tsallis 1988</a>)</span>:</p>
-<p><span class="math display">\[
-S_q(p) = \frac{1}{q-1}\Big(1 - \sum_x p(x)^q\Big).
-\]</span></p>
-<p>Here <span class="math inline">\(q \to 1\)</span> again recovers the Boltzmann–Gibbs form, but for <span class="math inline">\(q \neq 1\)</span> two independent systems combine as <span class="math inline">\(S_q(A,B) = S_q(A) + S_q(B) + (1-q)\,S_q(A)\,S_q(B)\)</span>. This <em>non-extensivity</em> was introduced to describe systems with long-range interactions and multifractal structure, where the usual assumption that entropy scales with system size fails.</p>
-<p>Both families are useful in their own domains, and both make the same point by contrast: Shannon entropy is the unique member satisfying the full set of Shannon–Khinchin axioms, including the chain rule that makes conditional entropy and mutual information well behaved. That is why it is the form used throughout the remainder of this book.</p>
-</section>
-<section id="minds-psychological-entropy" class="level3" data-number="2.1.5">
-<h3 data-number="2.1.5" class="anchored" data-anchor-id="minds-psychological-entropy"><span class="header-section-number">2.1.5</span> Minds: psychological entropy</h3>
-<p>The most surprising reappearance is in psychology. Hirsh, Mar, and Peterson propose the <strong>entropy model of uncertainty</strong>, which applies Shannon’s formula directly to the human information system <span class="citation" data-cites="hirsh2012psychological">(<a href="../references.html#ref-hirsh2012psychological" role="doc-biblioref">Hirsh et al. 2012</a>)</span>. At any moment an organism faces a set of competing <em>affordances</em>: possible interpretations of the sensory input, and possible actions to take. The model treats these as a subjectively weighted probability distribution and defines <strong>psychological entropy</strong> as its Shannon entropy.</p>
-<p>The reading is unusually literal. A familiar situation places nearly all the weight on one dominant affordance, giving low entropy and a fast habitual response. An unfamiliar or ambiguous one spreads the weight across many competing frames, giving high entropy and sustained neural competition — which, the authors argue, is what anxiety <em>is</em> subjectively, with anterior cingulate activity and noradrenaline release as its physiological correlates.</p>
-<p>Two features of the account matter for what follows. First, goals act as constraints: adopting a goal reweights the distribution towards the actions that serve it, and thereby lowers entropy. This is structurally the same move as imposing moment constraints in <a href="#sec-maxent-principle" class="quarto-xref"><span>Section 2.2</span></a>, since a constraint is whatever narrows the space of live possibilities. Second, the model makes entropy reduction a <em>drive</em> rather than a calculation. That idea runs from Schrödinger’s argument that organisms persist by exporting entropy to their environment <span class="citation" data-cites="schrodinger1944">(<a href="../references.html#ref-schrodinger1944" role="doc-biblioref">Schrödinger 1944</a>)</span> through to the free-energy principle <span class="citation" data-cites="friston2010free">(<a href="../references.html#ref-friston2010free" role="doc-biblioref">Friston 2010</a>)</span>, and it is the biological precedent for the minimum-entropy learning objectives of <a href="06-min-entropy.html" class="quarto-xref"><span>Chapter 6</span></a>.</p>
-</section>
-<section id="one-form-many-readings" class="level3" data-number="2.1.6">
-<h3 data-number="2.1.6" class="anchored" data-anchor-id="one-form-many-readings"><span class="header-section-number">2.1.6</span> One form, many readings</h3>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Notion</th>
-<th>Probabilities over</th>
-<th>Definition</th>
-<th>Origin</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Thermodynamic</td>
-<td>no explicit distribution</td>
-<td><span class="math inline">\(dS = \delta Q_{\text{rev}} / T\)</span></td>
-<td>Clausius, 1865</td>
-</tr>
-<tr class="even">
-<td>Statistical</td>
-<td>microstates, equally likely</td>
-<td><span class="math inline">\(k_B \log W\)</span></td>
-<td>Boltzmann, 1877</td>
-</tr>
-<tr class="odd">
-<td>Gibbs</td>
-<td>microstates, unequally likely</td>
-<td><span class="math inline">\(-k_B \sum_i p_i \log p_i\)</span></td>
-<td>Gibbs, 1902</td>
-</tr>
-<tr class="even">
-<td>Information</td>
-<td>a random variable or message source</td>
-<td><span class="math inline">\(-\sum_x p(x) \log p(x)\)</span></td>
-<td>Shannon, 1948</td>
-</tr>
-<tr class="odd">
-<td>Quantum</td>
-<td>eigenvalues of a density matrix</td>
-<td><span class="math inline">\(-\operatorname{Tr}(\rho \log \rho)\)</span></td>
-<td>von Neumann, 1927</td>
-</tr>
-<tr class="even">
-<td>Rényi</td>
-<td>any distribution, at order <span class="math inline">\(\alpha\)</span></td>
-<td><span class="math inline">\(\frac{1}{1-\alpha} \log \sum_x p(x)^\alpha\)</span></td>
-<td>Rényi, 1961</td>
-</tr>
-<tr class="odd">
-<td>Tsallis</td>
-<td>non-extensive systems, at order <span class="math inline">\(q\)</span></td>
-<td><span class="math inline">\(\frac{1}{q-1}(1 - \sum_x p(x)^q)\)</span></td>
-<td>Tsallis, 1988</td>
-</tr>
-<tr class="even">
-<td>Psychological</td>
-<td>competing perceptions and actions</td>
-<td><span class="math inline">\(-\sum_x p(x) \log p(x)\)</span></td>
-<td>Hirsh et al., 2012</td>
-</tr>
-</tbody>
-</table>
-<p>Two observations follow. The first is mathematical: almost every row is the same functional <span class="math inline">\(-\sum p \log p\)</span>, differing only in what the probabilities range over and what constant multiplies the result. Entropy is less a family of analogies than a single quantity applied to different objects.</p>
-<p>The second is interpretive, and it is the one that does work in this book. The same number reads as dispersal of energy to a physicist, as expected code length to an engineer, and as felt uncertainty to a psychologist. Those readings are what make the two principles that follow feel necessary rather than arbitrary: maximizing entropy is being honest about what we have not specified, and minimizing it is committing to what we have.</p>
-</section>
-</section>
-<section id="sec-maxent-principle" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="sec-maxent-principle"><span class="header-section-number">2.2</span> The maximum entropy principle</h2>
-<p>Given constraints — typically moment constraints of the form <span class="math inline">\(\mathbb{E}_p[f_k(X)] = \mu_k\)</span> — the <strong>maximum entropy</strong> distribution solves</p>
-<p><span class="math display">\[
-\max_{p}\; H(p)
-\quad \text{s.t.} \quad
-\sum_x p(x) = 1,\;\; \mathbb{E}_p[f_k(X)] = \mu_k .
-\]</span></p>
-<p>Its solution is the <strong>Gibbs / Boltzmann</strong> distribution</p>
-<p><span class="math display">\[
-p(x) = \frac{1}{Z(\boldsymbol{\lambda})}\,
-\exp\!\Big(\textstyle\sum_k \lambda_k f_k(x)\Big),
-\]</span></p>
-<p>where <span class="math inline">\(\boldsymbol{\lambda}\)</span> are Lagrange multipliers and <span class="math inline">\(Z\)</span> is the partition function. This is the least-biased distribution consistent with what we know <span class="citation" data-cites="jaynes1957information">(<a href="../references.html#ref-jaynes1957information" role="doc-biblioref">Jaynes 1957</a>)</span>.</p>
-<p>The single most important instance of this framework is the one in which the constrained feature is the energy of a physical system. That case, worked out in <a href="03-free-energy.html" class="quarto-xref"><span>Chapter 3</span></a>, is what turns the multipliers above into a temperature and connects the whole construction to thermodynamics.</p>
-</section>
-<section id="minimum-description-length-and-minimax-entropy" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="minimum-description-length-and-minimax-entropy"><span class="header-section-number">2.3</span> Minimum description length and minimax entropy</h2>
-<p>The maximum-entropy principle can be <em>derived</em> rather than postulated. Under the <strong>minimum description length</strong> (MDL) view <span class="citation" data-cites="grunwald2007mdl">(<a href="../references.html#ref-grunwald2007mdl" role="doc-biblioref">Grünwald 2007</a>)</span>, a model <span class="math inline">\(P\)</span> encodes each state with a code word of length <span class="math inline">\(-\log P(x)\)</span>, and its description length is the expected code length across all datasets consistent with the measured features. Among models matching those features, description length is minimized by the maximum-entropy model <span class="citation" data-cites="feder1986maximum">(<a href="../references.html#ref-feder1986maximum" role="doc-biblioref">Feder 1986</a>)</span>.</p>
-<p>MDL also poses a question that maximum entropy alone cannot answer: which features should be measured in the first place? For maximum-entropy models the description length coincides with the model’s own entropy,</p>
-<p><span class="math display">\[
-L(P_F) = S(P_F),
-\]</span></p>
-<p>so the best feature set <span class="math inline">\(F\)</span> is the one whose maximum-entropy model has the <em>smallest</em> entropy. This is the <strong>minimax entropy</strong> principle, developed in <a href="07-minimax-entropy.html" class="quarto-xref"><span>Chapter 7</span></a>.</p>
-</section>
-<section id="why-it-matters-for-learning" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="why-it-matters-for-learning"><span class="header-section-number">2.4</span> Why it matters for learning</h2>
-<p>The maximum-entropy principle explains why exponential families are ubiquitous, grounds the Boltzmann machine in statistical physics, and — as developed in <span class="citation" data-cites="bian2022energybased">Bian et al. (<a href="../references.html#ref-bian2022energybased" role="doc-biblioref">2022</a>)</span> — provides a principled basis for defining valuations in machine learning. The next chapter supplies the missing half of the picture: what happens when entropy is traded off against energy, and what the exchange rate between them turns out to be.</p>
+<div class="book-contents">
+<ul>
+<li><a href="./01-intro.html">1. Introduction</a>
+<ul>
+<li><a href="./01-intro.html#why-entropy">1.1 Why entropy?</a></li>
+<li><a href="./01-intro.html#roadmap">1.2 Roadmap</a></li>
+</ul></li>
+</ul>
+<p><strong>Part I — Foundations</strong></p>
+<ul>
+<li><a href="./chapters/02-entropy.html">2. Entropy and the Maximum Entropy Principle</a>
+<ul>
+<li><a href="./chapters/02-entropy.html#the-many-faces-of-entropy">2.1 The many faces of entropy</a>
+<ul>
+<li><a href="./chapters/02-entropy.html#information-shannon-entropy">2.1.1 Information: Shannon entropy</a></li>
+<li><a href="./chapters/02-entropy.html#heat-thermodynamic-entropy">2.1.2 Heat: thermodynamic entropy</a></li>
+<li><a href="./chapters/02-entropy.html#quantum-states-von-neumann-entropy">2.1.3 Quantum states: von Neumann entropy</a></li>
+<li><a href="./chapters/02-entropy.html#sec-entropy-renyi">2.1.4 One knob, a family: Rényi and Tsallis</a></li>
+<li><a href="./chapters/02-entropy.html#minds-psychological-entropy">2.1.5 Minds: psychological entropy</a></li>
+<li><a href="./chapters/02-entropy.html#one-form-many-readings">2.1.6 One form, many readings</a></li>
+</ul></li>
+<li><a href="./chapters/02-entropy.html#sec-maxent-principle">2.2 The maximum entropy principle</a></li>
+<li><a href="./chapters/02-entropy.html#minimum-description-length-and-minimax-entropy">2.3 Minimum description length and minimax entropy</a></li>
+<li><a href="./chapters/02-entropy.html#why-it-matters-for-learning">2.4 Why it matters for learning</a></li>
+</ul></li>
+<li><a href="./chapters/03-free-energy.html">3. Energy, Entropy, and Free Energy</a>
+<ul>
+<li><a href="./chapters/03-free-energy.html#maximum-entropy-with-an-energy-constraint">3.1 Maximum entropy with an energy constraint</a></li>
+<li><a href="./chapters/03-free-energy.html#free-energy">3.2 Free energy</a></li>
+<li><a href="./chapters/03-free-energy.html#what-entropy-buys-you">3.3 What entropy buys you</a>
+<ul>
+<li><a href="./chapters/03-free-energy.html#isothermal-expansion-a-process-with-no-energy-change">3.3.1 Isothermal expansion</a></li>
+<li><a href="./chapters/03-free-energy.html#the-rubber-band-a-force-made-of-entropy">3.3.2 The rubber band</a></li>
+<li><a href="./chapters/03-free-energy.html#melting-where-the-competition-changes-hands">3.3.3 Melting</a></li>
+</ul></li>
+<li><a href="./chapters/03-free-energy.html#from-spins-to-networks">3.4 From spins to networks</a></li>
+<li><a href="./chapters/03-free-energy.html#how-this-reached-ai">3.5 How this reached AI</a></li>
+<li><a href="./chapters/03-free-energy.html#the-temperature-dial">3.6 The temperature dial</a></li>
+<li><a href="./chapters/03-free-energy.html#why-it-matters-for-learning">3.7 Why it matters for learning</a></li>
+</ul></li>
+<li><a href="./chapters/04-energy-models.html">4. Energy-Based Models</a>
+<ul>
+<li><a href="./chapters/04-energy-models.html#sec-ebm-inference">4.1 The energy view of inference</a></li>
+<li><a href="./chapters/04-energy-models.html#sec-ebm-why">4.2 Why learn an energy at all?</a></li>
+<li><a href="./chapters/04-energy-models.html#sec-ebm-contrastive">4.3 Learning is shaping a landscape</a></li>
+<li><a href="./chapters/04-energy-models.html#sec-ebm-mcmc">4.4 Strategy one: sample the pull-up</a></li>
+<li><a href="./chapters/04-energy-models.html#sec-ebm-score-matching">4.5 Strategy two: match slopes, not heights</a></li>
+<li><a href="./chapters/04-energy-models.html#sec-ebm-nce">4.6 Strategy three: learn by telling things apart</a></li>
+<li><a href="./chapters/04-energy-models.html#sec-ebm-family">4.7 One family, three estimators</a></li>
+<li><a href="./chapters/04-energy-models.html#sec-ebm-latent">4.8 Latent variables, and the free energy again</a></li>
+<li><a href="./chapters/04-energy-models.html#sec-ebm-modern">4.9 The modern landscape</a></li>
+<li><a href="./chapters/04-energy-models.html#sec-ebm-book">4.10 Where this sits in the book</a></li>
+<li><a href="./chapters/04-energy-models.html#sec-ebm-takeaway">4.11 Takeaway</a></li>
+</ul></li>
+</ul>
+<p><strong>Part II — Methods</strong></p>
+<ul>
+<li><a href="./chapters/05-max-entropy.html">5. Maximum-Entropy Learning</a>
+<ul>
+<li><a href="./chapters/05-max-entropy.html#sec-max-pgm">5.1 Graphical models as an explanatory family</a></li>
+<li><a href="./chapters/05-max-entropy.html#sec-max-coop-games">5.2 A worked example: energy-based cooperative games</a>
+<ul>
+<li><a href="./chapters/05-max-entropy.html#why-this-is-useful">5.2.1 Why this is useful</a></li>
+</ul></li>
+<li><a href="./chapters/05-max-entropy.html#takeaway">5.3 Takeaway</a></li>
+</ul></li>
+<li><a href="./chapters/06-min-entropy.html">6. Minimum-Entropy Learning</a>
+<ul>
+<li><a href="./chapters/06-min-entropy.html#sec-min-two-regimes">6.1 Two regimes, and a warning about the name</a></li>
+<li><a href="./chapters/06-min-entropy.html#sec-min-semantic">6.2 From word-level to meaning-level uncertainty</a></li>
+<li><a href="./chapters/06-min-entropy.html#sec-min-history">6.3 Entropy minimisation as an objective: a short history</a></li>
+<li><a href="./chapters/06-min-entropy.html#sec-min-empo">6.4 EMPO: reward agreement, not correctness</a></li>
+<li><a href="./chapters/06-min-entropy.html#sec-min-what-optimised">6.5 What “reward agreement” actually optimises</a></li>
+<li><a href="./chapters/06-min-entropy.html#sec-min-collapse">6.6 The free-energy view, and why entropy collapses</a></li>
+<li><a href="./chapters/06-min-entropy.html#sec-min-ceiling">6.7 The information ceiling</a></li>
+<li><a href="./chapters/06-min-entropy.html#sec-min-schrodinger">6.8 Schrödinger, read carefully</a></li>
+<li><a href="./chapters/06-min-entropy.html#sec-min-prigogine">6.9 Prigogine, and an analogy that does not hold</a></li>
+<li><a href="./chapters/06-min-entropy.html#sec-min-name">6.10 So why call it minimum-entropy learning?</a></li>
+<li><a href="./chapters/06-min-entropy.html#sec-min-honest">6.11 When agreement means truth, and when it does not</a></li>
+<li><a href="./chapters/06-min-entropy.html#sec-min-takeaway">6.12 Takeaway</a></li>
+</ul></li>
+<li><a href="./chapters/07-minimax-entropy.html">7. Minimax-Entropy Learning</a>
+<ul>
+<li><a href="./chapters/07-minimax-entropy.html#which-features-should-a-model-include">7.1 Which features should a model include?</a></li>
+<li><a href="./chapters/07-minimax-entropy.html#the-minimax-entropy-principle">7.2 The minimax entropy principle</a></li>
+<li><a href="./chapters/07-minimax-entropy.html#three-equivalent-views">7.3 Three equivalent views</a></li>
+<li><a href="./chapters/07-minimax-entropy.html#solving-it">7.4 Solving it</a></li>
+<li><a href="./chapters/07-minimax-entropy.html#takeaway">7.5 Takeaway</a></li>
+</ul></li>
+<li><a href="./chapters/08-energy-reasoning.html">8. Energy-Based Reasoning, Guidance, and Refinement</a>
+<ul>
+<li><a href="./chapters/08-energy-reasoning.html#guidance">8.1 Guidance</a></li>
+<li><a href="./chapters/08-energy-reasoning.html#refinement">8.2 Refinement</a></li>
+<li><a href="./chapters/08-energy-reasoning.html#reasoning-as-energy-minimization">8.3 Reasoning as energy minimization</a></li>
+</ul></li>
+</ul>
+<p><strong>Part III — Applications</strong></p>
+<ul>
+<li><a href="./chapters/09-ai-for-science.html">9. Entropy-Based Learning for Science</a>
+<ul>
+<li><a href="./chapters/09-ai-for-science.html#two-synergistic-directions">9.1 Two synergistic directions</a></li>
+<li><a href="./chapters/09-ai-for-science.html#molecular-foundation-models">9.2 Molecular foundation models</a></li>
+<li><a href="./chapters/09-ai-for-science.html#outlook">9.3 Outlook</a></li>
+</ul></li>
+<li><a href="./summary.html">10. Summary</a></li>
+<li><a href="./references.html">References</a></li>
+</ul>
+</div>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
-<div id="ref-bian2022energybased" class="csl-entry" role="listitem">
-Bian, Yatao, Yu Rong, Tingyang Xu, Jiaxiang Wu, Andreas Krause, and Junzhou Huang. 2022. <span>“Energy-Based Learning for Cooperative Games, with Applications to Valuation Problems in Machine Learning.”</span> <em>International Conference on Learning Representations (ICLR)</em>. <a href="https://openreview.net/forum?id=xLfAgCroImw">https://openreview.net/forum?id=xLfAgCroImw</a>.
-</div>
-<div id="ref-boltzmann1877" class="csl-entry" role="listitem">
-Boltzmann, Ludwig. 1877. <span>“Über Die Beziehung Zwischen Dem Zweiten Hauptsatze Der Mechanischen Wärmetheorie Und Der Wahrscheinlichkeitsrechnung Respektive Den Sätzen Über Das Wärmegleichgewicht.”</span> <em>Sitzungsberichte Der Kaiserlichen Akademie Der Wissenschaften in Wien</em> 76: 373–435.
-</div>
-<div id="ref-clausius1865" class="csl-entry" role="listitem">
-Clausius, Rudolf. 1865. <span>“Über Verschiedene Für Die Anwendung Bequeme Formen Der Hauptgleichungen Der Mechanischen Wärmetheorie.”</span> <em>Annalen Der Physik Und Chemie</em> 125: 353–400.
-</div>
-<div id="ref-feder1986maximum" class="csl-entry" role="listitem">
-Feder, M. 1986. <span>“Maximum Entropy as a Special Case of the Minimum Description Length Criterion.”</span> <em>IEEE Transactions on Information Theory</em> 32: 847–49.
-</div>
-<div id="ref-friston2010free" class="csl-entry" role="listitem">
-Friston, Karl. 2010. <span>“The Free-Energy Principle: A Unified Brain Theory?”</span> <em>Nature Reviews Neuroscience</em> 11 (2): 127–38.
-</div>
-<div id="ref-gibbs1902" class="csl-entry" role="listitem">
-Gibbs, Josiah Willard. 1902. <em>Elementary Principles in Statistical Mechanics</em>. Charles Scribner’s Sons.
-</div>
-<div id="ref-grunwald2007mdl" class="csl-entry" role="listitem">
-Grünwald, Peter D. 2007. <em>The Minimum Description Length Principle</em>. MIT Press.
-</div>
-<div id="ref-hirsh2012psychological" class="csl-entry" role="listitem">
-Hirsh, Jacob B., Raymond A. Mar, and Jordan B. Peterson. 2012. <span>“Psychological Entropy: A Framework for Understanding Uncertainty-Related Anxiety.”</span> <em>Psychological Review</em> 119 (2): 304–20. <a href="https://doi.org/10.1037/a0026767">https://doi.org/10.1037/a0026767</a>.
-</div>
-<div id="ref-jaynes1957information" class="csl-entry" role="listitem">
-Jaynes, Edwin T. 1957. <span>“Information Theory and Statistical Mechanics.”</span> <em>Physical Review</em> 106: 620.
-</div>
-<div id="ref-vonneumann1927" class="csl-entry" role="listitem">
-Neumann, John von. 1927. <span>“Thermodynamik Quantenmechanischer Gesamtheiten.”</span> <em>Nachrichten von Der Gesellschaft Der Wissenschaften Zu Göttingen, Mathematisch-Physikalische Klasse</em> 1927: 273–91.
-</div>
-<div id="ref-renyi1961" class="csl-entry" role="listitem">
-Rényi, Alfréd. 1961. <span>“On Measures of Entropy and Information.”</span> <em>Proceedings of the Fourth Berkeley Symposium on Mathematical Statistics and Probability, Volume 1: Contributions to the Theory of Statistics</em>, 547–61.
-</div>
-<div id="ref-schrodinger1944" class="csl-entry" role="listitem">
-Schrödinger, Erwin. 1944. <em>What Is Life? The Physical Aspect of the Living Cell</em>. Cambridge University Press.
-</div>
-<div id="ref-shannon1948" class="csl-entry" role="listitem">
-Shannon, Claude E. 1948. <span>“A Mathematical Theory of Communication.”</span> <em>Bell System Technical Journal</em> 27 (3): 379–423.
-</div>
-<div id="ref-tsallis1988" class="csl-entry" role="listitem">
-Tsallis, Constantino. 1988. <span>“Possible Generalization of Boltzmann–Gibbs Statistics.”</span> <em>Journal of Statistical Physics</em> 52 (1–2): 479–87.
-</div>
-</div>
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -1087,13 +915,13 @@ Tsallis, Constantino. 1988. <span>“Possible Generalization of Boltzmann–Gibb
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../01-intro.html" class="pagination-link" aria-label="Introduction">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span>
+      <a href="./index.html" class="pagination-link" aria-label="Preface">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Preface</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../chapters/03-free-energy.html" class="pagination-link" aria-label="Energy, Entropy, and Free Energy">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Energy, Entropy, and Free Energy</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./01-intro.html" class="pagination-link" aria-label="Introduction">
+        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
