@@ -6,21 +6,41 @@ date-modified: last-modified
 # Maximum-Entropy Learning {#sec-max-entropy}
 
 ::: {.callout-note title="Scope and status of this chapter"}
-This chapter is an early scaffold, and it is worth being noted about what it
-will eventually hold. *Maximum-entropy learning* is where the energy-based
+This chapter is an early scaffold; it is worth saying what it will
+eventually hold. *Maximum-entropy learning* is where the energy-based
 viewpoint of @sec-energy-models meets the maximum-entropy principle of
 @sec-entropy: among all models consistent with what we know, prefer the
-maximally noncommittal one, which is the Gibbs distribution
-$p(x) \propto e^{-E(x)}$, and then *learn* its energy. Read that broadly and
-it is a large tent. A complete treatment should span at least:
+maximally noncommittal one. When what we know is a set of expectations
+$\mathbb{E}_p[f_k] = \mu_k$, that distribution is the Gibbs form
+$p(x) \propto \exp(-E(x))$ **with the energy confined to the span of the
+constrained features**, $E = -\sum_k \lambda_k f_k$ — the content of the
+theorem is the confinement, not the exponential shape, since any strictly
+positive $p$ can trivially be written as $e^{-E}$ with $E := -\log p$.
+Maximum-entropy *learning* is what happens when that confinement is
+relaxed and the energy is learned instead of derived; the hinge between
+the two is the maximum-entropy / maximum-likelihood duality (@sec-max-pgm).
+Read that broadly and it is a large tent. A complete treatment should span
+at least:
 
 - **Classical maximum-entropy models** — the Jaynes programme of @sec-entropy
   [@jaynes1957information], exponential families, and Gibbs distributions as
   the least-committal fit to moment constraints.
-- **Maximum-entropy reinforcement learning** — policies of the form
-  $\pi(a \mid s) \propto e^{Q(s,a)/\tau}$ that maximize reward *plus* entropy,
-  from maximum-entropy inverse RL [@ziebart2008maxent] to energy-based
-  policies and soft actor-critic [@haarnoja2017energy; @haarnoja2018sac].
+- **Probabilistic graphical models** — Markov random fields and Bayesian
+  networks. This is a classical field in its own right, still central after
+  several decades [@pearl1988probabilistic; @koller2009pgm;
+  @wainwright2008graphical]. This book reads it as an *explanatory family*:
+  a graph is a hypothesis about which independencies the joint must satisfy.
+  The identification with classical maximum entropy is tight for undirected
+  models and only partial for directed ones; that distinction is recorded
+  in @sec-max-pgm, not asserted as community consensus.
+- **Maximum-entropy reinforcement learning** — first a distribution over
+  trajectories $p(\tau) \propto e^{R(\tau)}$ that matches demonstrated
+  feature counts and nothing else [@ziebart2008maxent] (exactly so for
+  deterministic dynamics; with stochastic transitions Ziebart et al. carry
+  an explicit transition factor and an approximation assumption, and
+  *maximum causal entropy* is the principled repair), then energy-based
+  softmax policies $\pi(a \mid s) \propto e^{Q(s,a)/\tau}$ and soft
+  actor-critic [@haarnoja2017energy; @haarnoja2018sac].
 - **Energy-based guidance and refinement** — the currently active,
   inference-time face of the same idea, where a (possibly composed) energy
   steers or polishes a generative process. This book gives it its own home in
@@ -28,15 +48,181 @@ it is a large tent. A complete treatment should span at least:
   guidance is descent on an energy and refinement is annealed sampling from a
   Gibbs distribution (@sec-free-energy).
 - **Energy-based cooperative games** — our own line of work, recasting
-  valuation through a maximum-entropy lens. This is the one strand written out
-  below, as a worked example; it will be expanded in a later revision.
+  valuation through a maximum-entropy lens. This is the one strand written
+  out in full below, as a worked example; it will be expanded in a later
+  revision.
 
-The sections that follow develop only the last of these. The others are
-placeholders naming the intended territory, so that a reader knows what is
-missing and where the neighbouring chapters already cover part of it.
+@sec-max-pgm records where graphical models sit relative to the
+maximum-entropy programme, and what is and is not licensed by that
+identification; it is not a treatment of the field itself, which is a book
+of its own. The other fully worked-out strand below is the last item.
 :::
 
+## Graphical models as an explanatory family {#sec-max-pgm}
+
+Probabilistic graphical models (PGMs) organize a joint $p(x)$ by a graph
+that *encodes* a set of conditional independencies
+[@pearl1988probabilistic; @koller2009pgm]. The encoding is not the same
+in the two standard realizations. On an undirected graph, a missing edge
+is pairwise independence given all other variables (and, when $p$ is
+strictly positive, the pairwise, local, and global Markov properties
+coincide). On a directed acyclic graph the criterion is *d-separation*. A
+missing arrow still carries an independence — the local Markov property
+says each variable is independent of its non-descendants given its
+parents — but not the *same* independence as a missing undirected edge:
+conditioning on all the remaining variables can *open* a path through a
+collider, so the MRF's pairwise reading has no directed analogue
+[@pearl1988probabilistic]. The field is older than the modern
+energy-based revival of @sec-energy-models, larger than this chapter,
+and still the working language for structured uncertainty in statistics
+and in much of classical machine learning — vision, speech, computational
+biology, and expert systems among them.
+
+An **undirected** model, or Markov random field (MRF), scores
+*compatibilities*. On a finite graph $G$, a strictly positive
+distribution is Markov with respect to $G$ if and only if it is a Gibbs
+distribution that factors over the cliques of $G$ (Hammersley–Clifford;
+the published proof usually cited is @besag1974spatial). In energy
+language that is already the definition of @sec-energy-models, with the
+extra discipline that $E$ is a sum of local terms:
+
+$$
+p(x)
+\;=\;
+\frac{1}{Z}\,
+\exp\!\Bigl(-\sum_{C \in \mathrm{cliques}(G)} E_C(x_C)\Bigr).
+$$
+
+(The sum may equally be taken over maximal cliques: smaller clique terms
+can be absorbed.) The Gibbs $\Rightarrow$ Markov direction is elementary
+and needs no positivity; it is Markov $\Rightarrow$ Gibbs that does.
+Without it the implication fails: Moussouris' four-cycle example is a
+distribution that is Markov with respect to $G$ but admits no Gibbs
+factorization over the cliques of $G$ [@moussouris1974gibbs].
+
+A **directed** model, or Bayesian network, tells a *generative* story. If
+$\mathrm{pa}_i$ are the parents of coordinate $i$ in a directed acyclic
+graph,
+
+$$
+p(x)
+\;=\;
+\prod_i p\bigl(x_i \mid \mathrm{pa}_i\bigr)
+$$ {#eq-bn-factor}
+
+[@pearl1988probabilistic]. The arrows are often read as explanation or
+cause; the undirected edges of an MRF are not. Pearl's own contrast is
+that a Bayes net is a knowledge base of directed influences, while a Markov
+network is a system of symmetric associations. That reading is a stretch
+beyond what the joint distribution alone licenses: from observational data
+a DAG is identifiable only up to its **Markov equivalence class** — every
+DAG with the same skeleton and the same v-structures — so "the graph is
+the explanation" should be heard as a claim about which independencies the
+graph asserts, not about which arrow points which way.
+
+This book treats the pair as an **explanatory family**, in a local sense
+that is not a standard name in the literature. The graph is the
+explanation: it says which independencies the joint is required to
+satisfy, and the
+factorization is what makes the model intelligible rather than a mere
+scoring rule. That reading is closest to Pearl's directed case. It is more
+of a stretch for MRFs, whose native language is compatibility rather than
+cause. Both, however, explain the joint by a sparse independence
+hypothesis, and that is the sense in which they belong together here.
+
+**How much of this is classical maximum entropy?** Enough to be worth
+saying, not enough to be a slogan. The maximum-entropy distribution of
+@sec-maxent-principle that matches prescribed expectations of
+clique-supported features is an exponential-family MRF: the Lagrange
+multipliers are the feature weights, and the solution is the Gibbs form
+above (with $E_C = -\sum_k \lambda_k f_k$ over the features supported on
+$C$; the sign is the usual energy convention)
+[@jaynes1957information; @dellapietra1997inducing; @wainwright2008graphical].
+On a finite discrete state space every strictly positive MRF arises this
+way, because the clique-configuration indicators are a sufficient
+statistic. The modern synthesis of Wainwright and Jordan writes
+undirected graphical models, exponential families, and entropy duality
+as one subject. Feature induction for random fields
+[@dellapietra1997inducing] and the maximum-entropy models of classical
+NLP [@berger1996maxent] are the same *exponential-family* construction;
+they are MRFs only when the features have local graphical support —
+Della Pietra, Della Pietra, and Lafferty are explicit that their fields
+may be non-Markovian. Conditional random fields [@lafferty2001crf] take
+the construction over to $p(y \mid x)$ and became, for a decade, the
+default of structured prediction. None of that is controversial.
+
+The duality itself has a real regularity condition, not just a name: the
+program $\max_p H(p)$ subject to $\mathbb{E}_p[f] = \mu$ is dual to
+maximum likelihood in the exponential family exactly when $\mu$ sits in
+the *interior* of the marginal polytope; on the boundary the MLE fails to
+exist, and the maximum-entropy optimum is attained only in the closure of
+the exponential family [@wainwright2008graphical, §3.4].
+
+What is *not* settled — and should not be written as if it were — is the
+claim that "PGM *is* classical maximum entropy." Three qualifications
+matter.
+
+1. The PGM literature organizes itself around *representation, inference,
+   and learning*, not around Jaynes. Standard treatments
+   [@pearl1988probabilistic; @koller2009pgm] may discuss log-linear
+   Markov networks, whose maximum-likelihood dual *is* a maximum-entropy
+   problem, without taking that dual as the field's founding slogan. The
+   maxent identification is a precise reading of the exponential-family
+   parameterization, not the community's self-description.
+2. The tight theorem is undirected, finite, and strictly positive.
+   Directed models are a different organizing principle: @eq-bn-factor is
+   not a Jaynes problem. A Bayes net can be *moralized* into an MRF on
+   the graph obtained by marrying co-parents and dropping directions; the
+   resulting undirected model is an **I-map** (every independence it
+   asserts by missing edges does hold in $p$), but it need not be a
+   *perfect* map — moralization can lose independencies that the DAG had
+   (v-structures are the usual example, since marrying the parents removes
+   exactly the edge whose absence encoded that independence). The rewriting
+   $E(x) = -\sum_i \log p(x_i \mid \mathrm{pa}_i)$ is an energy in the
+   sense of @sec-energy-models, and in this case $Z = 1$ already, so the
+   network sits inside the energy-based tent as a *normalized* model. That
+   does not make it a maximum-entropy model, and the precise reason is the
+   dimensional cousin of the loss of independencies above: a Jaynes
+   problem with *linear* constraints has a solution confined to a
+   *linear* exponential family. Fully observed discrete **undirected**
+   graphical models are exactly such linear exponential families; fully
+   observed discrete **directed** (DAG) models are in general only a
+   *curved* exponential family [@geiger2001stratified], with equality
+   precisely when the DAG has no immoralities (v-structures) — that is,
+   when its Markov equivalence class contains a decomposable (chordal)
+   undirected model. Away from finite discrete variables the
+   identification loses its grip for a further, dimensional reason: the
+   clique potentials now range over an infinite-dimensional function
+   space, so the MRFs on a fixed graph no longer form a
+   *finite-dimensional* exponential family. (A single Gibbs distribution
+   is always trivially exponential-family — the claim has content only for
+   the model class.) Gaussian MRFs remain a finite-dimensional exponential
+   family; potentials given by mixtures do not.
+3. Even on the undirected side, maxent fixes the *distribution given the
+   constraints*. Choosing the graph, or which clique features to include,
+   is a *feature-selection* question with more than one answer — Della
+   Pietra, Della Pietra, and Lafferty's greedy KL-gain feature induction
+   [@dellapietra1997inducing], and Zhu, Wu, and Mumford's minimax entropy
+   [@zhu1997minimax] (@sec-minimax-entropy) — and neither is part of
+   Jaynes' original programme.
+
+So the accurate statement, and the one this chapter will use, is narrower
+than a slogan and stronger than a metaphor: **a strictly positive
+exponential-family MRF on a finite graph is a classical maximum-entropy
+model with structured constraints**; Bayesian networks are an explanatory
+sibling that can be rewritten as (already normalized) energies but should
+not be renamed maxent; the PGM field as a whole is larger than either
+identification, and still doing work that this book will not reproduce. 
+A future revision should include full derivations of both the Hammersley–Clifford theorem and the moralization construction. For now, this chapter simply points to them as essential references.
+
+
 ## A worked example: energy-based cooperative games {#sec-max-coop-games}
+
+The variational machinery of the previous section is not only for graphs.
+The same mean-field relaxation that Wainwright and Jordan use to
+approximate a graphical model's log-partition function applies verbatim
+to a Gibbs distribution over coalitions, and what it produces there turns
+out to be a familiar object.
 
 As one concrete instance of the programme above, consider a **valuation
 problem** in machine learning: how much does a feature, data point, or player
@@ -46,25 +232,41 @@ cooperative game theory, but it is one particular choice among many.
 In *Energy-Based Learning for Cooperative Games* [@bian2022energybased], the
 valuation problem is recast through an energy / maximum-entropy lens. A
 cooperative game with characteristic function $v(S)$ over coalitions
-$S \subseteq N$ induces a Gibbs distribution over coalitions,
+$S \subseteq N$ is turned into a distribution over coalitions by a single
+Jaynes constraint: match a prescribed expected payoff and nothing else.
+The solution is the Gibbs distribution
 
 $$
 p(S) \propto \exp\big(v(S) / \tau\big),
 $$
 
-where $\tau$ is a temperature in exactly the sense of @sec-free-energy: as
-$\tau \to 0$ the distribution concentrates on the highest-value coalitions,
-while as $\tau \to \infty$ it flattens towards uniform. Applying the
-maximum-entropy principle to game-theoretic valuations yields a **new class of
-valuation methods**, of which the Shapley value arises as a special case.
+with energy $-v(S)$. Here $\tau$ is a temperature in exactly the sense of
+@sec-free-energy: as $\tau \to 0$ the mass concentrates on the
+highest-value coalitions, while as $\tau \to \infty$ it flattens towards
+uniform. In the strict Jaynes reading $\tau = 1/\lambda$ is not a free
+knob — it is pinned by whichever expected payoff the constraint matches —
+so sweeping $\tau$ below is the same move as sweeping that matched level.
 
-## Why this is useful
+Player valuations are then read from a mean-field approximation to $p$.
+The payoff term of that mean-field ELBO is exactly Owen's **multilinear
+extension** of the game [@owen1972multilinear;@owen1975multilinear]. What the variational reading
+adds is the entropy term — which turns the multilinear extension from an
+interpolation device into an ELBO with a temperature — and the trajectory
+beyond one step: further mean-field iterations define a family of
+variational valuations whose fixed point — the minimizer of the mean-field
+KL divergence, i.e. the member with the best conceivable decoupling
+error — is the **Variational Index**. Shapley is therefore not a special
+case of the maximum-entropy *distribution*, but a one-step mean-field
+reading of it.
 
-- **Principled interpretation.** Valuations become the expectation of a
-  well-defined quantity under a maximum-entropy distribution, giving a
-  principled framework for interpreting AI models.
-- **A family, not a point.** The temperature $\tau$ traces a spectrum of
-  valuation schemes, enabling trade-offs beyond the single Shapley solution.
+### Why this is useful
+
+- **Principled interpretation.** Valuations become variational parameters
+  of a mean-field approximation to a maximum-entropy distribution over
+  coalitions, rather than isolated axiomatic scores.
+- **A family, not a point.** The temperature $\tau$ and the number of
+  mean-field steps trace a spectrum of valuations, with Shapley and
+  Banzhaf as one-step readings rather than the only options.
 - **Bridges to physics.** The same Gibbs machinery is the one that carried the
   Ising energy into neural networks in the first place, by way of the Hopfield
   network [@hopfield1982] and the Boltzmann machine [@ackley1985];
@@ -72,8 +274,13 @@ valuation methods**, of which the Shapley value arises as a special case.
 
 ## Takeaway
 
-Maximizing entropy turns "which valuation should I use?" into "which constraints
-do I believe?" — a shift that clarifies assumptions and unifies existing methods
-under one roof.
+Maximizing entropy turns the choice of a distribution over coalitions into
+the choice of a constraint; mean-field inference on that distribution then
+turns "which valuation should I use?" into "how far should I iterate the
+decoupling?" — a shift that places Shapley and Banzhaf on one trajectory
+rather than as isolated axioms. It is the same PGM lesson from earlier in
+the chapter, one level down: a strictly positive MRF is maxent with
+structured constraints, and here the mean-field relaxation of that MRF is
+what turns a menu of valuation axioms into one trajectory.
 
 

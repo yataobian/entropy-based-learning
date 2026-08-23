@@ -622,7 +622,8 @@ around the normalizer. Forward, each methods chapter picks up a specific
 thread:
 
 - **Maximum-entropy learning** (@sec-max-entropy) is the large tent in which
-  Gibbs distributions are *used* as models: classical MaxEnt, maximum-entropy
+  Gibbs distributions are *used* as models: classical MaxEnt, probabilistic
+  graphical models as an explanatory family (@sec-max-pgm), maximum-entropy
   RL, energy-based guidance, and — as the worked example written so far — a
   Gibbs distribution over coalitions in a cooperative game, from which
   game-theoretic valuations are derived [@bian2022energybased].
