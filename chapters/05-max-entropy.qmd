@@ -5,10 +5,41 @@ date-modified: last-modified
 
 # Maximum-Entropy Learning {#sec-max-entropy}
 
-## Energy-based cooperative games
+::: {.callout-note title="Scope and status of this chapter"}
+This chapter is an early scaffold, and it is worth being noted about what it
+will eventually hold. *Maximum-entropy learning* is where the energy-based
+viewpoint of @sec-energy-models meets the maximum-entropy principle of
+@sec-entropy: among all models consistent with what we know, prefer the
+maximally noncommittal one, which is the Gibbs distribution
+$p(x) \propto e^{-E(x)}$, and then *learn* its energy. Read that broadly and
+it is a large tent. A complete treatment should span at least:
 
-A striking application of the maximum-entropy principle is to **valuation
-problems** in machine learning: how much does a feature, data point, or player
+- **Classical maximum-entropy models** — the Jaynes programme of @sec-entropy
+  [@jaynes1957information], exponential families, and Gibbs distributions as
+  the least-committal fit to moment constraints.
+- **Maximum-entropy reinforcement learning** — policies of the form
+  $\pi(a \mid s) \propto e^{Q(s,a)/\tau}$ that maximize reward *plus* entropy,
+  from maximum-entropy inverse RL [@ziebart2008maxent] to energy-based
+  policies and soft actor-critic [@haarnoja2017energy; @haarnoja2018sac].
+- **Energy-based guidance and refinement** — the currently active,
+  inference-time face of the same idea, where a (possibly composed) energy
+  steers or polishes a generative process. This book gives it its own home in
+  @sec-energy-reasoning; it belongs to the maximum-entropy family because
+  guidance is descent on an energy and refinement is annealed sampling from a
+  Gibbs distribution (@sec-free-energy).
+- **Energy-based cooperative games** — our own line of work, recasting
+  valuation through a maximum-entropy lens. This is the one strand written out
+  below, as a worked example; it will be expanded in a later revision.
+
+The sections that follow develop only the last of these. The others are
+placeholders naming the intended territory, so that a reader knows what is
+missing and where the neighbouring chapters already cover part of it.
+:::
+
+## A worked example: energy-based cooperative games {#sec-max-coop-games}
+
+As one concrete instance of the programme above, consider a **valuation
+problem** in machine learning: how much does a feature, data point, or player
 contribute to an outcome? The classical answer is the **Shapley value** from
 cooperative game theory, but it is one particular choice among many.
 
@@ -44,3 +75,5 @@ valuation methods**, of which the Shapley value arises as a special case.
 Maximizing entropy turns "which valuation should I use?" into "which constraints
 do I believe?" — a shift that clarifies assumptions and unifies existing methods
 under one roof.
+
+

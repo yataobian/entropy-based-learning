@@ -5,43 +5,652 @@ date-modified: last-modified
 
 # Energy-Based Models {#sec-energy-models}
 
-## From energy to probability
+The previous chapter left us with an open question: what changes when the
+Gibbs distribution's energy function is no longer prescribed by physics, but
+instead *learned from data*? This chapter answers that question.
+
+
+Two things change the moment the energy becomes learnable. First, the energy
+stops being handed to us by physics — the Ising couplings, the hydrogen bonds
+of @sec-free-energy — and becomes a neural network $E_\theta(x)$ whose
+parameters we must fit. Second, the partition function, which for a physicist
+is a bookkeeping device, becomes for us the central computational villain of
+the story: nearly every algorithm in this chapter is best understood as a
+different strategy for *not computing it*.
 
 An **energy-based model (EBM)** associates to each configuration $x$ a scalar
-*energy* $E_\theta(x)$ and defines a Gibbs distribution
+energy $E_\theta(x)$ and defines the Gibbs distribution
 
 $$
-p_\theta(x) = \frac{1}{Z(\theta)}\, e^{-E_\theta(x)},
+p_\theta(x) = \frac{e^{-E_\theta(x)}}{Z(\theta)},
 \qquad
-Z(\theta) = \sum_x e^{-E_\theta(x)} .
+Z(\theta) = \int e^{-E_\theta(x)}\, dx ,
+$$ {#eq-ebm-def}
+
+with a sum in place of the integral when $x$ is discrete. This is the
+Boltzmann distribution of @sec-free-energy at unit temperature, with a
+learnable energy in place of a physical one. Low energy means high
+probability; the sign convention and the absorbed temperature were settled at
+the end of that chapter.
+
+The material here draws chiefly on two tutorials, written fifteen years apart
+and complementary in spirit. The first [@lecun2006tutorial] treats the energy
+as a *decision surface*: inference is energy minimization, learning is shaping
+the landscape, and probabilities are an optional purchase. The second
+[@song2021train] treats the energy as a *density*: the model is @eq-ebm-def
+taken literally, and the question is how to estimate it when $Z(\theta)$ cannot
+be computed. Reading them together — decision surface first, density second —
+is the plan of this chapter. A regularly updated companion list of papers,
+tutorials, and software is maintained at *Awesome-EBM* [@bian2020awesomeebm].
+
+## The energy view of inference {#sec-ebm-inference}
+
+Start with the decision surface. In the energy-based view, a model is a
+function $E_\theta(x, y)$ that measures the *compatibility* between an
+observed input $x$ and a candidate answer $y$: small energy means "these two
+belong together," large energy means "they do not." Inference is then not a
+forward pass but an *optimization*:
+
+$$
+y^\ast = \operatorname*{arg\,min}_{y \in \mathcal{Y}} E_\theta(x, y) .
+$$ {#eq-ebm-inference}
+
+When $\mathcal{Y}$ is a handful of class labels, the arg min is a table
+lookup and @eq-ebm-inference is just classification wearing unfamiliar
+clothes. The formulation earns its keep when $\mathcal{Y}$ is large or
+structured: all consistent segmentations of an image, all sentences of
+English, all conformations of a protein. In those cases no model can afford to
+enumerate answers; what it can afford is to *score* any proposed answer, and
+to search — by dynamic programming, by gradient descent on a continuous $y$,
+by annealing — for a good one. The energy function is precisely the object
+that makes such a search well posed.
+
+This view immediately clarifies what a model owes us, and it is less than one
+might think. LeCun et al. distinguish the questions a model may be asked
+[@lecun2006tutorial]:
+
+1. **Decision.** "Which $y$ is best for this $x$?" Only the *ordering* of
+   energies matters. Any strictly increasing transform of $E_\theta$ gives the
+   same answers.
+2. **Ranking.** "Is $y_1$ better than $y_2$?" Again only comparisons matter.
+3. **Detection.** "Is this $y$ good enough?" Now energies are compared to a
+   threshold, so their *scale* begins to matter.
+4. **Probability.** "How confident are we in each $y$?" Only here must
+   energies be converted into calibrated numbers that sum to one.
+
+Only the fourth question requires the Gibbs conversion
+
+$$
+p_\theta(y \mid x) = \frac{e^{-\beta E_\theta(x, y)}}{\int_{y'} e^{-\beta E_\theta(x, y')} \, dy'} ,
+$$ {#eq-ebm-gibbs}
+
+(a sum over $y'$ when $\mathcal{Y}$ is discrete), restoring the inverse
+temperature $\beta$ of @sec-free-energy as an explicit dial. The rest of the
+chapter works at $\beta = 1$ unless a limit in $\beta$ is at issue, matching
+the unit-temperature convention of @eq-ebm-def. The denominator is the
+partition function — the free-energy bill of @sec-free-energy. This is the
+first strategic lesson of energy-based learning: *probabilities are expensive,
+and you should buy them only when the application actually needs them*
+[@lecun2006tutorial]. A robot that must steer left or right needs the arg min,
+not a posterior. Much of this chapter is about what becomes possible when we
+decline to pay, and what it costs to pay when we must.
+
+## Why learn an energy at all? {#sec-ebm-why}
+
+If unnormalized models create such trouble, why prefer them? Three reasons,
+in increasing order of depth.
+
+**Freedom of form.** A normalized density must integrate to one, and
+maintaining that constraint dictates the architecture: autoregressive models
+must factor into conditionals, normalizing flows must be invertible with
+tractable Jacobians, variational autoencoders must route everything through a
+directed latent-variable structure. An energy function must merely be a
+scalar-valued function, bounded below well enough for @eq-ebm-def to make
+sense. Any regression architecture qualifies — a convolutional network for
+images, a graph neural network for molecules, a transformer for text. In the
+words of Song and Kingma, density estimation is thereby "reduced to a
+nonlinear regression problem" [@song2021train]. The modeling question stops
+being "what distributions can my architecture normalize?" and becomes "what
+shape should the landscape have?"
+
+**Compatibility is often what we actually know.** Domain knowledge usually
+arrives as statements about what configurations are good — physical
+constraints, grammatical constraints, consistency conditions — not as
+recipes for sampling. An energy function absorbs such knowledge directly, as
+terms that raise the energy of violating configurations.
+
+**Energies add.** If $E_1$ scores grammaticality and $E_2$ scores factual
+accuracy, then $E_1 + E_2$ scores both at once, and at the level of
+distributions the sum of energies is the *product* of the corresponding
+Gibbs factors — a product of experts [@hinton2002cd], in which each expert
+can veto a candidate by assigning it high energy. Normalized models do not
+compose this way: the product of two normalized densities is not normalized,
+and renormalizing it is exactly the partition-function problem again. This
+additivity is what makes energies the natural currency for *inference-time*
+composition — steering a generator with extra constraints — a theme that
+returns in force in @sec-energy-reasoning.
+
+The price of this freedom is stated by @eq-ebm-def itself: $Z(\theta)$ is
+an integral over every configuration the model can represent, and for any
+interesting architecture it is hopelessly intractable. Neither exact
+likelihoods nor exact samples are available. Everything that follows is about
+living well anyway.
+
+## Learning is shaping a landscape {#sec-ebm-contrastive}
+
+What should a learned energy landscape look like? Configurations resembling
+the training data should sit in valleys; everything else should sit high. The
+subtlety — and it is *the* central subtlety of EBM training — is that a
+learning rule which only digs valleys will destroy the landscape.
+
+Consider the most innocent possible objective, the **energy loss**: for each
+training pair $(x^i, y^i)$, minimize $E_\theta(x^i, y^i)$. Push down on the
+data; done. For some architectures this works — in least-squares regression,
+$E_\theta(x,y) = \lVert y - G_\theta(x)\rVert^2$, pushing the correct answer's
+energy toward zero automatically raises every other answer's, because the
+architecture allows only one minimum per input. But give the model more
+freedom and the innocent objective finds the cheat: make the energy *low
+everywhere*. A constant landscape assigns the data the lowest possible energy
+and is perfectly useless — it has **collapsed** [@lecun2006tutorial]. Flat
+landscapes answer every question with "everything is equally fine."
+
+The cure is as old as the perceptron: every push down on the correct answer
+must be paired with a **pull up** on incorrect ones. Losses that implement
+this pairing are called *contrastive*, and the zoo of them is organized by one
+question — *which* incorrect answers get pulled up, and how hard?
+
+**The most offending incorrect answer.** The sharpest choice is to pull up
+only on the incorrect answer the model currently likes best,
+$\bar{y}^i = \arg\min_{y \neq y^i} E_\theta(x^i, y)$ — the *most offending
+incorrect answer* [@lecun2006tutorial]. The **perceptron loss**
+$E_\theta(x^i, y^i) - \min_y E_\theta(x^i, y)$ does this but demands no gap,
+and so can still be satisfied by a nearly flat landscape. Margin losses fix
+that. The **hinge loss**
+$\max\big(0,\, m + E_\theta(x^i, y^i) - E_\theta(x^i, \bar{y}^i)\big)$
+insists the correct answer sit at least $m$ below its closest rival — the
+loss of support vector machines, re-read as landscape shaping. The **log
+loss** $\log\big(1 + e^{E_\theta(x^i, y^i) - E_\theta(x^i, \bar{y}^i)}\big)$
+is its soft, infinite-margin sibling. The **square–square loss**
+$E_\theta(x^i, y^i)^2 + \max(0, m - E_\theta(x^i, \bar{y}^i))^2$ pins correct
+answers near zero and rivals above $m$, which is natural when the energy is a
+distance and hence bounded below.
+
+**All incorrect answers at once.** The other extreme is the **negative
+log-likelihood (NLL) loss**. Write the Gibbs conversion @eq-ebm-gibbs,
+take $-\log$, and per sample:
+
+$$
+\mathcal{L}_{\text{nll}}
+= E_\theta(x^i, y^i)
+\;+\; \frac{1}{\beta}\log \int_{y} e^{-\beta E_\theta(x^i, y)}\, dy .
+$$ {#eq-ebm-nll}
+
+(Replace the integral by a sum when $\mathcal{Y}$ is finite.) The second
+term is *minus* the Helmholtz free energy
+$F = -(1/\beta)\log\int e^{-\beta E}\,dy$ of @sec-free-energy — at
+$\beta = 1$ it is $\log Z$, not $F$ itself. The first term pushes down on
+the data; the $\log Z$ term pulls up on *every* answer. How hard?
+Differentiate (at $\beta = 1$):
+
+$$
+\frac{\partial \mathcal{L}_{\text{nll}}}{\partial \theta}
+= \frac{\partial E_\theta(x^i, y^i)}{\partial \theta}
+- \int_y p_\theta(y \mid x^i)\,
+  \frac{\partial E_\theta(x^i, y)}{\partial \theta}\, dy .
+$$ {#eq-ebm-nll-grad}
+
+Each answer is pulled up with force proportional to *the probability the
+model currently assigns it*. The landscape's own valleys attract the
+correction: wherever the model is confidently wrong, the pull is strongest.
+This is a beautiful rule and an expensive one — the integral in
+@eq-ebm-nll-grad is an expectation over the model distribution, which is
+the partition-function problem in gradient form. Two limits knit the zoo
+together [@lecun2006tutorial]. As $\beta \to \infty$,
+$(1/\beta)\log\int e^{-\beta E}\,dy \to -\min_y E_\theta(x^i, y)$, so
+@eq-ebm-nll becomes the perceptron loss (only the minimum-energy rival
+matters). And when $\mathcal{Y}$ has just two elements $\{y^i, \bar{y}^i\}$,
+the $\beta = 1$ case collapses algebraically onto the log loss:
+$E(y^i)+\log\big(e^{-E(y^i)}+e^{-E(\bar{y}^i)}\big)
+= \log\big(1+e^{E(y^i)-E(\bar{y}^i)}\big)$.
+
+::: {.callout-note title="Collapse is a recurring character"}
+Hold on to the failure mode, because this book meets it twice more. In
+@sec-min-collapse, a language model trained on its own agreement signal can
+collapse to confident nonsense — entropy minimization with the pull-up term
+missing. And in modern self-supervised representation learning, joint-embedding
+architectures collapse to constant embeddings unless a contrastive or
+regularization term props the landscape up [@lecun2022path; @dawid2023introduction].
+The lesson is always the same: *an objective that only rewards fitting what
+you see will be gamed by a model that makes everything look equally good.*
+The interesting design space is in how — and how cheaply — you pull up.
+:::
+
+The remainder of the chapter follows the density view [@song2021train]:
+three families of estimators, distinguished by how they approximate or evade
+the pull-up integral of @eq-ebm-nll-grad. In caricature: **sample it**
+(maximum likelihood with MCMC), **differentiate it away** (score matching),
+or **turn it into a classification problem** (noise contrastive estimation).
+
+## Strategy one: sample the pull-up {#sec-ebm-mcmc}
+
+Take maximum likelihood seriously and estimate the intractable term by Monte
+Carlo. For the unconditional model @eq-ebm-def, the log-likelihood
+gradient splits into the same two forces as @eq-ebm-nll-grad:
+
+$$
+\nabla_\theta \log p_\theta(x)
+= -\nabla_\theta E_\theta(x) \;+\; \mathbb{E}_{\tilde{x} \sim p_\theta}\!\big[ \nabla_\theta E_\theta(\tilde{x}) \big] .
+$$ {#eq-ebm-mle-grad}
+
+The derivation is worth doing once by hand, because the punchline is neat.
+Start from $\nabla_\theta \log Z(\theta)$, use the chain rule, and watch the
+model distribution assemble itself:
+
+$$
+\nabla_\theta \log Z
+= \frac{1}{Z} \nabla_\theta \!\int e^{-E_\theta(x)} dx
+= \int \frac{e^{-E_\theta(x)}}{Z} \big(-\nabla_\theta E_\theta(x)\big)\, dx
+= -\,\mathbb{E}_{x \sim p_\theta}\!\big[\nabla_\theta E_\theta(x)\big] .
+$$ {#eq-ebm-logz-grad}
+
+The intractable normalizer has become an *expectation under the model* — not
+computable in closed form, but estimable from a single model sample, without
+bias. Substituting into $\nabla_\theta \log p_\theta = -\nabla_\theta E_\theta
+- \nabla_\theta \log Z$ gives @eq-ebm-mle-grad.
+
+Read the two terms as the two phases of learning. The **positive phase**
+lowers the energy of real data. The **negative phase** raises the energy of
+whatever the model itself likes to produce — its *fantasies*, in the old
+Boltzmann-machine vocabulary, where the phases were called *clamped* and
+*free* [@ackley1985] (the 1985 row of the table in @sec-free-energy).
+Learning stops exactly when the fantasies become statistically
+indistinguishable from the data, at which point the two forces cancel in
+expectation. Confabulate, compare, correct.
+
+The entire difficulty hides in four words: *sample from the model*. The
+standard tool is **Langevin dynamics**, which needs only the gradient of the
+log-density in $x$ — and here EBMs catch a genuine break, because the
+normalizer does not depend on $x$:
+
+$$
+\nabla_x \log p_\theta(x)
+= -\nabla_x E_\theta(x) - \underbrace{\nabla_x \log Z(\theta)}_{=\,0}
+= -\nabla_x E_\theta(x) .
+$$ {#eq-ebm-score}
+
+This quantity — the gradient of the log-density with respect to the *input*,
+not the parameters — is called the **score**, and @eq-ebm-score says an
+EBM hands it to us free of charge. Langevin MCMC then iterates
+
+$$
+x_{k+1} = x_k - \frac{\epsilon^2}{2}\, \nabla_x E_\theta(x_k) + \epsilon\, z_k,
+\qquad z_k \sim \mathcal{N}(0, I) :
+$$ {#eq-ebm-langevin}
+
+roll downhill, but shake while doing so. The reader will recognize
+finite-temperature descent — energy pulling toward minima, injected noise
+buying the entropy that keeps the walker exploring (@sec-free-energy). The
+*ratio* of noise amplitude to drift sets the temperature; @eq-ebm-langevin is
+the unit-temperature case already built into @eq-ebm-def. The step size
+$\epsilon$ is a discretization parameter, not a temperature: as
+$\epsilon \to 0$ and the number of steps grows, the iterates distribute as
+$p_\theta$ [@song2021train].
+
+"Long enough" is the problem: fresh chains per gradient step are ruinously
+slow, so practice truncates. **Contrastive divergence (CD)** starts chains at
+data points and runs a handful of steps [@hinton2002cd]; **persistent CD**
+never restarts, carrying chains across parameter updates [@tieleman2008pcd];
+replay buffers reinitialize chains from a reservoir of past samples
+[@du2019implicit]; short-run MCMC accepts non-convergence and reinterprets
+the truncated sampler itself as the generative model [@nijkamp2019shortrun].
+These approximations power most large-scale EBM image models, but the bias
+of truncated chains is real, and taming it remains a research area of its
+own [@song2021train].
+
+## Strategy two: match slopes, not heights {#sec-ebm-score-matching}
+
+Here is a different idea, and it begins with an observation about
+@eq-ebm-score. The score $\nabla_x \log p_\theta(x)$ does not contain
+$Z(\theta)$ at all. Two normalized densities with the same score everywhere
+on a connected domain are the same density — if their log-densities have
+equal gradients, they differ by a constant, and normalization forces that
+constant to zero. (When the domain falls into well-separated pieces the
+argument fails, and that failure is the mode-weight blind spot below.) So
+instead of matching *heights* of the log-density (which requires knowing sea
+level, i.e. $Z$), match *slopes*. Picture two hikers comparing
+terrain maps: they need not agree on altitude above sea level to verify they
+hold maps of the same mountain — agreeing on the steepness and direction of
+the slope at every point is enough.
+
+**Score matching** [@hyvarinen2005score] makes this precise by minimizing the
+**Fisher divergence** between data and model:
+
+$$
+D_F\big(p_{\text{data}} \,\Vert\, p_\theta\big)
+= \mathbb{E}_{p_{\text{data}}}\!\left[
+\tfrac{1}{2} \big\lVert \nabla_x \log p_{\text{data}}(x) - \nabla_x \log p_\theta(x) \big\rVert^2
+\right] .
+$$ {#eq-ebm-fisher}
+
+An objection leaps out: @eq-ebm-fisher contains the score of the *data
+distribution*, which nobody knows. The resolution is a small miracle of
+integration by parts, and it is worth seeing in one dimension. Expand the
+square in @eq-ebm-fisher; the term
+$\tfrac{1}{2}\mathbb{E}[(\partial_x \log p_{\text{data}})^2]$ is a constant
+in $\theta$ and can be dropped, and the term
+$\tfrac{1}{2}\mathbb{E}[(\partial_x \log p_\theta)^2]$ is computable. The
+troublesome cross-term is where the trick lands:
+
+$$
+-\mathbb{E}_{p_{\text{data}}}\!\big[ \partial_x \log p_{\text{data}} \cdot \partial_x \log p_\theta \big]
+= -\int p_{\text{data}}(x)\, \frac{\partial_x p_{\text{data}}(x)}{p_{\text{data}}(x)}\, \partial_x \log p_\theta(x)\, dx
+= -\int \partial_x p_{\text{data}}(x) \cdot \partial_x \log p_\theta(x)\, dx .
 $$
 
+The unknown density has been reduced to a plain factor, and one integration
+by parts (boundary terms vanishing for well-behaved densities) moves the
+derivative off it entirely:
 
-Low-energy configurations are more probable. This is the Boltzmann distribution
-derived in @sec-free-energy, at unit temperature and with a learnable energy
-function in place of a physical one. EBMs are attractive because they impose no
-normalization constraint on $E_\theta$ and can flexibly express dependencies.
+$$
+= \int p_{\text{data}}(x)\, \partial_x^2 \log p_\theta(x)\, dx
+= \mathbb{E}_{p_{\text{data}}}\!\big[ \partial_x^2 \log p_\theta(x) \big] .
+$$
 
+The unknown score has become a second derivative of the *model* — which for
+an EBM is a second derivative of the energy — averaged over data samples we
+have. In $d$ dimensions [@hyvarinen2005score]:
 
-## The challenge: the partition function
+$$
+D_F = \mathbb{E}_{p_{\text{data}}}\!\left[
+\sum_{i=1}^{d}
+\frac{1}{2} \left( \frac{\partial E_\theta(x)}{\partial x_i} \right)^{\!2}
+- \frac{\partial^2 E_\theta(x)}{\partial x_i^2}
+\right] + \text{const} .
+$$ {#eq-ebm-sm}
 
-The difficulty is the partition function $Z(\theta)$, which is generally
-intractable. Equivalently — and this is the more useful way to see it — the
-quantity we cannot compute is the free energy $-\log Z$. Learning and inference
-therefore rely on techniques such as:
+Signs deserve a moment of care here, because they are easy to slip on. Since
+$\log p_\theta = -E_\theta - \log Z$, second derivatives of the log-density
+are *negatives* of second derivatives of the energy, which is where the minus
+sign in @eq-ebm-sm comes from; the squared first-derivative term is immune
+because squaring erases the sign. A one-line sanity check: fit a Gaussian
+$E_\theta(x) = x^2 / 2\sigma^2$ to standard-normal data. @eq-ebm-sm gives
+$\tfrac{1}{2\sigma^4} - \tfrac{1}{\sigma^2}$, minimized at $\sigma^2 = 1$ as
+it must be; with the sign flipped, the objective would be minimized by
+sending $\sigma^2 \to \infty$ — a model dissolving into uniformity. (For
+*location* families the second-derivative term is constant in the parameter,
+so both signs give the same fit; that is exactly why the slip is easy to
+miss.)
 
-- **Sampling** (MCMC, Langevin dynamics) to approximate expectations,
-- **Score matching** and **contrastive** objectives that avoid computing $Z$
-  [@hinton2002cd],
-- **Variational** bounds, which are exactly the free-energy inequality
-  $F(q) \ge F$ of @sec-free-energy applied to a tractable family of $q$
-  [@lecun2006tutorial].
+No sampling, no partition function, and a consistent estimator. The catch is
+the Hessian trace: for deep networks and high-dimensional $x$, exact second
+derivatives cost roughly $d$ backpropagations. Two descendants remove the
+bottleneck, one by adding noise and one by throwing dice.
 
-## Connection to this book
+**Denoising score matching (DSM).** Perturb each data point with Gaussian
+noise, $\tilde{x} = x + \sigma z$, and match the model's score to the score of
+the *noisy* data distribution. Vincent's identity [@vincent2011denoising]
+shows this equals (up to a constant) a beautifully simple objective:
 
-Energy-based modeling is the substrate on which later chapters build:
+$$
+\mathbb{E}_{x \sim p_{\text{data}},\, z \sim \mathcal{N}(0, I)}
+\left[ \frac{1}{2} \left\lVert
+\nabla_{\tilde{x}} \log p_\theta(\tilde{x}) + \frac{z}{\sigma}
+\right\rVert^2 \right],
+\qquad \tilde{x} = x + \sigma z .
+$$ {#eq-ebm-dsm}
 
-- *Maximum-entropy learning* (@sec-max-entropy) uses Gibbs distributions to
-  derive game-theoretic valuations [@bian2022energybased].
-- *Energy-based reasoning* (@sec-energy-reasoning) treats an energy landscape as
-  an object to guide, refine, and search over at inference time.
+Intuitively: given a noisy point, the score of the noised distribution points
+back toward the clean data that produced it, so *learning the score is
+learning to denoise*. Second derivatives are gone. The costs are a bias — the
+optimum matches the noisy distribution, not the data — and, if one shrinks
+$\sigma$ to reduce that bias, a variance in the $z/\sigma$ term that blows up
+as $\sigma \to 0$ [@song2021train]. Noise is a knob with no free setting.
+
+**Sliced score matching (SSM).** Keep the clean data, and check the score
+match only along random directions: project both scores onto a random vector
+$v$ and match the resulting scalars [@song2019sliced]. The Hessian-trace term
+of @eq-ebm-sm is replaced by the directional second derivative
+$v^\top (\nabla_x^2 E_\theta)\, v$ — the Skilling–Hutchinson estimator —
+*keeping the minus sign*. Both the squared directional derivative and that
+Hessian–vector product are computable with two backpropagations at any
+dimension. SSM is consistent, like exact score matching, at the price of
+extra estimator variance from the random projections.
+
+**The blind spot, and how it launched diffusion.** Score matching has one
+structural weakness worth internalizing. Suppose the data has two well-separated
+modes — a mixture $\pi\, p_0 + (1-\pi)\, p_1$ with essentially disjoint
+supports. *Inside* each mode's region, the mixture's score is just that
+component's own score: the weight $\pi$ enters the density as a constant
+factor, and gradients of log-densities kill constant factors. The relative
+weight of the modes lives precisely in the no-man's-land *between* them,
+where there is no data to enforce it. A score-matched model can therefore
+reproduce each island perfectly and still apportion probability between the
+islands arbitrarily [@song2019generative; @song2021train].
+
+The fix is to flood the landscape: perturb the data with noise large enough
+to bridge the modes — making the weights visible in the score — and, since
+heavy noise distorts fine detail, do it at *many scales*, learning a
+noise-conditional score for each. Sampling then anneals from coarse to fine
+[@song2019generative]. The reader of @sec-free-energy will recognize the
+annealing schedule — start where entropy dominates, finish where energy does
+— and the reader of the wider literature will recognize the result: this
+multi-scale, score-based recipe, together with its diffusion-process
+formulation [@sohl2015nonequilibrium; @ho2020ddpm; @song2021sde], became the
+generative-modeling workhorse of the 2020s. Diffusion models are the
+energy-based lineage's most successful child: what they inherit is the score
+@eq-ebm-score, the Langevin walk @eq-ebm-langevin, and the annealed
+temperature dial of @sec-free-energy.
+
+## Strategy three: learn by telling things apart {#sec-ebm-nce}
+
+The third strategy is the slyest. If estimating a density is hard, compare it
+to one you know.
+
+**Noise contrastive estimation (NCE)** [@gutmann2010nce] introduces a noise
+distribution $p_n$ with tractable density and easy sampling — a Gaussian, say
+— and mixes noise samples with data samples. Now play a game: given a point,
+was it data or noise? By Bayes' rule, the ideal referee computes
+
+$$
+P(\text{data} \mid x)
+= \frac{\nu\, p_{\text{data}}(x)}{\nu\, p_{\text{data}}(x) + p_n(x)} ,
+$$ {#eq-ebm-nce-posterior}
+
+with $\nu$ the data-to-noise mixing ratio. NCE builds a classifier of exactly
+this functional form, but with the model density in the data slot,
+
+$$
+P_\theta(\text{data} \mid x)
+= \frac{\nu\, p_\theta(x)}{\nu\, p_\theta(x) + p_n(x)} ,
+$$ {#eq-ebm-nce-model}
+
+and trains it by ordinary logistic regression on the mixed samples. If the
+classifier family is rich enough, training drives
+@eq-ebm-nce-model to the true posterior @eq-ebm-nce-posterior
+for every $x$, and matching posteriors at fixed $p_n$ and $\nu$ forces
+$p_\theta = p_{\text{data}}$. Density estimation has been smuggled inside a
+classification problem — the one problem deep learning solves in its sleep.
+
+Two features distinguish NCE in the EBM toolkit [@song2021train]. First, the
+normalizer $Z_\theta$ can be treated as an explicit learnable scalar — the
+classification game is only won when the model's *absolute* density matches
+the data's, so the game itself calibrates $Z$. Alternatively, fix $Z = 1$ and
+obtain a *self-normalized* model, a trick beloved of language modeling, where
+NCE-style objectives trained word embeddings and early neural language models
+at vocabulary scales where softmax normalization was unaffordable
+[@mnih2012fast]. Second, the choice of $p_n$ is the whole game in practice:
+the classification task must be neither trivial nor impossible, which means
+the noise should resemble the data — a requirement that becomes brutal in
+high dimension, and has spawned a cottage industry of learned, adaptive noise
+distributions [@song2021train].
+
+One more connection ties the room together. Choose the noise to be the data
+itself, shifted by a small vector $v$, and the NCE objective Taylor-expands —
+as $\lVert v \rVert \to 0$ — into the sliced score matching objective with
+projection direction $v$ [@song2021train]. Telling the data apart from a
+nudged copy of itself means, in the limit, matching directional slopes.
+
+## One family, three estimators {#sec-ebm-family}
+
+The three strategies look like three separate inventions. They are better
+seen as one family, distinguished by which divergence they minimize and what
+they demand of us.
+
+| | MCMC-based MLE (@sec-ebm-mcmc) | Score matching (@sec-ebm-score-matching) | NCE (@sec-ebm-nce) |
+|---|---|---|---|
+| Minimizes | KL divergence | Fisher divergence | KL of classification posteriors |
+| Pull-up term handled by | sampling it | differentiating it away | canceling it against a reference |
+| Requires | model samples (MCMC) | input derivatives of $E_\theta$ | a tractable noise density |
+| Access to $Z$? | no | no (energy determined up to a constant) | yes ($Z$ learned, or fixed to $1$) |
+| Characteristic failure | biased truncated chains | invisible mode weights | noise too far from data |
+
+: Three roads around the partition function. Each row answers: how does this method avoid computing $Z(\theta)$, and what does it pay instead? {#tbl-ebm-three}
+
+And the roads interconnect. Contrastive divergence run with a single
+infinitesimal Langevin step *is* score matching, up to rescaling
+[@hyvarinen2007connections]. NCE against infinitesimally shifted data is
+sliced score matching, as we just saw. Underneath both coincidences sits a
+single identity — a relative form of de Bruijn's identity — relating the two
+divergences. Perturb data and model with the *same* Gaussian noise of
+variance $t$, write $q_t$ and $p_{\theta,t}$ for the smoothed densities, and
+
+$$
+\frac{d}{dt}\, D_{\mathrm{KL}}\big(q_t \,\Vert\, p_{\theta, t}\big)
+= -\tfrac{1}{2}\, D_F\big(q_t \,\Vert\, p_{\theta, t}\big) :
+$$ {#eq-ebm-debruijn}
+
+the Fisher divergence is the *rate* at which the KL divergence dissolves
+under noise [@song2021train]. (The classical de Bruijn identity is the
+special case that tracks entropy rather than KL.) KL is the integral view,
+Fisher the differential view, of one and the same discrepancy — which is why
+an MCMC shortcut and a derivative trick keep converging on the same
+estimator.
+
+There are further roads — minimizing Stein discrepancies, adversarially
+training a sampler network against the energy, differences of KL divergences
+— for which Song and Kingma's survey [@song2021train] and the running list
+at *Awesome-EBM* [@bian2020awesomeebm] are the entry points. The taxonomy
+above is enough to read that literature: whenever a new EBM training method
+appears, ask first *how it implements the pull-up*.
+
+## Latent variables, and the free energy again {#sec-ebm-latent}
+
+Often the energy needs helper variables that are observed never: the pose of
+a face, the segmentation of a sentence, the rotation of a molecule. Give the
+energy an extra argument $E_\theta(x, y, z)$ and let inference minimize over
+$z$ as well. But minimizing over $z$ is a $T = 0$ policy — it credits $y$
+with only its single best explanation. The finite-temperature policy sums
+over explanations:
+
+$$
+F_\beta(x, y)
+= -\frac{1}{\beta} \log \int_z e^{-\beta E_\theta(x, y, z)}\, dz ,
+$$ {#eq-ebm-latent-free}
+
+which the reader will recognize as a free energy — @eq-ebm-latent-free
+*is* $F = -\frac{1}{\beta}\log Z$ with the latent variable playing the role of
+microstate, and it interpolates between marginalization ($\beta = 1$: an
+answer is good if its explanations are *collectively* probable) and
+minimization ($\beta \to \infty$: an answer is as good as its best
+explanation) [@lecun2006tutorial]. Latent-variable EBMs thereby fold the
+machinery of @sec-free-energy inside the energy function itself, and the
+variational bound of that chapter — minimize
+$F(q) = \langle E \rangle_q - T\, S(q)$ over tractable $q$, with
+$T = 1/\beta$ — becomes the standard training route when the integral is
+intractable. The evidence lower bound of variational autoencoders is this
+construction at $T = 1$, as @sec-free-energy already made explicit.
+
+This is also where the energy-based view connects to the present frontier of
+self-supervised learning. LeCun's proposal for world-model architectures
+— JEPA, the joint-embedding predictive architecture — is at bottom a
+latent-variable EBM over *representation* space: energy measures prediction
+error between embeddings, latent variables absorb what cannot be predicted,
+and the central design problem is once again preventing collapse, either by
+contrastive pull-up or by regularizers that keep the embedding distribution
+spread out [@lecun2022path; @dawid2023introduction]. Decades of this
+subject can be compressed into one sentence: *dig valleys where the data is,
+and find an affordable way to keep the rest of the landscape high.*
+
+## The modern landscape {#sec-ebm-modern}
+
+A brief tour of where energies appear in current practice, with pointers
+rather than treatments — the companion list [@bian2020awesomeebm] tracks the
+full literature.
+
+**Your classifier was an EBM all along.** A softmax classifier computes
+logits $f_\theta(x)[y]$ and normalizes over labels only. Reuse those logits
+as a joint energy, $E_\theta(x, y) = -f_\theta(x)[y]$, and the *marginal*
+energy of an input is
+$E_\theta(x) = -\log \sum_y e^{f_\theta(x)[y]}$ — the free energy of the
+label ensemble. Training this hidden generative model alongside the
+classifier improves calibration and robustness [@grathwohl2020jem]. Even
+without retraining, the same marginal energy is a useful *score* for
+out-of-distribution detection, with higher energy read as more unfamiliar
+[@liu2020energyood]. (A classifier that was never trained as a generative
+model does not automatically place OOD inputs high; the energy score is still
+often a better OOD detector than the raw softmax confidence.) This is the
+"energy dial" of @sec-free-energy read in reverse — the logits every deep
+classifier already emits are energies in thin disguise.
+
+**Generation and its guidance.** Diffusion and score-based models
+(@sec-ebm-score-matching) carry the EBM inheritance in generation, and the
+additivity of energies (@sec-ebm-why) becomes *composability at inference
+time*: adding a classifier's gradient to a sampler's score steers generation
+toward a class [@dhariwal2021guidance]; adding hand-built constraint energies
+composes concepts [@du2020compositional]; in text, a lightweight energy can
+re-rank or steer a powerful autoregressive proposal — residual EBMs
+[@deng2020residual], constraint-guided decoding [@qin2022cold]. Discrete
+spaces lack Langevin's gradient walk, and a lively literature builds
+gradient-informed proposals for them [@grathwohl2021oops]. This
+inference-time story is the subject of @sec-energy-reasoning.
+
+**Science.** Molecules are the native habitat of energy functions — the word
+itself came from physics, and here it goes home. Denoising-style score
+matching over molecular geometries drives conformation generation
+[@shi2021confgen]; SE(3)-equivariant energies score protein structures
+end-to-end [@wu2021se3folding]. The learned energy (or its score) sits in
+the same seat as the physical force field it approximates or replaces —
+@sec-ai-for-science takes up this thread.
+
+## Where this sits in the book {#sec-ebm-book}
+
+This chapter closes Part I, and it is the load-bearing wall for Part II.
+Backward: @sec-entropy supplied entropy and the maximum-entropy principle;
+@sec-free-energy derived the Gibbs distribution and identified $-\log Z$ as a
+free energy; this chapter made the energy learnable and catalogued the ways
+around the normalizer. Forward, each methods chapter picks up a specific
+thread:
+
+- **Maximum-entropy learning** (@sec-max-entropy) is the large tent in which
+  Gibbs distributions are *used* as models: classical MaxEnt, maximum-entropy
+  RL, energy-based guidance, and — as the worked example written so far — a
+  Gibbs distribution over coalitions in a cooperative game, from which
+  game-theoretic valuations are derived [@bian2022energybased].
+- **Minimum-entropy learning** (@sec-min-entropy) trains a model on its own
+  agreement signal; its collapse mode (@sec-min-collapse) is the energy
+  loss's flat-landscape failure in a new costume, and the free-energy
+  decomposition used to analyze it is @eq-ebm-nll seen from the other
+  side.
+- **Minimax-entropy learning** (@sec-minimax-entropy) asks which *features*
+  an exponential-family model should include — which is precisely the
+  architecture-selection problem for the EBMs of this chapter, posed
+  variationally.
+- **Energy-based reasoning** (@sec-energy-reasoning) takes the landscape as
+  given and spends inference-time compute navigating it: guidance is
+  gradient descent on a composed energy, refinement is repeated local
+  descent, and both inherit the annealing wisdom of @sec-free-energy.
+
+## Takeaway {#sec-ebm-takeaway}
+
+An energy-based model is a learnable landscape: inference rolls downhill on
+it, probability — when needed — is bought from it at the price of a
+partition function. Training is landscape-shaping, and its non-negotiable
+rule is that digging valleys under the data must be paired with pulling up
+elsewhere, lest the landscape collapse into a useless plain. The three
+classical training strategies are three ways to afford the pull-up: sample it
+(MCMC-based maximum likelihood), sidestep it by matching slopes (score
+matching, the road that led to diffusion models), or fold it into a
+classification game against known noise (NCE). One identity — a relative form of de Bruijn's —
+reveals them as views of a single discrepancy, and one design question
+organizes the whole field, from Boltzmann machines to JEPA: *how do you keep
+the rest of the world high?*

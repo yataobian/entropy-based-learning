@@ -7,8 +7,16 @@ date-modified: last-modified
 
 Energy-based thinking is not only a training paradigm; it is also a powerful
 *inference-time* tool. Given an energy function $E_\theta(x)$ that scores how
-"good" a candidate solution $x$ is, we can **guide**, **refine**, and **search**
-at test time.
+"good" a candidate solution $x$ is — whether trained by the methods of
+@sec-energy-models or assembled by composing pretrained models and
+constraints, exploiting the additivity of energies noted there — we can
+**guide**, **refine**, and **search** at test time.
+
+This chapter is the inference-time face of the maximum-entropy programme
+sketched in @sec-max-entropy: guidance is descent on an energy, and refinement
+is annealed sampling from the Gibbs distribution $p(x) \propto e^{-E(x)}$, so
+both are the maximum-entropy machinery of @sec-free-energy applied at test
+time rather than during training.
 
 ## Guidance
 
