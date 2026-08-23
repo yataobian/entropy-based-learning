@@ -1,0 +1,42 @@
+# Quarto profile: `quarto render --profile pdf --to pdf`
+# Merged on top of _quarto.yml. Default `quarto render` stays HTML-only.
+
+project:
+  output-dir: _book-pdf
+
+format:
+  pdf:
+    documentclass: scrbook
+    classoption:
+      - oneside
+      - open=any
+      - numbers=noenddot
+      - fontsize=11pt
+    pdf-engine: lualatex
+    toc: true
+    toc-depth: 2
+    lot: false
+    lof: false
+    number-sections: true
+    papersize: a4
+    geometry:
+      - top=24mm
+      - bottom=24mm
+      - left=26mm
+      - right=26mm
+    linestretch: 1.18
+    mainfont: "TeX Gyre Pagella"
+    sansfont: "TeX Gyre Heros"
+    monofont: "Latin Modern Mono"
+    colorlinks: true
+    fig-align: center
+    fig-pos: "H"
+    keep-tex: false
+    cite-method: citeproc
+    link-citations: true
+    filters:
+      - filters/svg-to-pdf.lua
+    include-in-header:
+      - tex/book-pdf-header.tex
+    header-includes:
+      - \usepackage{float}

@@ -7,13 +7,26 @@ mass a, the remaining K-1 sharing 1-a equally), the scalar form
     a = 1 / (1 + (K-1) exp([(1-a)/(K-1) - a] / beta)).
 
 Roots of this equation are traced against beta to give the branch structure.
-Produces figures/min-entropy-phase.{svg,png} and prints the numerical tables
+Produces figures/min-entropy-phase.{pdf,svg,png} and prints the numerical tables
 quoted in the chapter on minimum-entropy learning.
+
+The PDF is the copy the book uses in print: it is written by Matplotlib
+directly (TrueType, fonttype 42). Do not regenerate that PDF from the SVG
+with ImageMagick — its SVG renderer drops math glyphs (beta, subscripts)
+and leaves empty boxes.
 """
 
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
+
+plt.rcParams.update({
+    "pdf.fonttype": 42,   # embed TrueType; survives inclusion in LuaLaTeX
+    "ps.fonttype": 42,
+    "mathtext.fontset": "dejavusans",
+    "font.family": "DejaVu Sans",
+    "axes.unicode_minus": False,
+})
 
 
 def residual(a, beta, K):
@@ -71,7 +84,7 @@ def spinodal(K, hi=4.0, steps=200):
 NAVY, RUST, GREY = "#1f3b57", "#b4451f", "#8a8a8a"
 XMIN, XMAX = 0.35, 2.2
 
-fig, axes = plt.subplots(1, 2, figsize=(9.8, 4.0))
+fig, axes = plt.subplots(1, 2, figsize=(10.4, 4.35))
 
 for ax, K in zip(axes, (2, 3)):
     x = np.linspace(XMIN, XMAX, 900)
@@ -117,9 +130,9 @@ for ax, K in zip(axes, (2, 3)):
         # K = 2: there is no unstable collapsed branch to draw -- the collapsed
         # state grows continuously out of the balanced one, so the transition
         # is reversible and no tipping line exists.
-        ax.annotate("branches meet: commitment grows\ngradually, and is reversible\n(no tipping line exists at $K=2$)",
-                    xy=(1.0, 0.52), xytext=(1.18, 0.72),
-                    fontsize=8.5, color=RUST, ha="left", va="center",
+        ax.annotate("branches meet: commitment grows\ngradually, and is reversible\n(no tipping line at K = 2)",
+                    xy=(1.0, 0.52), xytext=(1.22, 0.74),
+                    fontsize=8.2, color=RUST, ha="left", va="center",
                     arrowprops=dict(arrowstyle="-", color=RUST, lw=0.8,
                                     shrinkA=2, shrinkB=2))
 
@@ -129,13 +142,13 @@ for ax, K in zip(axes, (2, 3)):
 
     ax.set_xlim(XMIN, XMAX)
     ax.set_ylim(0, 1.04)
-    ax.set_xlabel(r"KL coefficient  $\beta\,/\,\beta_c$,   where $\beta_c = 1/K$",
+    ax.set_xlabel(r"KL coefficient  $\beta/\beta_c$    ($\beta_c = 1/K$)",
                   fontsize=9.5)
-    ax.set_ylabel(r"dominant cluster mass  $\max_c p_c$", fontsize=9.5)
-    ax.set_title(
-        rf"$K = {K}$:  " + ("continuous" if K == 2 else "discontinuous"),
-        fontsize=11, pad=9,
-    )
+    # Avoid \max_c: matplotlib mathtext mis-places that subscript on a
+    # rotated ylabel and the letters pile up.
+    ax.set_ylabel(r"largest-cluster share   $a$", fontsize=9.5)
+    kind = "continuous" if K == 2 else "discontinuous"
+    ax.set_title(rf"$K = {K}$" + f":  {kind}", fontsize=11, pad=9)
     ax.tick_params(labelsize=9)
     for side in ("top", "right"):
         ax.spines[side].set_visible(False)
@@ -146,15 +159,16 @@ axes[0].legend(
         Line2D([], [], color=NAVY, lw=1.7, ls=(0, (3, 2.6)), label="balanced, unstable"),
         Line2D([], [], color=RUST, lw=2.4, label="collapsed, stable"),
         Line2D([], [], color=RUST, lw=1.7, ls=(0, (3, 2.6)),
-               label="collapsed, unstable ($K \\geq 3$ only)"),
+               label="collapsed, unstable (K >= 3 only)"),
     ],
     fontsize=8.2, frameon=False, loc="lower left", bbox_to_anchor=(0.01, 0.03),
     handlelength=2.2, labelspacing=0.5,
 )
 
-fig.tight_layout()
+fig.tight_layout(w_pad=2.0)
+fig.savefig("figures/min-entropy-phase.pdf", bbox_inches="tight")
 fig.savefig("figures/min-entropy-phase.svg", bbox_inches="tight")
-fig.savefig("figures/min-entropy-phase.png", dpi=200, bbox_inches="tight")
+fig.savefig("figures/min-entropy-phase.png", dpi=220, bbox_inches="tight")
 
 
 # ---- numbers quoted in the text -------------------------------------------

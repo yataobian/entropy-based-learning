@@ -1,5 +1,7 @@
 /.quarto/
 /_book/
+/_book-pdf/
+/figures/*.pdf
 /site_libs/
 .DS_Store
 CLAUDE.local.md

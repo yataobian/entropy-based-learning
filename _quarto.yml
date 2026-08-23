@@ -1,6 +1,10 @@
 project:
   type: book
   output-dir: _book
+  resources:
+    - assets/Entropy-Based-Learning.pdf
+  post-render:
+    - scripts/place-site-pdf.sh
 
 book:
   title: "Entropy-Based Learning"
@@ -13,6 +17,8 @@ book:
     their applications to scientific and reasoning-oriented AI.
   site-url: "https://yataobian.github.io/entropy-based-learning/"
   repo-url: "https://github.com/yataobian/entropy-based-learning"
+  output-file: "Entropy-Based-Learning"
+  downloads: [pdf]
   chapters:
     - index.qmd
     - 01-intro.qmd

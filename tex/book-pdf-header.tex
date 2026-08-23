@@ -1,0 +1,52 @@
+% Quiet KOMA-Script monograph styling for the PDF build.
+% Loaded only by the `pdf` Quarto profile.
+
+\usepackage{microtype}
+\usepackage{bookmark}
+
+% Match the HTML book's ink / teal, without shouting.
+\definecolor{ink}{HTML}{1C2226}
+\definecolor{accent}{HTML}{1D5B6B}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=accent,
+  urlcolor=accent,
+  citecolor=accent,
+  filecolor=accent
+}
+
+% Chapter and section titles: serif, a little smaller than KOMA defaults.
+\addtokomafont{disposition}{\rmfamily\color{ink}}
+\addtokomafont{chapter}{\bfseries}
+\addtokomafont{section}{\bfseries}
+
+% Captions as quiet labels, not banners.
+\usepackage{caption}
+\captionsetup{
+  font=small,
+  labelfont={bf,small},
+  skip=6pt
+}
+
+% Tables: a little air, no heavy rules (booktabs is already loaded by Quarto).
+% Markdown tables become longtable; shrink them so five-column rows
+% cannot overflow the text block and overwrite one another.
+\usepackage{array}
+\usepackage{etoolbox}
+\renewcommand{\arraystretch}{1.15}
+\AtBeginDocument{%
+  \AtBeginEnvironment{longtable}{%
+    \small
+    \setlength{\tabcolsep}{5pt}%
+  }%
+}
+
+% Lists: compact enough for a technical book, not cramped.
+\usepackage{enumitem}
+\setlist{itemsep=0.28em, topsep=0.4em, parsep=0pt}
+
+% Callouts should read as margin notes, not alert boxes.
+\AtBeginDocument{%
+  \setlength{\parskip}{0.42em}%
+}

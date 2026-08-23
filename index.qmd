@@ -57,6 +57,8 @@ This book is an ongoing project, released early so you can follow its developmen
 scaffold. The table will be updated as chapters mature. Feedback and contributions are
 welcome at any stage.
 
+A printable PDF of the current draft is available from the download button in the sidebar, or directly as [Entropy-Based-Learning.pdf](assets/Entropy-Based-Learning.pdf).
+
 To learn more about the underlying research, visit
 <https://yataobian.com/> and the Blue Whale Lab.
 

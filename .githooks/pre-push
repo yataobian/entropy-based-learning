@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# pre-push: refuse to push main unless the tracked book PDF is committed
+# and matches the current sources (rebuild locally if stale).
+#
+# A new commit created here would not be part of this push, so this hook
+# never commits. It only rebuilds and, if the PDF changed, aborts.
+#
+set -euo pipefail
+
+ROOT=$(git rev-parse --show-toplevel)
+PDF_REL="assets/Entropy-Based-Learning.pdf"
+PDF="$ROOT/$PDF_REL"
+SYNC="$ROOT/scripts/sync-book-pdf.sh"
+
+enforce=0
+while read -r _local_ref _local_sha remote_ref _remote_sha; do
+  case "$remote_ref" in
+    refs/heads/main|refs/heads/master) enforce=1 ;;
+  esac
+done
+
+if [[ $enforce -eq 0 ]]; then
+  exit 0
+fi
+
+if [[ ! -x $SYNC ]]; then
+  echo "error: missing $SYNC" >&2
+  echo "This hook needs the book PDF helper scripts." >&2
+  exit 1
+fi
+
+"$SYNC" --if-stale
+
+if [[ ! -f $PDF ]]; then
+  echo "error: $PDF_REL is missing." >&2
+  echo "Run ./scripts/sync-book-pdf.sh, commit the file, then push again." >&2
+  exit 1
+fi
+
+if ! git cat-file -e "HEAD:$PDF_REL" 2>/dev/null; then
+  echo "error: $PDF_REL is not in HEAD." >&2
+  echo "  git add $PDF_REL && git commit -m \"Update published book PDF\"" >&2
+  echo "then push again." >&2
+  exit 1
+fi
+
+if ! git diff --quiet HEAD -- "$PDF_REL" || ! git diff --cached --quiet -- "$PDF_REL"; then
+  echo "error: the published PDF was refreshed and is not committed." >&2
+  echo "  git add $PDF_REL && git commit -m \"Update published book PDF\"" >&2
+  echo "then push again (the new commit cannot ride along with this push)." >&2
+  exit 1
+fi
+
+exit 0

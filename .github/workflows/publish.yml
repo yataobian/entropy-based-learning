@@ -28,6 +28,13 @@ jobs:
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
+      - name: Require the locally built book PDF
+        # The print PDF is compiled on the author's machine (TeX Live +
+        # fonts) and committed to assets/. CI only publishes that file.
+        run: |
+          test -f assets/Entropy-Based-Learning.pdf
+          echo "PDF present ($(du -h assets/Entropy-Based-Learning.pdf | awk '{print $1}'))"
+
       - name: Render and publish to GitHub Pages
         uses: quarto-dev/quarto-actions/publish@v2
         with:
