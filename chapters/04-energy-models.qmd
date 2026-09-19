@@ -624,9 +624,13 @@ thread:
 - **Maximum-entropy learning** (@sec-max-entropy) is the large tent in which
   Gibbs distributions are *used* as models: classical MaxEnt, probabilistic
   graphical models as an explanatory family (@sec-max-pgm), maximum-entropy
-  RL, energy-based guidance, and — as the worked example written so far — a
-  Gibbs distribution over coalitions in a cooperative game, from which
-  game-theoretic valuations are derived [@bian2022energybased].
+  RL, energy-based guidance, and two strands of our own — a Gibbs
+  distribution over coalitions in a *given* cooperative game, from which
+  game-theoretic valuations are derived [@bian2022energybased]
+  (@sec-max-coop-games), and a Gibbs distribution over subsets whose energy
+  is a neural set function *learned* from optimal subsets alone
+  [@ou2022equivset], a fourth road around the partition function that
+  @tbl-ebm-three does not list (@sec-max-os-oracle).
 - **Minimum-entropy learning** (@sec-min-entropy) trains a model on its own
   agreement signal; its collapse mode (@sec-min-collapse) is the energy
   loss's flat-landscape failure in a new costume, and the free-energy

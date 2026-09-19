@@ -13,8 +13,8 @@ That lineage is unusually direct. In 1982 John Hopfield borrowed the energy func
 
 We study three directions that are connected:
 
-1.  **Maximizing entropy** to obtain the least-biased model consistent with given constraints. This yields exponential-family / Gibbs distributions and, as we will see, a principled framework for valuation problems in machine learning [@bian2022energybased].
-2.  **Minimizing entropy** to sharpen a model's own predictions. When applied to large language models in a latent semantic space, this idea enables fully *unsupervised* elicitation of reasoning capabilities.
+1.  **Maximizing entropy** to obtain the least-biased model consistent with given constraints. This yields exponential-family / Gibbs distributions and, as we will see, a principled framework for valuation problems in machine learning [@bian2022energybased]. When the energy is itself learned rather than given, the same principle becomes a learning method on discrete domains — neural set functions trained from their optimal subsets alone [@ou2022equivset; @xie2024inset].
+2.  **Minimizing entropy** to sharpen a model's own predictions. When applied to large language models in a latent semantic space, this idea enables fully *unsupervised* elicitation of reasoning capabilities (EMPO) [@zhang2025empo].
 3.  **Minimaxing entropy** to decide which features a model should include at all. The optimal features are those whose maximum-entropy model has the *minimum* entropy, which makes model selection a well-posed problem [@carcamo2025minimax].
 
 ## Roadmap
