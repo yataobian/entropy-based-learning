@@ -5,65 +5,273 @@ date-modified: last-modified
 
 # Maximum-Entropy Learning {#sec-max-entropy}
 
-::: {.callout-note title="Scope and status of this chapter"}
-This chapter is an early scaffold; it is worth saying what it will
-eventually hold. *Maximum-entropy learning* is where the energy-based
-viewpoint of @sec-energy-models meets the maximum-entropy principle of
-@sec-entropy: among all models consistent with what we know, prefer the
-maximally noncommittal one. When what we know is a set of expectations
-$\mathbb{E}_p[f_k] = \mu_k$, that distribution is the Gibbs form
-$p(x) \propto \exp(-E(x))$ **with the energy confined to the span of the
-constrained features**, $E = -\sum_k \lambda_k f_k$ — the content of the
-theorem is the confinement, not the exponential shape, since any strictly
-positive $p$ can trivially be written as $e^{-E}$ with $E := -\log p$.
-Maximum-entropy *learning* is what happens when that confinement is
-relaxed and the energy is learned instead of derived; the hinge between
-the two is the maximum-entropy / maximum-likelihood duality (@sec-max-pgm).
-Read that broadly and it is a large tent. A complete treatment should span
-at least:
+## What this chapter means by maximum-entropy learning {#sec-max-definition}
 
-- **Classical maximum-entropy models** — the Jaynes programme of @sec-entropy
-  [@jaynes1957information], exponential families, and Gibbs distributions as
-  the least-committal fit to moment constraints.
-- **Probabilistic graphical models** — Markov random fields and Bayesian
-  networks. This is a classical field in its own right, still central after
-  several decades [@pearl1988probabilistic; @koller2009pgm;
-  @wainwright2008graphical]. This book reads it as an *explanatory family*:
-  a graph is a hypothesis about which independencies the joint must satisfy.
-  The identification with classical maximum entropy is tight for undirected
-  models and only partial for directed ones; that distinction is recorded
-  in @sec-max-pgm, not asserted as community consensus.
-- **Maximum-entropy reinforcement learning** — first a distribution over
-  trajectories $p(\tau) \propto e^{R(\tau)}$ that matches demonstrated
-  feature counts and nothing else [@ziebart2008maxent] (exactly so for
-  deterministic dynamics; with stochastic transitions Ziebart et al. carry
-  an explicit transition factor and an approximation assumption, and
-  *maximum causal entropy* is the principled repair), then energy-based
-  softmax policies $\pi(a \mid s) \propto e^{Q(s,a)/\tau}$ and soft
-  actor-critic [@haarnoja2017energy; @haarnoja2018sac].
-- **Energy-based guidance and refinement** — the currently active,
-  inference-time face of the same idea, where a (possibly composed) energy
-  steers or polishes a generative process. This book gives it its own home in
-  @sec-energy-reasoning; it belongs to the maximum-entropy family because
-  guidance is descent on an energy and refinement is annealed sampling from a
-  Gibbs distribution (@sec-free-energy).
-- **Energy-based cooperative games** — our own line of work, recasting
-  valuation through a maximum-entropy lens. The game is *given* and nothing
-  is learned: the Gibbs distribution over coalitions is derived from one
-  constraint and then read through mean-field inference
-  (@sec-max-coop-games).
-- **Discrete maximum-entropy learning under the optimal subset oracle** —
-  also our own line of work, and the strand in which the energy is actually
-  *learned*: a neural set function trained from optimal subsets alone, on
-  the power set $2^V$, by differentiating through mean-field inference
-  (@sec-max-os-oracle). EquiVSet and INSET are its two published steps.
+Throughout this book the term *maximum-entropy learning* is used in a broad
+sense: it refers to a family of methods rather than to one algorithm. The
+family contains methods in which nothing is learned at all, e.g., the
+cooperative games of @sec-max-coop-games, as well as methods in which an
+energy function is fitted from data, e.g., the set functions of @sec-max-os-oracle.
+We therefore need a vocabulary that keeps the two apart.
+We borrow it from probabilistic graphical models, whose standard textbooks
+are organized into three parts, *representation*, *inference*, and
+*learning* [@koller2009pgm], and we read every method through these three
+levels in turn. In this section we make each level precise, state the
+definition of the family, and fix the notation used in the rest of the
+chapter.
 
-@sec-max-pgm records where graphical models sit relative to the
-maximum-entropy programme, and what is and is not licensed by that
-identification; it is not a treatment of the field itself, which is a book
-of its own. The two strands written out in full below are the last two
-items.
+**Notation.** We write $\mathsf{T}(x) = (f_1(x), \dots, f_K(x))$ for the
+vector of features whose expectations are constrained, i.e., the *sufficient
+statistics* of the resulting exponential family. The upright sans-serif
+$\mathsf{T}$ is used on purpose: the italic $T$ is reserved for temperature
+throughout the book, and the two must not be confused. $h(x)$ denotes a
+*base measure*, i.e., a reference distribution, taken to be uniform unless
+stated otherwise; $\boldsymbol{\lambda}$ denotes the vector of Lagrange
+multipliers (the natural parameters), $Z$ the partition function, and
+$\mathrm{KL}(q \,\Vert\, p)$ the Kullback–Leibler divergence.
+
+### Representation: maximum-entropy models in two forms {#sec-max-def-representation}
+
+The first level asks which model class a method uses. In maximum-entropy
+learning the answer is the Gibbs distribution, equivalently the exponential
+family, and it can be written in two forms.
+
+The **constrained form** is the one of @sec-maxent-principle, stated here
+with a base measure [@jaynes1957information; @kullback1959information;
+@csiszar1975iprojection]:
+
+$$
+\begin{aligned}
+p^{\star} \;&=\; \operatorname*{arg\,min}_{q}\; \mathrm{KL}(q \,\Vert\, h)
+\quad \text{s.t.} \quad \mathbb{E}_{q}[\mathsf{T}(x)] = \boldsymbol{\mu} , \\[4pt]
+p^{\star}(x) \;&=\; \frac{h(x)\, \exp\big(\boldsymbol{\lambda}^{\top} \mathsf{T}(x)\big)}{Z(\boldsymbol{\lambda})} .
+\end{aligned}
+$$ {#eq-max-def-constrained}
+
+When $h$ is uniform, minimizing $\mathrm{KL}(q \,\Vert\, h)$ is the same as
+maximizing the entropy $H(q)$, and @eq-max-def-constrained is exactly the
+Jaynes problem of @sec-maxent-principle. For a general $h$ the principle is
+that of *minimum relative entropy*, known as minimum discrimination
+information in Kullback's work [@kullback1959information] and as minimum
+cross-entropy in the axiomatic treatment of @shore1980axiomatic; the
+solution $p^\star$ is the *I-projection* of $h$ onto the constraint set
+[@csiszar1975iprojection].
+
+The **free-energy form** is the one introduced in @sec-free-energy. Given an
+energy $E(x)$ and a temperature $T > 0$, define the variational free energy
+
+$$
+\begin{aligned}
+\mathcal{F}_{T}(q; E) \;&=\; \mathbb{E}_{q}[E] \;+\; T\, \mathrm{KL}(q \,\Vert\, h) , \\[4pt]
+p_{E,T} \;&=\; \operatorname*{arg\,min}_{q}\; \mathcal{F}_{T}(q; E)
+\;=\; \frac{h(x)\, e^{-E(x)/T}}{Z} ,
+\qquad
+\min_{q} \mathcal{F}_{T}(q; E) \;=\; -T \log Z .
+\end{aligned}
+$$ {#eq-max-def-free}
+
+For uniform $h$ this is $\mathbb{E}_q[E] - T\,H(q)$ up to a constant, i.e.,
+the $U - TS$ of @sec-free-energy, and the identity
+$\min_q \mathcal{F}_T = -T \log Z$ is the variational representation of the
+log-partition function [@wainwright2008graphical, §3.6], known in
+statistical physics as the Gibbs variational principle.
+
+The two forms are equivalent by Lagrangian duality. Setting
+$E = -\boldsymbol{\lambda}^{\top} \mathsf{T}$ and $T = 1$ in @eq-max-def-free
+recovers @eq-max-def-constrained, and the constraint values and the
+multipliers are in one-to-one correspondence through
+$\boldsymbol{\mu} = \nabla_{\boldsymbol{\lambda}} \log Z(\boldsymbol{\lambda})$,
+provided that $\boldsymbol{\mu}$ lies in the interior of the marginal
+polytope (the regularity condition discussed in @sec-max-pgm). One can also
+read the equivalence geometrically. For the empirical distribution $\hat p$
+and the maximum-likelihood member $p^\star$ of the exponential family,
+Csiszár's Pythagorean identity
+$\mathrm{KL}(\hat p \,\Vert\, h) = \mathrm{KL}(\hat p \,\Vert\, p^\star) + \mathrm{KL}(p^\star \,\Vert\, h)$
+holds [@csiszar1975iprojection], so the maximum-entropy solution and the
+maximum-likelihood solution are one point approached from two directions
+[@dellapietra1997inducing].
+
+Both forms will be used in this chapter, and the choice is a matter of
+emphasis. We state a model in the constrained form when the point is *what
+is known*, i.e., the form of $\mathsf{T}$ declared by the modeler: clique
+indicators in a Markov random field, $n$-gram features in a maximum-entropy
+classifier [@berger1996maxent], the invariant statistics of INSET
+(@sec-max-inset), reward features together with the dynamics in
+reinforcement learning (@sec-max-rl). We state it in the free-energy form
+when the point is *what is computed*: an ELBO, a mean-field iteration, a
+soft Bellman equation, an annealing schedule. It is worth noting where the
+knowledge sits. It does not sit in the value of $\boldsymbol{\mu}$, which
+the data supply, but in the form of $\mathsf{T}$: the content of the theorem
+behind @eq-max-def-constrained is that the energy is *confined to the span
+of the declared features*, $E = -\boldsymbol{\lambda}^\top \mathsf{T}$, not
+that it has an exponential shape, since any strictly positive $p$ can be
+written as $e^{-E}$ with $E := -\log p$.
+
+### Inference: free-energy minimization over a tractable family {#sec-max-def-inference}
+
+The second level asks how the distribution is computed or approximated. In
+maximum-entropy learning, inference is the minimization of the free energy
+of @eq-max-def-free over a tractable family $\mathcal{Q}$ of distributions,
+
+$$
+q^{\star}_{\mathcal{Q}}(E, T) \;=\; \operatorname*{arg\,min}_{q \in \mathcal{Q}}\; \mathcal{F}_{T}(q; E) .
+$$ {#eq-max-def-inference}
+
+The choice of $\mathcal{Q}$ is what distinguishes the algorithms. If
+$\mathcal{Q}$ is the set of all distributions, the inference is exact and
+returns $p_{E,T}$. If $\mathcal{Q}$ is the set of product distributions,
+@eq-max-def-inference is mean-field variational inference
+[@jordan1999variational; @wainwright2008graphical], the workhorse of
+@sec-max-coop-games and @sec-max-os-oracle. If $\mathcal{Q}$ is the set of
+trajectory distributions induced by a policy under the true dynamics, it is
+maximum-entropy reinforcement learning (@sec-max-rl). Markov chain Monte
+Carlo replaces the minimization by sampling, and a path in $T$ is an
+annealing schedule (@sec-energy-reasoning). The two limits are instructive:
+as $T \to 0$, @eq-max-def-inference becomes energy minimization, i.e., the
+inference of energy-based models in the sense of @sec-ebm-inference; as
+$T \to \infty$, it returns the base measure.
+
+A remark on terminology is in order. We deliberately avoid the phrase
+"maximum-entropy inference". In Jaynes' writing, *inference* means choosing
+a distribution from constraints, which is our representation level; in the
+graphical-model literature it means computing marginals or posteriors, which
+is the present level. For the latter we say *variational inference* or
+*free-energy minimization*.
+
+### Learning: fitting the energy through the inference {#sec-max-def-learning}
+
+The third level is active when the energy itself carries parameters,
+$E_\theta$, which are fitted from data $\mathcal{D}$ through the inference of
+the second level:
+
+$$
+\min_{\theta}\; \mathcal{L}\big(\mathcal{D};\; q^{\star}_{\mathcal{Q}}(E_\theta, T)\big) .
+$$ {#eq-max-def-learning}
+
+The supervision in $\mathcal{D}$ can take several forms: i.i.d. samples, as
+in maximum likelihood; prescribed moments, as in the classical setting;
+observed *optimal solutions*, as in the optimal subset oracle of
+@sec-max-os-oracle; demonstrated trajectories, as in inverse reinforcement
+learning (@sec-max-rl); or preferences. In every case the division of
+labour is the same. The learner chooses the form of $\mathsf{T}$, i.e., an
+architecture or a symmetry; the data supply the constraint content; and the
+maximum-entropy principle fixes the distribution. The inner problem
+@eq-max-def-inference is strictly convex in $q$, whereas the outer problem
+@eq-max-def-learning is in general non-convex in $\theta$.
+
+Maximum likelihood deserves a separate comment, because it is where the two
+levels meet. For the Gibbs model $p_\theta \propto h\, e^{-E_\theta}$ (we set
+$T = 1$ and absorb the scale into $E_\theta$), the gradient of the negative
+log-likelihood is
+$\mathbb{E}_{\hat p}[\nabla_\theta E_\theta] - \mathbb{E}_{p_\theta}[\nabla_\theta E_\theta]$
+(@eq-ebm-nll-grad), so at any stationary point
+
+$$
+\mathbb{E}_{\hat p}\big[\nabla_\theta E_\theta\big]
+\;=\;
+\mathbb{E}_{p_\theta}\big[\nabla_\theta E_\theta\big] .
+$$ {#eq-max-def-likelihood-eq}
+
+These are the classical *likelihood equations*, and they say that the model
+matches the data on the moments of the features $\nabla_\theta E_\theta$.
+For a linear energy $E = -\boldsymbol{\lambda}^{\top} \mathsf{T}$ they are
+exactly the constraints of @eq-max-def-constrained with $\boldsymbol{\mu}$
+the empirical moments — this is the maximum-entropy / maximum-likelihood
+duality — and the Boltzmann machine learning rule, clamped correlations
+minus free correlations [@ackley1985], is their best-known early instance in
+machine learning. For a neural energy the features move with $\theta$, so the
+constrained form holds only at each stationary point; the general case is
+better written in the free-energy form, as a saddle-point problem
+(@sec-max-family).
+
+### Definition of maximum-entropy learning, and a running example {#sec-max-def-family}
+
+We can now state the definition used in this chapter.
+
+::: {.callout-note title="Definition: maximum-entropy learning"}
+A method belongs to **maximum-entropy learning** if i) its model class is
+the Gibbs distribution of @eq-max-def-constrained or @eq-max-def-free,
+determined by a declared form of constraint; ii) its inference is a
+free-energy minimization @eq-max-def-inference in which the entropy term is
+explicit and load-bearing, i.e., $T > 0$; and, when the energy is fitted
+from data, iii) the fitting is carried out through that inference, as
+in @eq-max-def-learning. A method satisfying i) and ii) is a *maximum-entropy
+model* with variational inference; a method satisfying i)–iii) is termed a
+**maximum-entropy learner**. When the Kullback–Leibler divergence in i)–ii)
+is replaced by the Bregman divergence of another proper scoring rule, the
+same structure defines a *generalized* entropy [@grunwald2004game]; we then
+speak of maximum-entropy learning *in the generalized sense*, and reserve
+the unqualified term for the Shannon case.
 :::
+
+Two consequences of the definition are worth spelling out. First, the
+energy-based models of @sec-energy-models are all maximum-entropy models in
+the sense of i), and their training criteria differ in how they treat the
+inner problem that carries the entropy. Maximum likelihood and its
+approximations — sampled, as in persistent contrastive divergence
+[@tieleman2008pcd]; truncated, as in contrastive divergence [@hinton2002cd]
+and short-run MCMC [@nijkamp2019shortrun]; or amortized, as when a generator
+is trained to maximize its own entropy [@kumar2019meg] — are maximum-entropy
+learners in the strict sense of iii). Score matching and noise-contrastive
+estimation replace the log score by another proper scoring rule; each such
+rule carries its own generalized entropy and Bregman divergence
+[@grunwald2004game], and we call these methods maximum-entropy learners in
+the generalized sense, naming the entropy in each case (@sec-max-boundary).
+The zero-temperature losses of energy-based learning, e.g., the perceptron
+and hinge losses, lie on the boundary of the family. Second, methods in
+which the energy is *given* — a cooperative
+game (@sec-max-coop-games), a reward function in the soft actor–critic
+(@sec-max-rl), a composed energy used for guidance (@sec-energy-reasoning) —
+are maximum-entropy models with variational inference and no learner.
+Nothing is learned in them, and yet they belong to the family, because the
+entropy term does the work. @tbl-max-levels places the strands of this
+chapter, and two neighbouring ones, on the three levels.
+
+| Strand | Representation | Inference | Learning |
+|---|---|---|---|
+| Classical MaxEnt, log-linear models, CRFs (@sec-max-pgm) | Gibbs with declared features | exact, or message passing | multipliers by maximum likelihood |
+| Undirected graphical models (@sec-max-pgm) | Gibbs over cliques | variational or sampling | parameters by maximum likelihood |
+| Energy-based models by maximum likelihood or CD (@sec-energy-models) | Gibbs with learned features | MCMC, sampled or truncated | energy by maximum likelihood |
+| Energy-based models by score matching or NCE (@sec-energy-models) | Gibbs with learned features | none (local divergence) or a fixed noise proposal | energy by a generalized (Bregman) divergence; see @sec-max-boundary |
+| Energy-based cooperative games (@sec-max-coop-games) | Gibbs over coalitions, one constraint | mean field | — (game given) |
+| Optimal subset oracle (@sec-max-os-oracle) | Gibbs over $2^V$, neural set function | mean field, unrolled | energy from optimal subsets |
+| Maximum-entropy RL with a given reward (@sec-max-rl) | Gibbs over trajectories | soft Bellman recursion | — (reward given) |
+| Inverse RL (@sec-max-rl) | Gibbs over trajectories | soft Bellman recursion | reward from demonstrations |
+| Guidance and refinement (@sec-energy-reasoning) | Gibbs tilt of a pretrained generator | annealed sampling | — (energy given) |
+
+: The strands of maximum-entropy learning read through the three levels. A dash means that the level is not active: the energy is given rather than learned. {#tbl-max-levels}
+
+The status of the temperature follows the same pattern. When the energy is
+given and no constraint level is prescribed, $T$ is a genuine hyperparameter:
+the coalition temperature $\tau$ of @sec-max-coop-games, the entropy
+coefficient $\alpha$ of the soft actor–critic, the KL coefficient $\beta$ of
+policy optimization (@eq-min-gibbs). When the energy is learned and its
+family is closed under rescaling, $T$ is absorbed into the scale of
+$E_\theta$ and is not identifiable; this is the case of @sec-max-os-oracle.
+When a constraint level is prescribed, $T$ is the reciprocal of a
+multiplier and is determined by that level, as in the canonical ensemble
+of @sec-free-energy.
+
+
+**A running example.** The simplest maximum-entropy learner is the
+maximum-entropy classifier of classical natural language processing
+[@berger1996maxent], i.e., multinomial logistic regression. The features are
+indicator functions $f_k(x, y)$, e.g., "word $k$ occurs in document $x$ and
+the label $y$ is *sports*". The constrained form asks for the conditional
+distribution closest to uniform that matches the empirical expectations of
+all $f_k$; the solution is
+$p(y \mid x) \propto \exp\big(\boldsymbol{\lambda}^{\top} \mathsf{T}(x, y)\big)$,
+and fitting $\boldsymbol{\lambda}$ by maximum likelihood is the dual problem,
+so the likelihood equations @eq-max-def-likelihood-eq are precisely the
+moment constraints. In the free-energy form, the negative log-likelihood of
+one example is
+$-\boldsymbol{\lambda}^{\top} \mathsf{T}(x, y) + \log \sum_{y'} \exp\big(\boldsymbol{\lambda}^{\top} \mathsf{T}(x, y')\big)$,
+i.e., the energy of the observed label plus the free energy of the label
+ensemble. Inference is exact because the label set is small, and the
+temperature is absorbed into the scale of $\boldsymbol{\lambda}$. Levels
+i)–iii) are all present and all three are trivial; the rest of this chapter
+is about what happens when the space is the power set $2^V$ or the set of
+trajectories, and the inference is no longer exact.
 
 ## Graphical models as an explanatory family {#sec-max-pgm}
 
@@ -153,8 +361,8 @@ as one subject. Feature induction for random fields
 [@dellapietra1997inducing] and the maximum-entropy models of classical
 NLP [@berger1996maxent] are the same *exponential-family* construction;
 they are MRFs only when the features have local graphical support —
-Della Pietra, Della Pietra, and Lafferty are explicit that their fields
-may be non-Markovian. Conditional random fields [@lafferty2001crf] take
+Stephen Della Pietra, Vincent Della Pietra, and John Lafferty are explicit
+that their fields may be non-Markovian. Conditional random fields [@lafferty2001crf] take
 the construction over to $p(y \mid x)$ and became, for a decade, the
 default of structured prediction. None of that is controversial.
 
@@ -170,7 +378,8 @@ claim that "PGM *is* classical maximum entropy." Three qualifications
 matter.
 
 1. The PGM literature organizes itself around *representation, inference,
-   and learning*, not around Jaynes. Standard treatments
+   and learning* — the triad we borrowed in @sec-max-definition — not
+   around Jaynes. Standard treatments
    [@pearl1988probabilistic; @koller2009pgm] may discuss log-linear
    Markov networks, whose maximum-likelihood dual *is* a maximum-entropy
    problem, without taking that dual as the field's founding slogan. The
@@ -207,11 +416,11 @@ matter.
    family; potentials given by mixtures do not.
 3. Even on the undirected side, maxent fixes the *distribution given the
    constraints*. Choosing the graph, or which clique features to include,
-   is a *feature-selection* question with more than one answer — Della
-   Pietra, Della Pietra, and Lafferty's greedy KL-gain feature induction
-   [@dellapietra1997inducing], and Zhu, Wu, and Mumford's minimax entropy
-   [@zhu1997minimax] (@sec-minimax-entropy) — and neither is part of
-   Jaynes' original programme.
+   is a *feature-selection* question with more than one answer — the greedy
+   KL-gain feature induction of Della Pietra, Della Pietra, and Lafferty
+   [@dellapietra1997inducing], and the minimax entropy of Zhu, Wu, and
+   Mumford [@zhu1997minimax], the subject of @sec-minimax-entropy — and
+   neither is part of Jaynes' original programme.
 
 So the accurate statement, and the one this chapter will use, is narrower
 than a slogan and stronger than a metaphor: **a strictly positive
@@ -291,7 +500,7 @@ subset turned out to be optimal, and the same Gibbs-plus-mean-field
 machinery becomes a *training loop* on the power set $2^V$ — an exponentially
 large discrete space on which none of the Langevin machinery of
 @sec-energy-models applies. 
-This section most concretely embodies the concept of maximum-entropy *learning* as introduced at the beginning: here, the energy function is not given a priori but is instead learned directly on a discrete set space.
+This section most concretely embodies the concept of maximum-entropy *learning* as defined in @sec-max-definition: here, the energy function is not given a priori but is instead learned directly on a discrete set space, so the strand is a maximum-entropy *learner* in the sense of @sec-max-def-family.
 The published line runs through EquiVSet [@ou2022equivset] and INSET
 [@xie2024inset], and has since been taken up by others
 [@xie2024horse; @ozcan2025implicit]; a further step of our own is still a
@@ -369,6 +578,30 @@ probability the model currently assigns it. In the taxonomy of
 @sec-ebm-inference this is the *decision* question answered through the
 *probability* question, and the detour is deliberate.
 
+The same objective can be read in the constrained form
+of @sec-max-def-representation. What the OS oracle tells us about the unknown
+set function is a collection of *optimality constraints*,
+$F(S^\ast; V) \ge F(S; V)$ for all $S \subseteq V$, i.e., one polyhedral
+cone per instance, and the set functions satisfying them are exactly those
+under which the observed subset is optimal. Inferring an objective from
+observed optimal solutions is the classical problem of *inverse
+optimization* [@burton1992inverse; @ahuja2001inverse; @heuberger2004inverse],
+and the zero-temperature loss above is the structured perceptron of
+structured prediction [@collins2002perceptron; @taskar2003m3n;
+@tsochantaridis2005large]. Seen this way, the setting is not new in kind,
+and it is worth being explicit about its nearest relatives. Max-margin
+learning of submodular set functions from reference summaries
+[@lin2012shells; @sipos2012large] is the $T \to 0$ version on a fixed
+function class; structured prediction energy networks (SPENs) place a deep
+energy on a structured output and train it through unrolled gradient-based
+inference [@belanger2016spen; @belanger2017endtoend]. What EquiVSet adds is
+the combination: a permutation-invariant neural set function on a variable
+ground set, the maximum-entropy justification of the set mass function,
+amortized mean-field inference on the power set, and a copula that restores
+the correlations which mean field discards. The finite temperature is what
+turns the optimality constraints into a likelihood, and the likelihood into
+an objective that a gradient method can train.
+
 Two further requirements shape the architecture. The set mass function must
 be **permutation invariant**, and it must accept a **varying ground set**,
 since every instance arrives with its own $V$. Both are met by
@@ -442,7 +675,13 @@ with gradients back-propagated through the $K$ fixed-point steps. This is
 Domke's *marginal-based loss* [@domke2013marginal] — the training rule
 behind differentiable mean field for dense random fields and CRF-as-RNN
 [@krahenbuhl2013dense; @zheng2015crfrnn] — carried over to a deep energy on
-a variable ground set. Two properties should be stated plainly. The loss is
+a variable ground set. In the terminology of the broader literature it is
+end-to-end training through *unrolled inference*, also termed deep
+unfolding: the iterations of an inference algorithm are treated as the
+layers of a network, and the loss is back-propagated through them
+[@gregor2010lista; @stoyanov2011erm; @domke2012generic;
+@hershey2014unfolding; @belanger2017endtoend]. Two properties should be
+stated plainly. The loss is
 not a bound on the log-likelihood of @eq-os-mle: what is fit is the output
 of an approximate inference algorithm, which is a virtue (inference error is
 accounted for at training time) and a limitation (the link to the
@@ -515,23 +754,22 @@ Five points, and then what is open.
 
 1. **The feature is learned, not the multipliers.** Classical maximum
    entropy fixes the distribution given the features; @sec-max-coop-games
-   read valuations off that distribution for a given game. Here the Jaynes
-   confinement of the opening callout collapses to a single feature — the
-   utility itself — and that feature is a neural network trained from data.
-   This is the definition of maximum-entropy *learning* at the head of the
-   chapter, realized on a discrete domain, with the coalition temperature
-   $\tau$ of @sec-max-coop-games reappearing as the learned scale of
-   $F_\theta$.
-2. **Supervision by maximizers.** The OS oracle is neither function values
-   nor samples from the model; it is arg-max points of the energy. Maximum
-   likelihood is the finite-temperature relaxation of the perceptron
-   condition "the observed subset is a maximizer," and the pull-up over
-   $2^V$ is the price of smoothing it. The data constrain $F$ only through
-   its maximizers, so what is learned is a landscape with the right valleys,
-   not a calibrated utility: with noiseless optimal subsets the likelihood
-   alone would send the scale of $F_\theta$ to infinity, as in separable
-   logistic regression, and regularization and early stopping are what pin
-   it.
+   read valuations off that distribution for a given game. Here the
+   confinement of @sec-max-def-representation collapses to a single feature
+   — the utility itself — and that feature is a neural network trained from
+   data. In the vocabulary of @sec-max-def-family this is a maximum-entropy
+   *learner* on a discrete domain, with the coalition temperature $\tau$ of
+   @sec-max-coop-games reappearing as the learned scale of $F_\theta$.
+2. **Learning from observed optimal solutions.** The OS oracle is neither
+   function values nor samples from the model; it is arg-max points of the
+   energy, i.e., the supervision of inverse optimization. Maximum likelihood
+   is the finite-temperature relaxation of the perceptron condition "the
+   observed subset is a maximizer," and the pull-up over $2^V$ is the price
+   of smoothing it. The data constrain $F$ only through its maximizers, so
+   what is learned is a landscape with the right valleys, not a calibrated
+   utility: with noiseless optimal subsets the likelihood alone would send
+   the scale of $F_\theta$ to infinity, as in separable logistic regression,
+   and regularization and early stopping are what pin it.
 3. **A fourth road around the partition function.** @tbl-ebm-three listed
    three ways to afford the pull-up: sample it, differentiate it away,
    cancel it against noise. EquiVSet's road — relax the discrete
@@ -583,11 +821,327 @@ energy whose temperature is learned rather than fixed at one. It is not yet
 published, and we record it here as the direction the strand is taking
 rather than as a result.
 
+## Maximum-entropy reinforcement learning: energies over trajectories {#sec-max-rl}
+
+Reinforcement learning (RL) supplies the largest instance of the family
+outside our own work, and the one that most closely
+resembles @sec-max-os-oracle. We do not survey the field here. The aim of this section
+is to place maximum-entropy RL on the three levels of @sec-max-definition,
+and to show that inverse RL is the optimal subset oracle with trajectories in
+place of subsets.
+
+### A Gibbs distribution over trajectories {#sec-max-rl-model}
+
+Consider a Markov decision process with states $s$, actions $a$, transition
+kernel $p(s' \mid s, a)$, and reward $r(s, a)$, and let
+$\tau = (s_1, a_1, \dots, s_H, a_H)$ denote a trajectory. The representation
+level is a Gibbs distribution over trajectories,
+
+$$
+\begin{aligned}
+p(\tau) \;&=\; \frac{1}{Z}\, h(\tau)\,
+\exp\Big( \frac{1}{\alpha} \sum_{t=1}^{H} r(s_t, a_t) \Big), \\[4pt]
+h(\tau) \;&=\; p(s_1) \prod_{t=1}^{H-1} p(s_{t+1} \mid s_t, a_t)
+\prod_{t=1}^{H} u(a_t) ,
+\end{aligned}
+$$ {#eq-max-rl-gibbs}
+
+with energy $E(\tau) = -\sum_t r(s_t, a_t)$, temperature $\alpha$, and a base
+measure that is not uniform: $h$ is the law of the trajectories generated by
+the dynamics under a uniform action distribution $u$, i.e., the *passive
+dynamics* of the system in the terminology of KL control
+[@todorov2006lmdp; @todorov2009efficient; @kappen2005path]. The base measure
+is what keeps the model from placing mass on physically impossible
+transitions. For deterministic dynamics $h$ is uniform over the feasible
+trajectories, and @eq-max-rl-gibbs is exactly the trajectory distribution of
+maximum-entropy inverse RL [@ziebart2008maxent]; for stochastic dynamics the
+same paper carries an explicit transition factor together with an
+approximation, and the principled repair is the *maximum causal entropy*
+discussed next [@ziebart2010causal].
+
+### Soft Bellman equations as free energies {#sec-max-rl-inference}
+
+The inference level restricts $\mathcal{Q}$ to the distributions an agent
+can actually realize, namely those induced by a policy under the true
+dynamics,
+$q_\pi(\tau) = p(s_1) \prod_t p(s_{t+1} \mid s_t, a_t)\, \pi(a_t \mid s_t)$.
+This restriction has a pleasant consequence. In $\mathrm{KL}(q_\pi \,\Vert\, h)$
+the transition factors cancel, and what remains is
+$\mathbb{E}_{q_\pi}\big[\sum_t \log \pi(a_t \mid s_t) - \log u(a_t)\big]$,
+i.e., minus the *causal entropy* of the policy [@ziebart2010causal] up to a
+constant. Minimizing the free energy @eq-max-def-free over $q_\pi$ is
+therefore
+
+$$
+\max_{\pi}\; \mathbb{E}_{q_\pi}\Big[ \sum_{t} r(s_t, a_t)
+\;+\; \alpha\, H\big(\pi(\cdot \mid s_t)\big) \Big] ,
+$$ {#eq-max-rl-objective}
+
+which is the objective of maximum-entropy RL [@ziebart2010causal;
+@fox2016taming; @haarnoja2017energy]. Its optimality conditions are the
+*soft* Bellman equations,
+
+$$
+\begin{aligned}
+Q(s, a) \;&=\; r(s, a) + \mathbb{E}_{s' \sim p(\cdot \mid s, a)}\big[V(s')\big], \\[4pt]
+V(s) \;&=\; \alpha \log \sum_{a} \exp\big(Q(s, a)/\alpha\big), \\[4pt]
+\pi^{\star}(a \mid s) \;&=\; \exp\big((Q(s, a) - V(s))/\alpha\big) ,
+\end{aligned}
+$$ {#eq-max-rl-soft-bellman}
+
+and the soft value $V(s)$ is a log-partition function, i.e., a free energy
+at temperature $\alpha$, one per state. As $\alpha \to 0$ one recovers the
+hard Bellman equations and the greedy policy, exactly as $T \to 0$ recovers
+energy minimization in @sec-max-def-inference. The reading of RL as
+inference in a graphical model, in which the policy-induced family plays the
+role of $\mathcal{Q}$, goes back to Todorov, Toussaint, and Kappen
+[@todorov2009efficient; @toussaint2009robot; @kappen2012graphical] and is
+reviewed by @levine2018rlinference; the theory of entropy-regularized Markov
+decision processes states the same facts in the language of convex
+regularization [@neu2017unified; @geist2019regularized]. When the reward is
+given, as in soft Q-learning and the soft actor–critic [@haarnoja2017energy;
+@haarnoja2018sac], this is the whole story: a maximum-entropy model with
+variational inference and no learner, i.e., the same class as the
+cooperative games of @sec-max-coop-games, with $\alpha$ a genuine dial. The
+KL-regularized policy optimization of @eq-min-klrl is the same construction
+on a single decision, with a reference policy as the base measure and the KL
+coefficient as the temperature; imposing the KL as a constraint instead, as
+trust-region methods do [@schulman2015trpo], is the constrained form of the
+same problem.
+
+### Inverse reinforcement learning: the optimal subset oracle on trajectories {#sec-max-rl-irl}
+
+The learning level becomes active when the reward is unknown and one
+observes expert trajectories $\tau^\ast$ instead, which is the problem of
+inverse RL [@ng2000irl]. Maximum-entropy inverse RL fits a parametric reward
+$r_\theta$ by maximum likelihood under @eq-max-rl-gibbs [@ziebart2008maxent].
+For a linear reward $r_\theta(s, a) = \theta^{\top} \phi(s, a)$, the
+likelihood equations @eq-max-def-likelihood-eq read
+
+$$
+\mathbb{E}_{\text{expert}}\Big[\sum_t \phi(s_t, a_t)\Big]
+\;=\;
+\mathbb{E}_{p_\theta}\Big[\sum_t \phi(s_t, a_t)\Big] ,
+$$ {#eq-max-rl-feature-matching}
+
+i.e., the learned reward makes the model reproduce the expert's expected
+feature counts. This is the *feature-expectation matching* that
+apprenticeship learning had imposed directly [@abbeel2004apprenticeship],
+and the model expectation is computed by the soft Bellman recursion of
+@eq-max-rl-soft-bellman, i.e., the inference of the second level runs inside
+the training loop. At zero temperature the same objective becomes a
+max-margin structured prediction problem over policies, termed maximum
+margin planning [@ratliff2006mmp].
+
+The parallel with @sec-max-os-oracle is now line by line, and
+@tbl-max-irl-os records it. In both cases the supervision consists of
+*observed optimal solutions* of an unknown objective: a chosen subset in one
+case, a demonstrated trajectory in the other. In both cases the finite
+temperature turns the optimality constraints into a likelihood, the
+zero-temperature limit is a perceptron or max-margin loss, the inner problem
+is a free-energy minimization over a tractable family (mean field on the
+multilinear extension; soft value iteration over policies), and the learning
+signal is the difference between an expert statistic and a model statistic.
+The difference lies in the base measure and in the family: the power set has
+no dynamics and $h$ is uniform, whereas trajectories are constrained by the
+transition kernel, which is why the causal entropy replaces the Bernoulli
+entropies of @eq-os-elbo. We regard this parallel as the strongest external
+evidence that "learning an energy from its own optimizers" is a definition
+and not the description of one paper.
+
+| | Optimal subset oracle (@sec-max-os-oracle) | Maximum-entropy inverse RL |
+|---|---|---|
+| Observed optimal solution | subset $S^\ast \subseteq V$ | trajectory $\tau^\ast$ |
+| Energy to be learned | $-F_\theta(S; V)$ | $-\sum_t r_\theta(s_t, a_t)$ |
+| Base measure $h$ | uniform on $2^V$ | passive dynamics |
+| Constrained reading | optimality constraints (inverse optimization) | feature-expectation matching [@abbeel2004apprenticeship] |
+| Zero-temperature limit | structured perceptron; max-margin submodular learning [@lin2012shells; @sipos2012large] | maximum margin planning [@ratliff2006mmp] |
+| Inner problem | mean field on the multilinear extension | soft value iteration |
+| Entropy that does the work | Bernoulli entropies of $q_\psi$ | causal entropy of $\pi$ |
+| Learning signal | marginal-based loss through unrolled steps | expert minus model feature counts |
+
+: The optimal subset oracle and maximum-entropy inverse RL, read through the same three levels. {#tbl-max-irl-os}
+
+## What the family adds, and where it stops {#sec-max-family}
+
+
+Having placed the strands, we close the chapter with three general facts
+that the definition of @sec-max-definition makes available, and with a
+statement of what the definition excludes.
+
+### Maximum likelihood as a saddle-point problem {#sec-max-saddle}
+
+For the Gibbs model $p_\theta = h\, e^{-E_\theta / T} / Z(\theta)$, the
+variational representation $-T \log Z(\theta) = \min_q \mathcal{F}_T(q; E_\theta)$
+of @eq-max-def-free turns the negative log-likelihood into
+
+$$
+\begin{aligned}
+T \cdot \mathrm{NLL}(\theta)
+\;&=\; \mathbb{E}_{\hat p}[E_\theta] + T \log Z(\theta) \\[4pt]
+\;&=\; \max_{q}\Big\{\, \mathbb{E}_{\hat p}[E_\theta] - \mathbb{E}_{q}[E_\theta]
+- T\, \mathrm{KL}(q \,\Vert\, h) \Big\} + \text{const},
+\end{aligned}
+$$ {#eq-max-saddle}
+
+so maximum likelihood is $\min_\theta \max_q$: a saddle-point, or
+primal–dual, problem in which the inner player is the inference of
+@eq-max-def-inference and the outer player shapes the energy
+[@kim2016deep; @dai2019ade]. This is the form in which the pull-up of
+@eq-ebm-nll-grad appears as a variational player, and it is also the right
+place to locate the estimators of @tbl-ebm-three. Maximum likelihood with
+MCMC samples from the inner maximizer; contrastive divergence truncates the
+chain that would reach it; the fourth road of @sec-max-os-oracle solves the
+inner problem over a tractable family; score matching and noise-contrastive
+estimation do something different in kind — they replace the
+Kullback–Leibler divergence behind @eq-max-saddle by another divergence — and
+we return to them in @sec-max-boundary. We call @eq-max-saddle the
+*saddle-point form* and we do not call it minimax, since that word is
+reserved for the different nesting of @sec-minimax-entropy.
+
+### Maximum entropy inside, minimum entropy outside: the bridge to minimax entropy {#sec-max-bridge}
+
+Let the energy be linear in its last layer,
+$E_\theta(x) = -\, w^{\top} \phi_{\theta'}(x)$, as is the case for every
+network whose output is a linear read-out of its penultimate features, e.g.,
+the last layer of $\rho$ in a DeepSets set function. For fixed $\theta'$, the
+maximum-likelihood $w$ solves the Jaynes problem @eq-max-def-constrained with
+$\mathsf{T} = \phi_{\theta'}$ and $\boldsymbol{\mu}$ the empirical moments,
+and the likelihood equations in $w$ state that
+$\mathbb{E}_{\hat p}[\phi_{\theta'}] = \mathbb{E}_{p_\theta}[\phi_{\theta'}]$.
+At such a point, and for uniform $h$,
+
+$$
+\begin{aligned}
+\mathbb{E}_{\hat p}\big[-\log p_\theta\big]
+\;&=\; -\, w^{\top} \mathbb{E}_{\hat p}[\phi_{\theta'}] + \log Z \\[4pt]
+\;&=\; -\, w^{\top} \mathbb{E}_{p_\theta}[\phi_{\theta'}] + \log Z
+\;=\; H(p_\theta) ,
+\end{aligned}
+$$ {#eq-max-bridge}
+
+i.e., the cross-entropy of the data under the model equals the entropy of
+the model itself. Consequently, minimizing the negative log-likelihood over
+the feature parameters $\theta'$ is minimizing the entropy of the
+maximum-entropy model built on the features $\phi_{\theta'}$:
+
+$$
+\min_{\theta'}\; \mathrm{NLL}\big(\theta', w^{\star}(\theta')\big)
+\;=\;
+\min_{\theta'}\; H\big(p_{\theta',\, w^{\star}(\theta')}\big) .
+$$
+
+This is the minimax entropy principle of @sec-minimax-entropy
+[@zhu1997minimax], with a continuous family of features and with gradient
+descent in place of greedy selection. The incremental version is classical:
+in feature induction for random fields, the gain of adding a feature is the
+reduction of the model's entropy, which equals the reduction of the KL
+divergence to the data [@dellapietra1997inducing], and in the FRAME model of
+texture the filters are selected by the largest entropy drop
+[@zhu1998frame]. Replacing "select a filter from a bank" by "take a gradient
+step on the filter parameters" is what a deep energy model does
+[@ngiam2011deep]. The vision lineage of energy-based models describes itself
+in exactly these terms: the generative ConvNet is an exponential tilting of
+a Gaussian reference distribution by a ConvNet, and its authors present it
+as a hierarchical FRAME model, i.e., a maximum-entropy model whose features
+are learned filters [@xie2016convnet]. In this precise sense, every
+energy-based model trained by maximum likelihood is a minimax-entropy
+learner. The hypotheses should be
+kept in mind — a linear last layer (or a family closed under rescaling), an
+exact fit of $w$, and a uniform base measure — and @sec-minimax-entropy
+studies the explicit, budgeted, combinatorial version of the outer problem,
+which is where the open questions lie.
+
+### Where the family stops {#sec-max-boundary}
+
+The definition also says where the family stops, and which of its
+neighbours sit on which side of the line. We go through them in turn,
+starting with the estimators of @sec-energy-models, since the answer there
+is not the same for every estimator.
+
+- Contrastive divergence [@hinton2002cd], its persistent variant
+  [@tieleman2008pcd], and short-run MCMC [@nijkamp2019shortrun] are
+  maximum-entropy learners in the strict sense. They approximate the inner
+  maximization of @eq-max-saddle by sampling from, or truncating, a Markov
+  chain whose target is the maximum-entropy distribution, so the entropy
+  term is carried by that target. The truncated versions share the structure
+  and the caveat of @sec-max-equivset: what is fit is the output of a
+  truncated inference procedure, the update is biased and in general not the
+  gradient of any objective [@carreira2005cd; @bengio2009cd;
+  @sutskever2010cd], and the learned energy need not be a valid density
+  [@nijkamp2020anatomy]. In this respect the optimal subset oracle and
+  CD-$k$ stand or fall together, and we keep both inside the family.
+- Score matching [@hyvarinen2005score] and noise-contrastive estimation
+  [@gutmann2010nce] fit the same Gibbs model by minimizing a different
+  divergence, and we call them maximum-entropy learners *in the generalized
+  sense*. The construction behind the word is that of proper scoring rules.
+  Every proper scoring rule $S$ defines a generalized entropy
+  $H_S(p) = \mathbb{E}_p[S(x, p)]$ and a Bregman divergence
+  $d_S(p, q) = \mathbb{E}_p[S(x, q)] - H_S(p)$, and maximizing $H_S$ under
+  constraints is dual to minimizing the worst-case expected score, exactly
+  as for the Shannon entropy and the log score [@grunwald2004game;
+  @dawid2007geometry]. Score matching minimizes the Fisher divergence, which
+  is $d_S$ for the Hyvärinen score — the basic second-order local proper
+  scoring rule, computable without the normalizing constant
+  [@parry2012local] — and the corresponding generalized entropy is
+  $-\tfrac{1}{2}\,\mathbb{E}_p\|\nabla_x \log p\|^2$, i.e., minus one half of
+  the Fisher information. Score matching is therefore a
+  *minimum-Fisher-information* learner, a principle with its own history in
+  physics [@frieden1990fisher]. Its bridges to the strict case are
+  quantitative: it is the infinitesimal-step limit of Langevin contrastive
+  divergence [@hyvarinen2007connections], the derivative of the KL divergence
+  under Gaussian smoothing [@lyu2009score], and, with likelihood weighting in
+  diffusion models, an upper bound on the negative log-likelihood
+  [@song2021mlscore]. Noise-contrastive estimation is the maximum-entropy
+  classifier of @sec-max-def-family with the energy as its single learned
+  feature; it is consistent, and for normalized models it becomes
+  asymptotically as efficient as maximum likelihood as the noise-to-data
+  ratio grows [@gutmann2012nce]. The constant it estimates in place of
+  $\log Z$ plays the role of a free-energy difference between the model and
+  the noise distribution, and the estimator is, up to the roles of data and
+  noise samples, Bennett's acceptance-ratio method of statistical physics,
+  which is itself a logistic-regression maximum-likelihood estimator
+  [@bennett1976free; @shirts2003bar]. Both estimators, together with ratio
+  matching, belong to one Bregman-divergence framework for unnormalized
+  models [@gutmann2011bregman], and the Kullback–Leibler divergence of
+  maximum likelihood is itself a Bregman divergence. Their derivations
+  remain in @sec-energy-models.
+- The zero-temperature losses — perceptron, hinge, maximum margin planning —
+  are the $T \to 0$ limits of the family and lie on its boundary: the
+  entropy term has been switched off.
+- Directed graphical models fitted by maximum likelihood or EM are learners
+  at levels ii)–iii): the E-step is the I-projection of
+  @eq-max-def-constrained, and the free-energy view of EM is that of
+  @sec-ebm-latent [@neal1998em]. But their model class is not a linear
+  exponential family (@sec-max-pgm), so they are maximum-entropy learners
+  without being maximum-entropy models.
+- Minimum-entropy learning (@sec-min-entropy) uses the same inner Gibbs
+  tilt (@eq-min-gibbs) but reverses the outer criterion; it is excluded by
+  ii) by design, and the two chapters are the two directions of the dial
+  of @sec-free-energy.
+- Entropy bonuses added to an arbitrary objective as a heuristic, without a
+  Gibbs model behind them, are in the penumbra: they become maximum-entropy
+  learning exactly when the objective can be written as @eq-max-def-free.
+
+Two remarks connect the definition to finite samples and to decision theory.
+When the moments $\boldsymbol{\mu}$ are estimated from data, relaxing the
+constraints of @eq-max-def-constrained to a box
+$|\mathbb{E}_q[\mathsf{T}] - \hat{\boldsymbol{\mu}}| \le \boldsymbol{\beta}$
+is dual to $\ell_1$-regularized maximum likelihood, so constraint slack and
+regularization strength are one quantity [@dudik2007maxent;
+@altun2006unifying]. And the maximum-entropy distribution is the minimax
+strategy of a zero-sum game against nature under logarithmic loss
+[@topsoe1979information; @grunwald2004game], which gives the principle a
+decision-theoretic rationale that is independent of Jaynes' informational
+one.
+
 ## Takeaway
 
 Maximizing entropy reframes choosing a distribution over coalitions as the process of specifying a constraint; mean-field inference on this distribution transforms the question from “which valuation should I adopt?” to “how far along the mean-field path should I iterate?”—placing Shapley, Banzhaf, and related values on a continuous spectrum rather than as disconnected axioms. This echoes the main probabilistic graphical models insight from earlier in the chapter: a strictly positive MRF corresponds to a maximum-entropy model with structured constraints, and it is the mean-field relaxation that unifies different valuation principles as points along a single trajectory.
 
 
-If we no longer assume the game is given, the same framework becomes a learning algorithm: we model a Gibbs distribution over subsets, where the energy is a neural set function, and learn this energy directly from observations of optimal subsets—by differentiating through mean-field inference on the multilinear extension. This is maximum-entropy learning as described in the chapter's introduction, but now on a discrete space with an energy function discovered (not specified) from data. Here, the ELBO becomes the free energy to optimize, and the resulting energy landscape is itself shaped by the training data—a direct example of the chapter’s central idea.
+If we no longer assume the game is given, the same framework becomes a learning algorithm: we model a Gibbs distribution over subsets, where the energy is a neural set function, and learn this energy directly from observations of optimal subsets—by differentiating through mean-field inference on the multilinear extension. This is maximum-entropy learning as defined in @sec-max-definition, but now on a discrete space with an energy function discovered (not specified) from data. Here, the ELBO becomes the free energy to optimize, and the resulting energy landscape is itself shaped by the training data—a direct example of the chapter’s central idea.
+
+Read through the three levels of @sec-max-definition, the chapter has one shape. Every strand shares the representation and inference levels—a Gibbs model and a free-energy minimization—and the strands differ in whether the learning level is active and in what supervises it. The cooperative games and maximum-entropy RL with a given reward stop at inference; the optimal subset oracle and inverse RL learn the energy from observed optimal solutions, and the two are parallel line by line (@tbl-max-irl-os). Finally, by the identity @eq-max-bridge, maximum likelihood over the features of any such model is already a minimax-entropy problem, which is related to @sec-minimax-entropy.
 
 

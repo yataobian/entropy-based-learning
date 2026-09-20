@@ -18,7 +18,8 @@ Three complementary principles organize the material in this book:
 - **The Maximum Entropy Principle** — among all models consistent with the
   observed constraints, prefer the one that is maximally noncommittal (highest
   entropy). This principle underlies statistical physics, Boltzmann machines,
-  and a principled class of game-theoretic valuation methods.
+  maximum-entropy reinforcement learning, and a principled class of
+  game-theoretic valuation methods.
 - **The Minimum Entropy Principle** — when a model's own predictions can serve
   as a training signal, reducing predictive uncertainty can elicit capabilities
   such as reasoning, *without* external supervision.

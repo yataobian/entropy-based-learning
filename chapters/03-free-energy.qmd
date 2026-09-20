@@ -243,7 +243,13 @@ of a single dial.
 
 The principles are not competing claims about the right amount of uncertainty.
 They are claims about *when* to be uncertain, and the free energy is what makes
-that question well posed.
+that question well posed. Read at the level of algorithms rather than slogans,
+the three also share one *inner* problem — the minimization of a free energy
+over distributions, which @sec-max-entropy calls the representation and
+inference levels — and differ only in the *outer* criterion: fit the data
+(maximum entropy), sharpen the model's own output (minimum entropy), or choose
+the features whose maximum-entropy model has the least entropy (minimax
+entropy).
 
 ## Why it matters for learning
 

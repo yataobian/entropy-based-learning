@@ -16,7 +16,11 @@ This chapter is the inference-time face of the maximum-entropy programme
 sketched in @sec-max-entropy: guidance is descent on an energy, and refinement
 is annealed sampling from the Gibbs distribution $p(x) \propto e^{-E(x)}$, so
 both are the maximum-entropy machinery of @sec-free-energy applied at test
-time rather than during training.
+time rather than during training. In the vocabulary of @sec-max-definition,
+both operate at the *inference* level with a given energy: the pretrained
+generator plays the role of the base measure $h$, and the energy tilts it — a
+product of experts [@hinton2002cd] — so the learning level is not active and
+nothing is fitted.
 
 ## Guidance
 

@@ -42,6 +42,23 @@ constrain our expectations while leaving the model maximally random about
 everything unobserved. The principle was first proposed for texture modeling in
 computer vision [@zhu1997minimax].
 
+The principle is closer to everyday practice than its combinatorial statement
+suggests. Let an energy-based model (@sec-energy-models) be linear in its last
+layer, $E_\theta(x) = -\sum_\mu w_\mu\, \phi_\mu(x; \theta')$, so that for
+fixed $\theta'$ the functions $\phi_\mu(\cdot\,; \theta')$ play the role of the
+feature set $F$. For fixed $\theta'$ the maximum-likelihood $w$ is the
+maximum-entropy model $P_F$ of these features, and at that point the
+cross-entropy of the data equals $S(P_F)$; this is the identity
+@eq-max-bridge of @sec-max-bridge, whose hypotheses are a linear last layer,
+an exact fit of $w$, and a uniform base measure. Maximum likelihood over
+$\theta'$ is therefore $\min_F S(P_F)$ over a continuous family of feature
+sets: minimax entropy, with gradient descent in place of greedy selection. In
+this sense every neural energy-based model trained by maximum likelihood is a
+minimax-entropy learner, whether or not anyone says so. What this chapter
+adds, and what the implicit version lacks, is the *explicit* selection of a
+feature set under a description-length budget — a combinatorial outer problem
+whose solution can be inspected, bounded, and compared across budgets.
+
 ## Three equivalent views
 
 Minimizing $S(P_F)$ optimizes three quantities at once. In what follows,
@@ -88,7 +105,10 @@ certainty, and the minimax formulation decides which details deserve to be
 modelled at all.
 
 The principle has recently yielded exactly solvable models of large neuronal
-populations [@lynn2024exact], yet its reach in machine learning is largely
-untapped. Open directions include scalability and sample complexity in high
-dimensions, realizations for LLMs, agents, and multimodal models, and the
-relationship to the free-energy principle [@friston2010free].
+populations [@lynn2024exact]. Its implicit form runs inside every
+energy-based model trained by maximum likelihood (@sec-max-bridge), but its
+explicit form — the selection of a feature set under a description-length
+budget, with guarantees on sample complexity — remains largely untapped in
+machine learning. Open directions include scalability and sample complexity
+in high dimensions, realizations for LLMs, agents, and multimodal models, and
+the relationship to the free-energy principle [@friston2010free].

@@ -309,8 +309,8 @@ own [@song2021train].
 
 ## Strategy two: match slopes, not heights {#sec-ebm-score-matching}
 
-Here is a different idea, and it begins with an observation about
-@eq-ebm-score. The score $\nabla_x \log p_\theta(x)$ does not contain
+Here is a different idea, and it begins with an observation
+about @eq-ebm-score. The score $\nabla_x \log p_\theta(x)$ does not contain
 $Z(\theta)$ at all. Two normalized densities with the same score everywhere
 on a connected domain are the same density — if their log-densities have
 equal gradients, they differ by a constant, and normalization forces that
@@ -621,16 +621,23 @@ free energy; this chapter made the energy learnable and catalogued the ways
 around the normalizer. Forward, each methods chapter picks up a specific
 thread:
 
-- **Maximum-entropy learning** (@sec-max-entropy) is the large tent in which
-  Gibbs distributions are *used* as models: classical MaxEnt, probabilistic
-  graphical models as an explanatory family (@sec-max-pgm), maximum-entropy
-  RL, energy-based guidance, and two strands of our own — a Gibbs
-  distribution over coalitions in a *given* cooperative game, from which
-  game-theoretic valuations are derived [@bian2022energybased]
-  (@sec-max-coop-games), and a Gibbs distribution over subsets whose energy
-  is a neural set function *learned* from optimal subsets alone
-  [@ou2022equivset], a fourth road around the partition function that
-  @tbl-ebm-three does not list (@sec-max-os-oracle).
+- **Maximum-entropy learning** (@sec-max-entropy) is the family in which
+  Gibbs distributions are *used* as models and the entropy term is explicit
+  in the inference, whereas this chapter supplied *estimators* for a Gibbs
+  model, in which the entropy is implicit in $\log Z$ (maximum likelihood,
+  contrastive divergence) or replaced by a generalized entropy (score
+  matching, NCE; see @sec-max-boundary). The family is defined through the
+  three levels of
+  representation, inference, and learning (@sec-max-definition), and it
+  contains classical MaxEnt, probabilistic graphical models as an
+  explanatory family (@sec-max-pgm), maximum-entropy and inverse
+  reinforcement learning (@sec-max-rl), energy-based guidance, and two
+  strands of our own — a Gibbs distribution over coalitions in a *given*
+  cooperative game, from which game-theoretic valuations are derived
+  [@bian2022energybased] (@sec-max-coop-games), and a Gibbs distribution
+  over subsets whose energy is a neural set function *learned* from optimal
+  subsets alone [@ou2022equivset], a fourth road around the partition
+  function that @tbl-ebm-three does not list (@sec-max-os-oracle).
 - **Minimum-entropy learning** (@sec-min-entropy) trains a model on its own
   agreement signal; its collapse mode (@sec-min-collapse) is the energy
   loss's flat-landscape failure in a new costume, and the free-energy
