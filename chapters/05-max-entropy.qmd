@@ -107,6 +107,23 @@ of the declared features*, $E = -\boldsymbol{\lambda}^\top \mathsf{T}$, not
 that it has an exponential shape, since any strictly positive $p$ can be
 written as $e^{-E}$ with $E := -\log p$.
 
+A related point is that the two forms constrain different variables. The
+constrained form restricts the distribution $q$; an architecture for
+$E_\theta$ restricts the energy, i.e., the dual variable, and the two
+descriptions coincide exactly only when the admissible energies form a
+linear space (equality constraints, with free multipliers) or a convex cone
+(inequality constraints, with nonnegative multipliers). For a neural energy
+the correspondence holds slice by slice through the last linear layer, and
+at every stationary point through the likelihood equations of
+@sec-max-def-learning, but not for the family as a whole, which is a curved
+rather than an exponential family [@efron1975curvature]. Symmetry is the
+exception that lives on both sides at once: invariance of the distribution
+under a group $G$ is a set of homogeneous linear constraints
+$\mathbb{E}_q[f \circ g - f] = 0$, the maximum-entropy solution inherits it
+[@jaynes1968prior], and it is equivalent to restricting the features to
+functions of the maximal invariant of the group
+[@bloemreddy2020symmetries], which is the route taken in @sec-max-inset.
+
 ### Inference: free-energy minimization over a tractable family {#sec-max-def-inference}
 
 The second level asks how the distribution is computed or approximated. In
@@ -743,7 +760,12 @@ The move is the one @sec-max-pgm attributed to Jaynes, with invariance in
 place of moment constraints: the constraints fix *which statistics* the
 distribution may depend on — there, clique indicators; here, the maximal
 invariant of the symmetry group — and leave the function of those
-statistics free for the data to determine. The two-branch design improved on
+statistics free for the data to determine. In the vocabulary
+of @sec-max-def-representation, invariance is the one structural constraint
+that can be stated on either side of the duality, as linear equality
+constraints on the distribution or as the requirement that the features
+factor through the maximal invariant, and INSET takes the second route. The
+two-branch design improved on
 EquiVSet across every benchmark (on Double MNIST the mean Jaccard index rose
 from $0.575$ to $0.707$), converged in fewer epochs, and an ablation shows the
 gain is not bought with parameter count.
