@@ -47,7 +47,7 @@ This book is an ongoing project, released early so you can follow its developmen
 | 2 — Entropy and the Maximum Entropy Principle | **mostly complete** |
 | 3 — Energy, Entropy, and Free Energy | **mostly complete** |
 | 4 — Energy-Based Models | **mostly complete** |
-| 5 — Maximum-Entropy Learning | early draft |
+| 5 — Maximum-Entropy Learning | **mostly complete** |
 | 6 — Minimum-Entropy Learning | **mostly complete** |
 | 7 — Minimax-Entropy Learning | early draft |
 | 8 — Energy-Based Reasoning, Guidance, and Refinement | early draft |
