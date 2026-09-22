@@ -3,65 +3,432 @@ date: "2026-08-03"
 date-modified: last-modified
 ---
 
-# Energy-Based Reasoning, Guidance, and Refinement {#sec-energy-reasoning}
+# Energy-Based Guidance and Refinement {#sec-energy-reasoning}
 
-Energy-based thinking is not only a training paradigm; it is also a powerful
-*inference-time* tool. Given an energy function $E_\theta(x)$ that scores how
-"good" a candidate solution $x$ is — whether trained by the methods of
-@sec-energy-models or assembled by composing pretrained models and
-constraints, exploiting the additivity of energies noted there — we can
-**guide**, **refine**, and **search** at test time.
-
-This chapter is the inference-time face of the maximum-entropy programme
-sketched in @sec-max-entropy: guidance is descent on an energy, and refinement
-is annealed sampling from the Gibbs distribution $p(x) \propto e^{-E(x)}$, so
-both are the maximum-entropy machinery of @sec-free-energy applied at test
-time rather than during training. In the vocabulary of @sec-max-definition,
-both operate at the *inference* level with a given energy: the pretrained
-generator plays the role of the base measure $h$, and the energy tilts it — a
-product of experts [@hinton2002cd] — so the learning level is not active and
-nothing is fitted.
-
-## Guidance
-
-An energy (or a gradient of it) can steer a generative process toward
-desiderata:
+The previous chapters treated the energy as something to be learned from
+data. This chapter and the next treat a different situation, which is by now
+the most common one in practice: a large generative model is already trained,
+and we want to change what it generates without training it from scratch. We
+call the trained model the *reference*, written $p_{\mathrm{ref}}$, and we
+call the change a *tilt*. Both chapters are organized around one object,
 
 $$
-x \leftarrow x - \eta\, \nabla_x E_\theta(x),
+p^{\star}(x) \;=\; \frac{p_{\mathrm{ref}}(x)\, \exp\big(-E(x)/T\big)}{Z},
+\qquad
+Z \;=\; \sum_{x} p_{\mathrm{ref}}(x)\, \exp\big(-E(x)/T\big),
+$$ {#eq-guid-tilt}
+
+which is the free-energy form of @sec-max-def-representation with the
+reference as base measure, $h = p_{\mathrm{ref}}$: $p^\star$ is the
+distribution closest to the reference, in Kullback–Leibler divergence, among
+those with a prescribed expected energy, and equivalently the minimizer of
+$\mathbb{E}_q[E] + T\,\mathrm{KL}(q \,\Vert\, p_{\mathrm{ref}})$. In the
+vocabulary of @sec-max-definition, @eq-guid-tilt is the representation level.
+The two chapters differ in *where the tilt is executed*. In this chapter it
+is executed at inference time: the reference is frozen, and a sampler does
+the work — gradient guidance, reranking, importance sampling, sequential
+Monte Carlo, or iterative refinement. This is the inference level of
+@sec-max-def-inference carried out at test time. In @sec-post-training the
+tilt is absorbed into the weights of the reference, or the energy is learned
+through the reference; that is the learning level. 
+These are not rival approaches, but rather two ways to obtain the same target distribution: one pays the cost in computation at inference (test) time, while the other pays it upfront through additional training.
+
+**What is fixed and what is fitted.** It is worth being precise about the
+phrase "the energy is given", since several methods in this chapter *train*
+an energy: a residual energy by noise-contrastive estimation, a verifier by
+pairwise ranking, a guidance network by regression. 
+The distinction we emphasize is not whether the energy itself is trained or untrained, but rather which part in @eq-guid-tilt is being held fixed and which is being adjusted.
+In this chapter the *reference* is fixed; its parameters are
+never updated, and the energy, however it was obtained, enters only through
+the sampler. Training the energy is a learning problem in its own right — a
+maximum-entropy learner in the sense of @sec-max-def-family whose data are
+labels, preferences, or contrastive noise — but it is a separate learner, and
+its output is then handed to the sampler. So "energy given" should be read as
+"energy given to the sampler, reference frozen". Two methods at the end of
+the chapter blur even this line, because in them the energy *is* the
+generator: Energy Matching and energy-based transformers have no separate
+reference, and sampling is refinement on the energy itself. We treat them as
+the limit in which the tilt has nothing left to tilt.
+
+## The tilted reference {#sec-guid-tilt}
+
+Three remarks on @eq-guid-tilt organize the chapter.
+
+First, the temperature has the status of a genuine dial (@sec-max-def-family):
+the energy is given, no constraint level is prescribed, and $T$ is chosen. It
+appears in the literature under several names. In classifier guidance for
+diffusion models it is the reciprocal of the guidance scale $w$; in
+KL-regularized fine-tuning it is the KL coefficient $\beta$; in best-of-$N$
+selection, as we show in @sec-guid-verifiers, the number of candidates $N$
+plays the role of an inverse temperature. Small $T$ concentrates $p^\star$ on
+the low-energy region and moves it far from the reference; large $T$ leaves
+the reference almost untouched. The zero-temperature limit is energy
+minimization on the support of the reference, and it is where guidance stops
+being a probabilistic method (@sec-max-boundary).
+
+Second, the energy is additive. If two energies $E_1$ and $E_2$ encode two
+requirements, the tilt by $E_1 + E_2$ is the product of the two tilts
+normalized once, i.e., a product of experts [@hinton2002cd]. This is why
+guidance composes: a classifier, a constraint, and a reward can be added
+without retraining anything. The price is a partition function that depends
+on all of them together, and most of the technical content of the chapter is
+about how each sampler avoids or estimates that partition function.
+
+Third, the constrained reading is available. By the duality of
+@sec-max-def-representation, $p^\star$ is the I-projection of the reference
+onto the set $\{q : \mathbb{E}_q[E] = U\}$ for the level $U$ implied by $T$.
+The reading matters for one practical question: how far from the reference a
+tilt is allowed to travel. The Kullback–Leibler divergence
+$\mathrm{KL}(p^\star \,\Vert\, p_{\mathrm{ref}})$ is a budget, and several
+results below are bounds on that budget.
+
+## Continuous guidance {#sec-guid-continuous}
+
+For continuous data the reference is usually a diffusion or flow model, and
+the sampler has a gradient available. Classifier guidance [@dhariwal2021guidance]
+is the original instance of @eq-guid-tilt in this setting. To generate from
+$p(x \mid y) \propto p(x)\, p(y \mid x)$ with a pretrained unconditional model
+$p(x)$ and a classifier $p(y \mid x)$, one adds the classifier gradient to the
+score at every noise level,
+
 $$
+\nabla_{x_t} \log p_t(x_t \mid y)
+\;\approx\;
+\nabla_{x_t} \log p_t(x_t) \;+\; w\, \nabla_{x_t} \log p(y \mid x_t),
+$$ {#eq-guid-classifier}
 
-nudging samples toward lower-energy, higher-quality regions. This is the
-mechanism behind classifier / energy guidance in diffusion-style generation and,
-more broadly, behind constraint-aware generation.
+with a guidance scale $w \ge 1$ that sharpens the conditional. In our
+notation the energy is $E = -\log p(y \mid x)$ and $T = 1/w$; the target is a
+product of experts, and the classifier must be trained on noisy inputs $x_t$.
+Classifier-free guidance [@ho2022cfg] removes the separate classifier by
+training the generator with and without the condition and extrapolating,
+$\hat\epsilon = (1 + w)\,\epsilon_\theta(x_t, y) - w\, \epsilon_\theta(x_t)$,
+which amounts to using the implicit classifier
+$p(y \mid x_t) \propto p(x_t \mid y) / p(x_t)$ as the energy.
 
-Note that pure descent is the zero-temperature limit of @sec-free-energy: it
-consults energy and ignores entropy entirely, and so inherits the classic
-weakness of getting trapped in local minima. Adding noise and lowering it over
-the course of the process — annealing [@kirkpatrick1983] — is the
-finite-temperature generalization, and it is the same schedule that diffusion
-samplers implement under a different name.
+For a general energy $J$ on clean data, i.e., a target
+$p'(x_0) \propto p(x_0)\, e^{-J(x_0)}$, the difficulty is that the sampler
+runs on noisy states $x_t$ and needs the energy *there*. The exact
+intermediate energy is
 
-## Refinement
+$$
+E_t(x_t) \;=\; -\log \mathbb{E}_{p(x_0 \mid x_t)}\big[ e^{-J(x_0)} \big],
+$$ {#eq-guid-intermediate}
 
-Rather than accepting a single forward pass, we can iteratively **refine** a
-candidate by repeatedly lowering its energy — an optimization view of
-"thinking longer." Refinement trades extra compute for higher-quality outputs,
-and connects naturally to the minimum-entropy view of self-consistent reasoning
-in @sec-min-entropy.
+a free energy of the posterior over clean samples given the noisy one, and
+its gradient is the exact guidance. Lu et al. [@lu2023cep] show that
+@eq-guid-intermediate is the only guidance consistent with the marginals of
+the reverse process and propose contrastive energy prediction to learn it; the
+common shortcut evaluates $J$ at the posterior mean $\hat{x}_0(x_t)$ instead,
+which is a first-order approximation. Feng et al. [@feng2025flowguidance]
+carry the analysis to general flow matching, where the reference is a vector
+field $v_t$ generating a probability path from noise to data. They ask for a
+guidance field $g_t$ such that $v_t + g_t$ generates the path to
+$p'(x) \propto p(x)\, e^{-J(x)}$, and derive three families: an asymptotically
+exact Monte Carlo guidance that reweights samples of the coupling by
+$e^{-J}$, a local guidance obtained by Taylor expansion that is proportional
+to $\nabla J$ and recovers the classical gradient guidance of diffusion models
+under affine Gaussian paths, and training-based exact guidance with its own
+regression losses. The value of this framework for us is the hierarchy it
+makes explicit: exact guidance is an expectation under the posterior of the
+reference, and gradient guidance is its cheapest approximation.
 
-## Reasoning as energy minimization
+When several energies are composed, the approximation error of gradient
+guidance compounds, since the reverse process only sees the sum of
+approximate scores. Du et al. [@du2023reduce] show that running a few steps of
+Markov chain Monte Carlo (Langevin or Hamiltonian) on the composed energy
+inside each reverse step corrects the composition; the sampler then targets
+the product of experts rather than the sum of its approximations. This is
+refinement in the sense of @sec-guid-refinement, applied locally in noise
+level.
 
-A unifying perspective:
+Energy Matching [@balcerak2025energymatching] takes the opposite route to the
+same end. Instead of tilting a flow with an energy, it learns a single
+time-independent scalar potential $V_\theta(x)$ whose gradient plays two
+roles: far from the data manifold it is a transport field along optimal
+transport paths, and near the manifold it is the drift of Langevin dynamics,
+so that the sampler equilibrates in a Boltzmann well $\propto e^{-V_\theta}$
+around the data. Additional requirements are added as energy terms — the
+authors use an interaction energy to spread samples over modes in protein
+design — which is the additivity of @sec-guid-tilt with the potential itself
+as the reference. Here the energy and the generator coincide; there is no
+frozen reference to tilt, and we return to this case in @sec-guid-refinement.
 
-- A **reasoning problem** defines an (implicit) energy landscape over candidate
-  solution trajectories.
-- **Reasoning** is the process of finding low-energy trajectories — via search,
-  guidance, or refinement.
-- **Learning** shapes the landscape so that correct or self-consistent
-  solutions sit at the minima.
+## Discrete guidance: residual energies over a proposal {#sec-guid-discrete}
 
-This viewpoint ties together the threads of the book: maximum entropy defines
-principled landscapes, minimum entropy sharpens them from self-supervision, and
-energy-based inference navigates them. The next part turns to where these ideas
-pay off — scientific intelligence.
+For sequences the sampler has no gradient in the data space, and the tilt is
+implemented by *proposing* from the reference and *reweighting* by the
+energy. The construction is the residual energy-based model of Deng et al.
+[@deng2020residual],
+
+$$
+p(x) \;=\; \frac{p_{\mathrm{AR}}(x)\, \exp\big(-E_\phi(x)\big)}{Z_\phi},
+$$ {#eq-guid-residual}
+
+in which a pretrained autoregressive language model $p_{\mathrm{AR}}$ is the
+proposal, $E_\phi$ is a bidirectional scorer of the whole sequence, and
+generation draws $n$ candidates from $p_{\mathrm{AR}}$ and resamples them with
+weights $\propto e^{-E_\phi}$. The energy is trained by noise-contrastive
+estimation with the proposal as the noise distribution
+[@gutmann2010nce], so that, in the classification of @sec-max-boundary, the
+residual EBM is a maximum-entropy learner in the generalized sense whose
+inference is importance sampling from the tilt. The same construction at the
+token level is Electric [@clark2020electric], an energy-based cloze model
+trained by conditional noise-contrastive estimation; its authors show that
+ELECTRA's replaced-token detection [@clark2020electra] is a closely related
+negative-sampling objective, which gives a principled reading of what that
+discriminative pre-training learns: an energy over tokens in context.
+
+Discrete diffusion language models sharpen the need for a residual energy. A
+masked diffusion model decodes several tokens in parallel at each step, but
+its denoiser factorizes over positions, $p_\theta(x_{t-1} \mid x_t) =
+\prod_i p_\theta(x^i_{t-1} \mid x_t)$, so the tokens decoded together are
+conditionally independent given the current state; with few steps the
+independence assumption is badly violated and quality degrades. The
+energy-based diffusion language model (EDLM) of Xu et al. [@xu2025edlm] puts a
+residual energy on each denoising step,
+
+$$
+p_{\mathrm{EDLM}}(x_{t-1} \mid x_t) \;\propto\;
+p_{\mathrm{diffusion}}(x_{t-1} \mid x_t)\, \exp\big(-E(x_{t-1}, x_t)\big),
+$$ {#eq-guid-edlm}
+
+and shows that the energy can be read off a pretrained autoregressive model or
+fitted by noise-contrastive estimation from a bidirectional transformer; the
+sampler is parallel importance sampling over candidates from the diffusion
+proposal. On language-modeling benchmarks EDLM approaches autoregressive
+perplexity and reaches the same generation quality as the diffusion baseline
+in fewer steps (a $1.3\times$ sampling speedup is reported).
+
+Our own contribution to this line is the *unified energy* (Uni-E) of Yan et
+al. [@yan2026unie], which starts from a decomposition of the gap between a
+diffusion language model and the data distribution. Writing the
+Kullback–Leibler divergence along a decoding order and expanding it, the gap
+splits into three factors: a *capacity* factor, i.e., how well the denoiser
+fits each position; a *dependency* factor, i.e., whether the tokens decoded
+in one step are independent given the context; and an *invariance* factor,
+i.e., whether a token decoded now would be decoded the same way once more
+context is revealed. The second factor is handled by the independent energy of
+EDLM, which compares the denoiser with a proxy autoregressive model on the
+fully decoded sequence,
+
+$$
+E_{\mathrm{ind}}(x_0, x_t) \;=\;
+\log \frac{p_\theta(x_0 \mid x_t)}{p_{\mathrm{AR}}(x_0 \mid x_t)} - \log F_{\mathrm{ind}}(x_t) .
+$$ {#eq-guid-inde}
+
+For the third factor the paper introduces an *invariant energy*. Let $x_s$ be
+a partially revealed sequence between $x_t$ and $x_0$, obtained by re-masking;
+the decoding of $x_s$ from $x_t$ is a "future step", and a token is invariant
+if revealing it does not change what the proxy model believes about the rest.
+The invariant energy is
+
+$$
+E_{\mathrm{inv}}(x_0, x_s, x_t) \;=\;
+\log \frac{p_\theta(x_s \mid x_t)}{p_{\mathrm{AR}}(x_s \mid x_t)}
+\;+\; \log \frac{p_{\mathrm{AR}}(x_0 \mid x_t)}{p_{\mathrm{AR}}(x_0 \mid x_s)}
+\;-\; \log F_{\mathrm{inv}}(x_t),
+$$ {#eq-guid-inve}
+
+whose second term is small exactly when the intermediate reveal $x_s$ leaves
+the proxy's posterior over $x_0$ unchanged. By the additivity of energies the
+two are combined into the unified energy $E_{\mathrm{uni}} = E_{\mathrm{inv}} +
+E_{\mathrm{ind}}$, parameterized without its normalizer as
+
+$$
+E_\phi(x_0, x_s, x_t) \;=\;
+\log \frac{p_\theta(x_s \mid x_t)}{p_{\mathrm{AR}}(x_s \mid x_t)}
+\;+\; \log \frac{p_\theta(x_0 \mid x_t)}{p_{\mathrm{AR}}(x_0 \mid x_s)} .
+$$ {#eq-guid-unie}
+
+The property that distinguishes Uni-E from other residual energies is that
+its partition function is available in closed form. Summing
+$p_\theta(x_0 \mid x_t)\, e^{-E_\phi}$ over $x_0$, the denoiser cancels against
+the second log-ratio and what remains is $p_{\mathrm{AR}}(x_0 \mid x_s)$, which
+sums to one; hence
+
+$$
+\log F(x_t) \;=\; \log \frac{p_{\mathrm{AR}}(x_s \mid x_t)}{p_\theta(x_s \mid x_t)} ,
+$$ {#eq-guid-unie-z}
+
+and the tilted denoiser is the proxy model's posterior given the revealed
+sequence $x_s$. No Monte Carlo estimate of the normalizer is needed, which is
+the usual bottleneck of residual EBMs. The paper proves that the resulting
+decoder has a strictly smaller gap to the data distribution than the
+diffusion model whenever the dependency or invariance factor is non-zero, and
+reports that on diffusion language models Uni-E reaches quality comparable to
+autoregressive decoding with about a $22\%$ speedup, while on diffusion large
+language models it mitigates the degradation that otherwise grows with the
+degree of parallelism. Two caveats should be stated. The invariant energy
+relies on a proxy autoregressive model and on a sampling estimate of the
+invariance term whose accuracy is characterized rather than exact (the paper's
+Lemma 4.1 gives the approximation factor). And the whole construction is a
+tilt of a *frozen* denoiser: the diffusion model is not retrained, and the
+energy, whether read off the proxy or fitted by noise-contrastive estimation,
+enters only through the reweighting of candidates. It is discrete guidance in
+the sense of this chapter, and its closed-form normalizer is what makes it
+exact rather than approximate.
+
+## Verifiers as energies, best-of-$N$, and sequential Monte Carlo {#sec-guid-verifiers}
+
+The simplest energy for a language model is a *verifier*: a scalar score of a
+complete output, low for good outputs and high for bad ones. Outcome reward
+models trained to predict correctness [@cobbe2021verifiers] and process reward
+models trained on step-level labels [@lightman2023verify] are energies of this
+kind. The learning signal is usually pairwise: given a preferred output $y_w$
+and a rejected one $y_l$, the Bradley–Terry model [@bradley1952rank]
+
+$$
+P(y_w \succ y_l) \;=\; \sigma\big( E(y_l) - E(y_w) \big)
+$$ {#eq-guid-bt}
+
+is fitted by maximum likelihood, which is logistic regression on the
+difference of energies and hence the maximum-entropy classifier of
+@sec-max-def-family applied to pairs. The energy outcome reward model (EORM)
+of Jiang et al. [@jiang2025eorm] shows how little is needed: a 55M-parameter
+encoder with a scalar energy head, trained with the pairwise loss over all
+correct–incorrect pairs of sampled chains of thought, using outcome labels
+only. At inference the verifier reranks a pool of $N$ candidates from the
+language model and returns $\arg\min_y E_\theta(y)$; the partition function is
+never needed, since the candidates share it. In the terms of this chapter,
+reranking is the zero-temperature limit of the tilt on the finite support of
+the candidate pool, and the reported gains (Llama 3 8B rises to $90.7\%$ on
+GSM8K and $63.7\%$ on MATH) are those of best-of-$N$ with a learned energy in
+place of a large reward model.
+
+Best-of-$N$ itself deserves a precise statement, because it is the most
+widely used inference-time tilt and it is *not* the exponential tilt
+of @eq-guid-tilt. Drawing $N$ samples from the reference and keeping the one
+with the highest reward induces a distribution $\pi_{\mathrm{BoN}}$ that is a
+monotone reweighting of $p_{\mathrm{ref}}$ by the rank of the reward. Beirami
+et al. [@beirami2024bon] show that the expression
+$\log N - (N-1)/N$, often quoted as the KL divergence between $\pi_{\mathrm{BoN}}$
+and the reference, is an *upper bound*,
+
+$$
+\mathrm{KL}\big(\pi_{\mathrm{BoN}} \,\Vert\, p_{\mathrm{ref}}\big)
+\;\le\; \log N - \frac{N-1}{N},
+$$ {#eq-guid-bon-kl}
+
+and that the win rate of $\pi_{\mathrm{BoN}}$ against the reference is bounded
+by $N/(N+1)$. Gui, Gârbacea, and Veitch [@gui2024bonbon] embed best-of-$N$
+and the distributions learned by alignment methods in a common class of
+tiltings of the reference and show that, within this class, best-of-$N$ is
+essentially optimal for the trade-off between win rate and KL divergence. Read
+through @eq-guid-tilt, $N$ is an inverse temperature: the KL budget grows
+like $\log N$, exactly as the budget of an exponential tilt grows as $T$
+falls. The cost is $N$ forward passes per output; distilling the best-of-$N$
+distribution into the weights is a post-training method, and we return to it
+in @sec-post-amortize.
+
+Between reranking whole outputs and gradient guidance sits sequential Monte
+Carlo. Zhao et al. [@zhao2024twisted] observe that a large part of language
+model alignment, red-teaming, and constrained generation can be cast as
+sampling from a target $\sigma(x_{1:T}) \propto p_{\mathrm{ref}}(x_{1:T})\,
+\phi(x_{1:T})$ with a potential $\phi$ on complete sequences, i.e.,
+@eq-guid-tilt with $\phi = e^{-E/T}$, and that the right inference-time tool
+is sequential Monte Carlo with *twist functions*
+$\psi_t(x_{1:t}) \approx \mathbb{E}[\phi(x_{1:T}) \mid x_{1:t}]$, the expected
+future potential given a prefix. The twists are soft value functions: their
+logarithms satisfy the soft Bellman recursion of @sec-max-rl-inference, and
+the paper's contrastive method for learning them is a soft reinforcement
+learning algorithm. Resampling partial sequences by their twists focuses
+computation on promising prefixes, and the authors derive bidirectional
+bounds on $\log Z$ from the same machinery, which let one measure how far an
+inference method is from the target in KL divergence in both directions.
+Controlled decoding [@mudgal2024controlled] is the same idea with a learned
+prefix scorer used either token by token or blockwise; in both cases the
+reference is frozen and the energy acts through the prefix values.
+
+## Refinement and reasoning as energy minimization {#sec-guid-refinement}
+
+Rather than accepting a single forward pass, one can iteratively lower the
+energy of a candidate — an optimization view of "thinking longer". Pure
+descent,
+
+$$
+x \;\leftarrow\; x - \eta\, \nabla_x E(x),
+$$ {#eq-guid-descent}
+
+is the zero-temperature limit of @sec-free-energy: it consults the energy and
+ignores the entropy, and inherits the classical weakness of local minima.
+Adding noise and lowering it over the course of the process, i.e., annealing
+[@kirkpatrick1983], is the finite-temperature version, and it is the schedule
+that diffusion samplers implement under another name. For text, where the
+data space is discrete, COLD decoding [@qin2022cold] runs Langevin dynamics on
+a continuous relaxation of the sequence under a composed energy and rounds at
+the end; for images, the MCMC corrections of @sec-guid-continuous are
+refinement inside each reverse step. In every case the number of steps is a
+compute knob that buys quality, and the target of the refinement is a tilt of
+a frozen reference.
+
+Energy-based transformers (EBTs) [@gladstone2026ebt] carry refinement to the
+point where it becomes the model. An EBT assigns an energy to a pair of input
+and candidate prediction and produces its prediction by gradient descent on
+the candidate until convergence; the number of descent steps is chosen at
+inference time, which the authors frame as System-2 thinking learned from
+unsupervised pre-training alone, without verifiers or verifiable rewards. They
+report that EBTs scale faster than a strong autoregressive Transformer
+baseline during pre-training and improve with inference-time computation,
+with larger gains on data farther from the training distribution. Two points
+matter for this book. Learning here is the shaping of the landscape of
+@sec-ebm-contrastive so that the correct continuation is the minimizer, and
+inference is the zero-temperature inference of @sec-max-def-inference with a
+variable budget; and, as in Energy Matching, there is no separate reference:
+the energy is the generator, so the "tilt" of @eq-guid-tilt degenerates to
+the energy itself. This is the boundary case announced at the beginning of the
+chapter, and it is instructive because it shows the two roles of the energy —
+verifier and generator — collapsing into one function.
+
+The unifying perspective, then, is the following. A reasoning problem
+defines an energy landscape over candidate solutions; reasoning is the search
+for low-energy candidates, by guidance, reranking, sampling, or refinement;
+and learning shapes the landscape so that correct or self-consistent solutions
+sit at its minima. Maximum-entropy learning (@sec-max-entropy) defines the
+landscapes, minimum-entropy learning (@sec-min-entropy) sharpens them from the
+model's own agreement, and the methods of this chapter navigate them at test
+time.
+
+## Guidance on the three levels {#sec-guid-levels}
+
+@tbl-guid-levels reads the methods of this chapter through the three levels
+of @sec-max-definition. In every row the reference is fixed and the inference
+level is where the method lives; the energy column records where the energy
+came from, which is a separate learning problem when it was trained.
+
+| Method | Base measure (frozen) | Energy and its source | Sampler | Temperature |
+|---|---|---|---|---|
+| Classifier guidance [@dhariwal2021guidance]; classifier-free guidance [@ho2022cfg] | diffusion prior | $-\log p(y \mid x_t)$: a classifier trained on noisy inputs, or the implicit classifier $p(x_t \mid y)/p(x_t)$ | score plus gradient of the energy | guidance scale: $T = 1/w$ (classifier), $1/(1+w)$ (classifier-free) |
+| Exact energy guidance, CEP [@lu2023cep]; flow-matching guidance [@feng2025flowguidance] | diffusion / flow | given $J$ on clean data; intermediate energy @eq-guid-intermediate, exact (Monte Carlo, learned) or local (gradient) | guided score or vector field | $T$ of the tilt |
+| Compositional generation with MCMC [@du2023reduce] | diffusion prior | sum of given energies (product of experts) | Langevin / HMC steps inside each reverse step | $T$; number of MCMC steps |
+| Residual EBMs [@deng2020residual]; Electric [@clark2020electric] | autoregressive LM (Deng et al.); a cloze-model noise distribution (Electric) | residual energy, NCE-trained with the base measure as noise | sample-then-resample by $e^{-E_\phi}$; reranking | absorbed in the scale of $E_\phi$ |
+| EDLM [@xu2025edlm]; Uni-E [@yan2026unie] | diffusion LM denoiser | log-ratio to a proxy AR model, or NCE-trained | parallel importance sampling over candidates; closed-form $Z$ for Uni-E | absorbed |
+| COLD decoding [@qin2022cold] | LM, entering as a fluency energy | composed energies: fluency, constraints | Langevin on soft tokens, then rounding | $T$; step count |
+| Verifier reranking: ORM [@cobbe2021verifiers], PRM [@lightman2023verify], EORM [@jiang2025eorm] | LM candidate pool | verifier trained from labels (ORM, PRM) or Bradley–Terry pairs (EORM) | $\arg\min$ of the energy over the pool | $T \to 0$ |
+| Best-of-$N$ [@beirami2024bon; @gui2024bonbon] | LM | reward, given | keep the best of $N$ | not a Gibbs tilt; KL budget $\le \log N - (N-1)/N$ |
+| Twisted SMC [@zhao2024twisted]; controlled decoding [@mudgal2024controlled] | LM | potential $\phi = e^{-E/T}$, given; twists / prefix scorer learned | resampling of prefixes by twists; token-wise or blockwise reweighting by the prefix scorer | $T$ of the potential |
+| Energy Matching [@balcerak2025energymatching]; EBTs [@gladstone2026ebt] | — (energy is the generator) | learned potential / energy | Langevin in the Boltzmann well; gradient descent on the candidate | $T$; number of steps |
+
+: Inference-time methods read through the three levels. The base measure is never updated; where an energy was trained, that training is a separate maximum-entropy learner whose output is handed to the sampler. {#tbl-guid-levels}
+
+The table also makes the trade-off with the next chapter visible. Every row
+pays for the tilt at test time, in candidates, steps, or particles, and the
+payment is repeated for every query. Post-training pays once, by fitting the
+reference so that a single forward pass approximates the tilt, and gives up
+the ability to change the energy afterwards without retraining. The choice
+between them is a choice between computation and storage, or, in the terms of
+@gladstone2026ebt, between System 2 and System 1.
+
+## Takeaway {#sec-guid-takeaway}
+
+Guidance, reranking, sequential Monte Carlo, and refinement are one operation
+performed by different samplers: the tilt of a frozen reference by an energy,
+@eq-guid-tilt, which is the maximum-entropy model of @sec-max-definition with
+the pretrained generator as base measure. The energy may be a classifier, a
+composed constraint, a residual log-ratio to a proxy model, a learned
+verifier, or a reward; when it was trained, that training is a separate
+learner, and the sampler treats its output as given. The temperature is a
+genuine dial that appears as a guidance scale, a KL coefficient, or the size
+$N$ of a candidate pool, and the zero-temperature limit — descent and
+reranking — is where the method leaves the family. The next chapter asks what
+changes when the reference itself is allowed to move.

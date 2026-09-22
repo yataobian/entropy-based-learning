@@ -254,7 +254,8 @@ chapter, and two neighbouring ones, on the three levels.
 | Optimal subset oracle (@sec-max-os-oracle) | Gibbs over $2^V$, neural set function | mean field, unrolled | energy from optimal subsets |
 | Maximum-entropy RL with a given reward (@sec-max-rl) | Gibbs over trajectories | soft Bellman recursion | — (reward given) |
 | Inverse RL (@sec-max-rl) | Gibbs over trajectories | soft Bellman recursion | reward from demonstrations |
-| Guidance and refinement (@sec-energy-reasoning) | Gibbs tilt of a pretrained generator | annealed sampling | — (energy given) |
+| Guidance and refinement (@sec-energy-reasoning) | Gibbs tilt of a pretrained generator | guided or annealed sampling, reranking | — (energy given to the sampler; if trained, by a separate learner) |
+| Maximum-entropy post-training (@sec-post-training) | Gibbs tilt of a pretrained model | amortized into the weights | reward from preferences, or through the closed form (DPO) |
 
 : The strands of maximum-entropy learning read through the three levels. A dash means that the level is not active: the energy is given rather than learned. {#tbl-max-levels}
 
@@ -929,7 +930,8 @@ KL-regularized policy optimization of @eq-min-klrl is the same construction
 on a single decision, with a reference policy as the base measure and the KL
 coefficient as the temperature; imposing the KL as a constraint instead, as
 trust-region methods do [@schulman2015trpo], is the constrained form of the
-same problem.
+same problem. @sec-post-training develops this reading for the post-training
+of pretrained models.
 
 ### Inverse reinforcement learning: the optimal subset oracle on trajectories {#sec-max-rl-irl}
 

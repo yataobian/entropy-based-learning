@@ -20,5 +20,5 @@ We study three directions that are connected:
 ## Roadmap
 
 - **Part I — Foundations** surveys the thermodynamic, information-theoretic, quantum, and psychological notions of entropy, develops the maximum-entropy principle together with the free-energy relationship $F = U - TS$ that connects entropy to energy, and introduces energy-based models and the minimum-description-length view that leads to minimax entropy.
-- **Part II — Methods** develops maximum-entropy, minimum-entropy, and minimax-entropy learning, together with energy-based reasoning / guidance / refinement.
+- **Part II — Methods** develops maximum-entropy, minimum-entropy, and minimax-entropy learning, and then applies the maximum-entropy machinery to pretrained models in two ways: energy-based guidance and refinement at inference time, and maximum-entropy post-training, which reads RLHF, GRPO, DPO, and their relatives as one Gibbs tilt of a pretrained reference.
 - **Part III — Applications** connects these ideas to scientific foundation models and AI-for-science.

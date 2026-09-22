@@ -1,0 +1,377 @@
+---
+date: "2026-09-21"
+date-modified: last-modified
+---
+
+# Maximum-Entropy Post-Training {#sec-post-training}
+
+*Post-training* is the name that has become standard for everything done to a
+pretrained model after pre-training: supervised fine-tuning on
+demonstrations, reinforcement learning from human or verifier feedback,
+preference optimization, and their many variants. The methods look different
+and are usually presented as a list. In this chapter we argue that most of
+them are one thing, and that the one thing is maximum-entropy learning in the
+sense of @sec-max-definition with the pretrained model as base measure.
+Specifically, the object every method approximates is the tilt of the
+reference policy,
+
+$$
+\begin{aligned}
+\pi^{\star}(y \mid x) \;&=\;
+\frac{\pi_{\mathrm{ref}}(y \mid x)\, \exp\big(r(x, y)/\beta\big)}{Z_\beta(x)} \\
+&=\;
+\arg\min_{\pi}\; \mathbb{E}_{\pi}\big[-r(x, y)\big] + \beta\, \mathrm{KL}\big(\pi(\cdot \mid x) \,\Vert\, \pi_{\mathrm{ref}}(\cdot \mid x)\big),
+\end{aligned}
+$$ {#eq-post-tilt}
+
+
+which is @eq-guid-tilt with the pretrained model as reference, the negative
+reward as energy, and the KL coefficient $\beta$ as temperature; it was
+derived in @sec-min-collapse as @eq-min-gibbs. @sec-energy-reasoning sampled
+from this tilt at inference time with the reference frozen. Post-training
+moves to the learning level: either the reference is fitted so that a single
+forward pass approximates $\pi^\star$ — we call this *amortizing* the tilt —
+or the energy $r$ is itself learned from preferences, outcomes, or the
+model's own behaviour. We treat the two in turn, then the continuous case of
+diffusion and flow models, and finally the boundary of the family.
+
+## From the reference to its tilt {#sec-post-tilt}
+
+The KL-regularized objective on the right of @eq-post-tilt has a longer
+history than its current use. In control it is the KL-control problem of
+@sec-max-rl-model, in which the base measure is the passive dynamics
+[@todorov2006lmdp; @todorov2009efficient]. For sequence models it was
+introduced by Jaques et al. [@jaques2017sequencetutor], who fine-tuned a
+recurrent network with a reward while penalizing the divergence from the
+maximum-likelihood model it started from, precisely to keep what the model
+had learned from data. Ziegler et al. [@ziegler2019finetuning] used the same
+penalty to fine-tune language models from human preferences, and the recipe
+of reward model plus KL-regularized policy optimization became reinforcement
+learning from human feedback (RLHF) [@christiano2017preferences;
+@ouyang2022instructgpt]. It is worth noting why the penalty is not optional.
+Without it, maximizing $\mathbb{E}_\pi[r]$ over all policies places the entire
+mass on the arg-max of the reward, a degenerate distribution; Korbak, Perez,
+and Buckley [@korbak2022rlkl] make the point sharply and show that the
+KL-regularized problem is equivalent to variational inference: minimizing
+$\mathrm{KL}(\pi \,\Vert\, \pi^\star)$ for the target @eq-post-tilt, i.e.,
+approximating a Bayesian posterior in which the reference is the prior and
+$e^{r/\beta}$ the likelihood. In the terms of this book, the entropy term is
+load-bearing (@sec-max-def-family), and removing it is the zero-temperature
+boundary of @sec-max-boundary.
+
+The constrained form of @sec-max-def-representation has an instance of its
+own. Generation with distributional control (GDC) [@khalifa2021gdc] asks for
+the distribution $p$ closest to a pretrained language model $a$ that
+satisfies moment constraints on chosen features,
+
+$$
+\begin{aligned}
+&\min_{p}\; \mathrm{KL}(p \,\Vert\, a)
+\quad \text{s.t.} \quad
+\mathbb{E}_{p}\big[\phi_i(x)\big] = \bar\mu_i,\; i = 1, \dots, K, \\
+&\qquad\Longrightarrow\qquad
+p(x) \;=\; \frac{a(x)\, \exp\big(\boldsymbol{\lambda}^{\top} \boldsymbol{\phi}(x)\big)}{Z} .
+\end{aligned}
+$$ {#eq-post-gdc}
+
+The constraints can be pointwise (every sample mentions sports) or
+distributional (half of the samples mention female characters), the solution
+is an energy-based model over the reference, and the authors describe the
+framework as a generalization of the maximum-entropy principle — which it is:
+@eq-post-gdc is @eq-max-def-constrained with $h = a$. The two forms sit side
+by side in @tbl-post-forms. RLHF declares an energy and a temperature; GDC
+declares features and moments; the multipliers of one are the temperature of
+the other, and both are tilts of the same reference. Go et al. [@go2023fdpg]
+close the circle by showing that RLHF minimizes the reverse KL divergence to
+its implicit target while GDC minimizes the forward KL divergence to its
+explicit one, and by allowing any $f$-divergence in between; in their
+experiments the Jensen–Shannon divergence often gives the best balance between
+alignment and diversity. In the vocabulary of @sec-max-boundary, the choice
+of divergence at the amortization step is the generalized sense of
+maximum-entropy learning, now applied to the fitting of the policy rather
+than of the energy.
+
+| | Free-energy form (RLHF, KL-control) | Constrained form (GDC) |
+|---|---|---|
+| Declared | reward $r$, temperature $\beta$ | features $\boldsymbol{\phi}$, moments $\bar{\boldsymbol{\mu}}$ |
+| Target | $\pi_{\mathrm{ref}}\, e^{r/\beta} / Z$ | $a\, e^{\boldsymbol{\lambda}^\top \boldsymbol{\phi}} / Z$ |
+| Temperature | a genuine dial | determined by the moments |
+| Amortization | reverse KL, policy gradient | forward KL, distributional policy gradient |
+| Generalization | any $f$-divergence [@go2023fdpg] | |
+
+: The two forms of the maximum-entropy model, instantiated in post-training. {#tbl-post-forms}
+
+The temperature of @eq-post-tilt is a genuine dial in the sense of
+@sec-max-def-family: the reward is given, no level is prescribed, and $\beta$
+is chosen. Small $\beta$ moves the policy far from the reference and toward
+the arg-max of the reward; large $\beta$ leaves it nearly unchanged. The
+same trade-off appears as a KL constraint rather than a penalty in
+trust-region methods [@schulman2015trpo], which is the constrained form once
+more.
+
+## Amortizing the tilt {#sec-post-amortize}
+
+Amortization fits a parametric policy $\pi_\theta$ to $\pi^\star$ so that
+generation is one forward pass. The methods differ in the divergence they
+minimize and in how they estimate its gradient; none of them changes the
+target.
+
+**Reverse KL and policy gradients.** Minimizing
+$\mathrm{KL}(\pi_\theta \,\Vert\, \pi^\star)$ is, up to a constant,
+maximizing the right-hand side of @eq-post-tilt in $\theta$, and its gradient
+is a policy gradient with a shaped reward,
+
+$$
+\nabla_\theta\, \mathcal{J}(\theta) \;=\;
+\mathbb{E}_{y \sim \pi_\theta(\cdot \mid x)}\Big[
+\Big( r(x, y) - \beta \log \frac{\pi_\theta(y \mid x)}{\pi_{\mathrm{ref}}(y \mid x)} - b(x) \Big)
+\nabla_\theta \log \pi_\theta(y \mid x) \Big],
+$$ {#eq-post-pg}
+
+with any baseline $b(x)$ [@williams1992reinforce]. Proximal policy
+optimization [@schulman2017ppo] estimates this with a learned value baseline
+and a clipped surrogate, and is the algorithm behind the RLHF of
+@ouyang2022instructgpt. Two recent variants remove the value network. Group
+relative policy optimization (GRPO) [@shao2024grpo] samples a group of $G$
+outputs $\{o_i\}$ for each prompt and uses the group as its own baseline,
+
+$$
+\begin{aligned}
+\hat{A}_i \;&=\; \frac{r_i - \operatorname{mean}(r_1, \dots, r_G)}{\operatorname{std}(r_1, \dots, r_G)}, \\
+\mathcal{L}_{\mathrm{GRPO}}
+\;&=\; -\frac{1}{G}\sum_{i=1}^{G} \frac{1}{|o_i|} \sum_{t=1}^{|o_i|}
+\Big[ \min\big(\rho_{i,t}\hat{A}_i,\ \operatorname{clip}(\rho_{i,t}, 1-\epsilon, 1+\epsilon)\hat{A}_i\big)
+- \beta\, \widehat{\mathrm{KL}}_{i,t} \Big],
+\end{aligned}
+$$ {#eq-post-grpo}
+
+where $\rho_{i,t}$ is the token-level probability ratio to the sampling
+policy and the KL term is estimated per token by the unbiased, non-negative
+estimator
+
+$$
+\widehat{\mathrm{KL}}_{i,t} \;=\;
+\frac{\pi_{\mathrm{ref}}(o_{i,t} \mid \cdot)}{\pi_\theta(o_{i,t} \mid \cdot)}
+- \log \frac{\pi_{\mathrm{ref}}(o_{i,t} \mid \cdot)}{\pi_\theta(o_{i,t} \mid \cdot)} - 1 .
+$$ {#eq-post-k3}
+
+REINFORCE leave-one-out (RLOO) [@ahmadian2024rloo] is the sequence-level
+version: the baseline for each sample is the mean reward of the other $G - 1$
+samples, there is no clipping, and the authors show that this simpler
+estimator matches or outperforms PPO in the RLHF setting. What we want the
+reader to see is that @eq-post-grpo and RLOO are estimators of the same
+gradient @eq-post-pg. The group normalization and the clipping are variance
+reduction; the target is unchanged, and the KL term is the entropy term of the
+free energy, estimated rather than computed. Every variant in this family is
+therefore an approximate maximum-entropy learner in the strict sense of
+@sec-max-def-family, in which the inner problem is solved by amortization
+rather than by sampling.
+
+**Forward KL and distribution matching.** The distributional policy gradient
+(DPG) of Parshakova, Andreoli, and Dymetman [@parshakova2019dpg], which GDC
+[@khalifa2021gdc] adopts, minimizes the forward divergence
+$\mathrm{KL}(p \,\Vert\, \pi_\theta)$ to the explicit target @eq-post-gdc by
+importance sampling,
+
+$$
+\nabla_\theta\, \mathrm{KL}(p \,\Vert\, \pi_\theta)
+\;=\; -\,\mathbb{E}_{x \sim q}\Big[ \frac{p(x)}{q(x)}\, \nabla_\theta \log \pi_\theta(x) \Big],
+$$ {#eq-post-dpg}
+
+with a proposal $q$ that is periodically updated to the current policy and
+an estimate of $Z$. GFlowNet fine-tuning [@hu2024gflownet] trains the policy
+so that complete sequences are sampled with probability proportional to a
+reward, $\pi_\theta(x) \propto R(x)$, which is the tilt at $\beta = 1$ with
+$r = \log R$ and the reference absorbed into $R$; the training objective is a
+subtrajectory-balance loss rather than a divergence, and the authors call the
+result amortized inference, which is the exact name. Rejection-sampling
+fine-tuning — sample from the current model, keep the outputs the reward
+accepts, and fit by maximum likelihood on the survivors [@dong2023raft;
+@gulcehre2023rest] — is forward-KL amortization of a truncated tilt, and
+distilling the best-of-$N$ distribution of @sec-guid-verifiers into the
+weights [@gui2024bonbon] is the same move with the best-of-$N$ tilt as
+target, implemented as maximum likelihood on the best sample together with a
+pairwise term on the best and the worst of the $N$. The divergence matters:
+reverse KL is mode-seeking and drives the policy toward the reward's arg-max
+as $\beta$ falls, whereas forward KL is mass-covering and needs samples from,
+or importance weights for, the target. Neither is right in general, which is
+the empirical finding of @go2023fdpg.
+
+## Learning the energy {#sec-post-energy}
+
+The reward of @eq-post-tilt is rarely given. It is learned, and the way it is
+learned is where post-training becomes a maximum-entropy learner in the sense
+of iii) in @sec-max-def-family.
+
+**Reward models from pairs.** The standard supervision is a comparison: for a
+prompt $x$, a preferred response $y_w$ and a rejected one $y_l$. The
+Bradley–Terry model [@bradley1952rank]
+
+$$
+P(y_w \succ y_l \mid x) \;=\; \sigma\big( r_\theta(x, y_w) - r_\theta(x, y_l) \big)
+$$ {#eq-post-bt}
+
+is fitted by maximum likelihood, which is logistic regression on the
+difference of rewards and hence the maximum-entropy classifier of
+@sec-max-def-family applied to pairs; its likelihood equations match the
+empirical and predicted win frequencies. Outcome and process reward models
+[@cobbe2021verifiers; @lightman2023verify] and the small verifier of
+@sec-guid-verifiers are trained in this way, and the trained reward is then
+either handed to a sampler (@sec-energy-reasoning) or amortized
+(@sec-post-amortize).
+
+**Direct preference optimization: the energy through the closed form.**
+Direct preference optimization (DPO) [@rafailov2023dpo] removes the separate
+reward model by substituting the representation level into the learning
+level. Inverting @eq-post-tilt gives
+
+$$
+r(x, y) \;=\; \beta \log \frac{\pi^\star(y \mid x)}{\pi_{\mathrm{ref}}(y \mid x)} + \beta \log Z_\beta(x),
+$$ {#eq-post-dpo-reward}
+
+and the partition function cancels in the difference that
+enters @eq-post-bt. Replacing $\pi^\star$ by the policy being trained yields
+the loss
+
+$$
+\mathcal{L}_{\mathrm{DPO}}(\theta) \;=\;
+-\,\mathbb{E}_{(x, y_w, y_l)}\Big[ \log \sigma\Big(
+\beta \log \frac{\pi_\theta(y_w \mid x)}{\pi_{\mathrm{ref}}(y_w \mid x)}
+- \beta \log \frac{\pi_\theta(y_l \mid x)}{\pi_{\mathrm{ref}}(y_l \mid x)} \Big) \Big],
+$$ {#eq-post-dpo}
+
+whose gradient weights each pair by how wrongly the implicit reward
+$\hat{r}_\theta = \beta \log(\pi_\theta / \pi_{\mathrm{ref}})$ currently
+orders it. Nothing is sampled during training, which is the practical
+appeal; the conceptual point is that the log-ratio of the policy to the
+reference *is* the energy, so that learning the policy and learning the energy
+are one step. Rafailov et al. [@rafailov2024rtoq] extend the reading to the
+token level: in the token Markov decision process, the token-wise log-ratio
+$\beta \log \pi^\star(a_t \mid s_t)/\pi_{\mathrm{ref}}(a_t \mid s_t)$ is the
+soft advantage $Q^\star - V^\star$ of maximum-entropy reinforcement learning,
+so DPO fits soft $Q$-values of @sec-max-rl-inference with the reference as
+base measure. The limitations are those of any learned energy: the implicit
+reward is defined only relative to $\pi_{\mathrm{ref}}$, the data are
+off-policy, and a small $\beta$ lets the policy travel far from the reference
+on the strength of a few comparisons.
+
+**Energies from contrastive noise.** The residual energies of
+@sec-guid-discrete are the third route: noise-contrastive estimation with the
+reference as noise distribution [@deng2020residual; @xu2025edlm;
+@yan2026unie]. This is a maximum-entropy learner in the generalized sense of
+@sec-max-boundary, and its output is used at inference time, so it belongs to
+both chapters — learned here, applied there.
+
+## Self-referential energies {#sec-post-self}
+
+A last class of methods takes the reward from the model itself. EMPO
+[@zhang2025empo] rewards a response by the frequency of its semantic cluster
+among the model's own samples; test-time reinforcement learning (TTRL)
+[@zuo2025ttrl] does the same with an exact-match majority vote as the
+pseudo-label; and in test-time adaptation
+the analogous move is to minimize the entropy of the model's predictions on
+the test stream, which Park et al. [@park2025retta] show should be paired with
+an explicit energy objective to be reliable. Formally these are instances of
+@eq-post-tilt with $r$ replaced by a functional of $\pi$ itself, and the
+closed form becomes the self-consistency equation @eq-min-selfconsistent. The
+consequence, worked out in @sec-min-collapse, is a rich-get-richer dynamics
+with a collapse threshold, and the reason is that the outer criterion has
+been reversed: an external reward tilts the reference toward what the world
+values, whereas an internal one tilts it toward what the model already
+believes, and the entropy term now fights the objective rather than
+regularizing it. This is why we place these methods in @sec-min-entropy and
+not here. They share the inner Gibbs tilt with maximum-entropy post-training
+and differ in the sign of the outer problem; the two chapters are the two
+directions of the dial of @sec-free-energy.
+
+## The continuous case {#sec-post-continuous}
+
+The same structure recurs, almost verbatim, for diffusion and flow models,
+with the pretrained generator $p_{\mathrm{base}}$ as reference and a reward on
+clean samples as energy. Black et al. [@black2024ddpo] cast denoising as a
+multi-step decision process and optimize a reward by policy gradient (DDPO).
+It is worth noting that DDPO has no KL term: the authors control
+over-optimization by stopping early, so that on its own the method sits at
+the boundary of the family described in @sec-post-levels, and it is the
+concurrent DPOK of Fan et al. [@fan2023dpok], which adds a per-step KL penalty
+to the pretrained model, that brings the construction back inside.
+Wallace et al. [@wallace2024diffusiondpo] carry DPO over to diffusion models
+by writing the preference likelihood on denoising trajectories. Uehara et al.
+[@uehara2024entropy] make the target explicit: fine-tuning as
+entropy-regularized control against the pretrained model has the tilt
+$p_{\mathrm{base}}(x)\, e^{r(x)/\alpha}$ as its solution, and the
+regularization is what prevents the "reward collapse" of over-optimizing an
+imperfect learned reward. Domingo-Enrich et al. [@domingoenrich2025adjoint]
+then show that the naive stochastic-optimal-control formulation carries an
+*initial value function bias*: the generated distribution picks up a term
+that depends on the initial noise and is not the tilt. The remedy is a
+particular memoryless noise schedule, under which the fine-tuned flow or
+diffusion model provably converges to $p_{\mathrm{base}}\, e^{r}$, and their
+adjoint matching algorithm turns the control problem into a regression. 
+Seen in light of @sec-guid-continuous, guidance and reward fine-tuning are two perspectives on the same underlying tilt: guidance injects the gradient correction from @eq-guid-intermediate during sampling, while fine-tuning incorporates that same adjustment directly into the model’s drift.
+
+## Post-training on the three levels, and where it stops {#sec-post-levels}
+
+@tbl-post-levels places the methods of this chapter on the three levels
+of @sec-max-definition. The representation level is the same in every row;
+the rows differ in what is computed and in whether the energy is given, learned,
+or self-referential.
+
+| Method | Base measure $\pi_{\mathrm{ref}}$ | Energy | What is fitted | Level | Divergence or objective |
+|---|---|---|---|---|---|
+| RLHF with PPO [@ouyang2022instructgpt]; GRPO [@shao2024grpo]; RLOO [@ahmadian2024rloo] | pretrained LM | reward, given: a learned reward model or a rule-based verifier | policy $\pi_\theta \approx \pi^\star$ | amortized inference | reverse KL, by KL-penalized policy gradient |
+| GDC, trained by DPG [@khalifa2021gdc; @parshakova2019dpg] | pretrained LM $a$ | moments of declared features, i.e., $\boldsymbol{\lambda}^\top \boldsymbol{\phi}$ | policy | amortized inference (constrained form) | forward KL, importance-weighted |
+| $f$-DPG [@go2023fdpg] | pretrained LM | any unnormalized target $P$ | policy | amortized inference | any $f$-divergence |
+| GFlowNet fine-tuning [@hu2024gflownet] | pretrained LM (initialization; also evaluates $R$) | reward $R$, e.g., a posterior of the same LM | policy $\propto R$ | amortized inference | subtrajectory-balance objective |
+| RAFT [@dong2023raft], ReST [@gulcehre2023rest] | current / pretrained LM | reward, given | policy | amortized inference | forward KL to a truncated tilt: maximum likelihood on accepted samples |
+| BoNBoN [@gui2024bonbon] | pretrained LM | reward, given | policy $\approx \pi_{\mathrm{BoN}}$ | amortized inference | maximum likelihood on the best of $n$ plus an IPO-type term on best–worst pairs |
+| Reward models [@christiano2017preferences; @ouyang2022instructgpt]; ORM [@cobbe2021verifiers]; PRM [@lightman2023verify]; EORM [@jiang2025eorm] | — | learned from pairs, or from outcome / step labels | energy | learning | log score on pairs (Bradley–Terry) or on labels |
+| DPO [@rafailov2023dpo; @rafailov2024rtoq] | pretrained LM | implicit: $\beta \log \pi_\theta / \pi_{\mathrm{ref}}$ | policy $=$ energy | learning through the closed form | log score on pairs |
+| Residual energies [@deng2020residual]; EDLM [@xu2025edlm]; Uni-E [@yan2026unie] | AR LM / DLM denoiser | residual, NCE-trained or read off a proxy AR model | energy | learning (generalized sense), or none when read off | NCE, i.e., the logistic score |
+| DDPO [@black2024ddpo] | diffusion prior | reward, given | denoising policy | reward maximization with no KL term (boundary case; early stopping) | — |
+| DPOK [@fan2023dpok]; entropy-regularized control [@uehara2024entropy]; adjoint matching [@domingoenrich2025adjoint] | diffusion / flow prior | reward, given | denoising policy / generator drift | amortized inference | reverse KL: per-step KL penalty, or stochastic optimal control |
+| Diffusion-DPO [@wallace2024diffusiondpo] | diffusion prior | implicit, from pairs | generator $=$ energy | learning through the closed form | log score on pairs |
+| EMPO [@zhang2025empo]; TTRL [@zuo2025ttrl]; ReTTA [@park2025retta] | pretrained model | the model's own agreement (EMPO, TTRL) or its own free energy (ReTTA) | policy | reversed outer criterion | — (@sec-min-entropy) |
+
+: Post-training methods on the three levels. Amortization fits the reference to a fixed tilt; energy learning fits the tilt itself; self-referential rewards reverse the outer criterion and belong to minimum-entropy learning. DDPO is listed for contrast: without a KL term it sits at the boundary of the family. {#tbl-post-levels}
+
+The definition also says what is *not* maximum-entropy post-training.
+Reward maximization without a KL term is the zero-temperature boundary: its
+optimum is the degenerate distribution on the arg-max, which is the
+distribution collapse of @korbak2022rlkl. Best-of-$N$ with $N \to \infty$ is
+the same limit reached from the sampling side. Supervised fine-tuning on
+demonstrations is maximum likelihood, i.e., forward KL from the data to the
+model, and involves no reference and no tilt; it is a maximum-entropy learner
+only in the trivial sense of @sec-max-def-family, and it becomes part of the
+family here only as the fitting step of rejection-sampling fine-tuning, where
+the "data" are samples from a tilt. DPO with $\beta \to 0$ leaves the family
+in the same way as RLHF without a penalty.
+
+What is open is, again, at least as interesting. Reward hacking is energy
+misspecification: the tilt faithfully concentrates on what the learned energy
+rewards, and the entropy term is the only thing that keeps an imperfect
+energy from being exploited, which is why the KL budget, the choice of
+$\beta$, and the choice of divergence [@go2023fdpg] are not implementation
+details. The trade-off between test-time computation (@sec-energy-reasoning)
+and train-time amortization has no theory yet beyond the KL accounting of
+best-of-$N$; a principled answer would say, for a given energy and budget,
+how much of the tilt to execute at inference and how much to store. And the
+self-referential methods of @sec-post-self show that the boundary between
+maximum- and minimum-entropy learning runs through post-training itself: the
+same tilt, with an external or an internal energy, gives a method that stays
+honest or one that collapses.
+
+## Takeaway {#sec-post-takeaway}
+
+Post-training is maximum-entropy learning with the pretrained model as base
+measure. Its object is the tilt @eq-post-tilt, which has both forms of
+@sec-max-def-representation as instances — RLHF and KL-control declare a
+reward and a temperature, GDC declares features and moments. Amortization
+(PPO, GRPO, RLOO, DPG, GFlowNet fine-tuning, rejection sampling) fits the
+reference to the tilt and differs only in the divergence and its estimator;
+energy learning (reward models, DPO, contrastive residual energies) fits the
+tilt itself, and in DPO the two coincide because the policy's log-ratio to
+the reference is the energy. The KL term is where the entropy is
+load-bearing, and removing it, or sending $N$ or $1/\beta$ to infinity, is
+where the method leaves the family. 
+The story so far is of a single distribution, accessible by paying in either of two currencies: computation expended at inference time, or training and storage invested in advance. The next part explores how and where these approaches enable progress in scientific discovery.

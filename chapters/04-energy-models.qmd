@@ -602,7 +602,9 @@ re-rank or steer a powerful autoregressive proposal — residual EBMs
 [@deng2020residual], constraint-guided decoding [@qin2022cold]. Discrete
 spaces lack Langevin's gradient walk, and a lively literature builds
 gradient-informed proposals for them [@grathwohl2021oops]. This
-inference-time story is the subject of @sec-energy-reasoning.
+inference-time story is the subject of @sec-energy-reasoning; its
+training-time counterpart, in which the tilt is absorbed into the weights
+of the pretrained model, is the subject of @sec-post-training.
 
 **Science.** Molecules are the native habitat of energy functions — the word
 itself came from physics, and here it goes home. Denoising-style score
@@ -647,10 +649,17 @@ thread:
   an exponential-family model should include — which is precisely the
   architecture-selection problem for the EBMs of this chapter, posed
   variationally.
-- **Energy-based reasoning** (@sec-energy-reasoning) takes the landscape as
-  given and spends inference-time compute navigating it: guidance is
-  gradient descent on a composed energy, refinement is repeated local
-  descent, and both inherit the annealing wisdom of @sec-free-energy.
+- **Energy-based guidance and refinement** (@sec-energy-reasoning) keep a
+  pretrained generator frozen and spend inference-time compute tilting it
+  by an energy: guidance is gradient descent on a composed energy,
+  refinement is repeated local descent, and both inherit the annealing
+  wisdom of @sec-free-energy. The energy may itself have been trained — by
+  the NCE of this chapter, for instance — but it enters only through the
+  sampler.
+- **Maximum-entropy post-training** (@sec-post-training) performs the same
+  tilt at the learning level: the pretrained model is fitted to absorb the
+  tilt, or the energy is learned through the model's log-ratio to its
+  reference, which is how RLHF, GRPO, and DPO enter this book.
 
 ## Takeaway {#sec-ebm-takeaway}
 

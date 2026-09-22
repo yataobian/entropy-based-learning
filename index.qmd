@@ -50,11 +50,12 @@ This book is an ongoing project, released early so you can follow its developmen
 | 5 — Maximum-Entropy Learning | **mostly complete** |
 | 6 — Minimum-Entropy Learning | **mostly complete** |
 | 7 — Minimax-Entropy Learning | early draft |
-| 8 — Energy-Based Reasoning, Guidance, and Refinement | early draft |
-| 9 — Entropy-Based Learning for Science | early draft |
-| 10 — Summary | early draft |
+| 8 — Energy-Based Guidance and Refinement | first full draft |
+| 9 — Maximum-Entropy Post-Training | first full draft |
+| 10 — Entropy-Based Learning for Science | early draft |
+| 11 — Summary | early draft |
 
-"Mostly complete" means the argument is in place and has been checked, though details may still move. "Early draft" means little more than a
+"Mostly complete" means the argument is in place and has been checked, though details may still move. "First full draft" means the chapter is written end to end but has not yet been checked with the same care. "Early draft" means little more than a
 scaffold. The table will be updated as chapters mature. Feedback and contributions are
 welcome at any stage.
 
@@ -62,6 +63,7 @@ A printable PDF of the current draft is available from the download button in th
 
 To learn more about the underlying research, visit
 <https://yataobian.com/> and the Blue Whale Lab.
+
 
 
 ## Citation {.unnumbered}

@@ -34,9 +34,10 @@ book:
         - chapters/06-min-entropy.qmd
         - chapters/07-minimax-entropy.qmd
         - chapters/08-energy-reasoning.qmd
+        - chapters/09-max-entropy-post-training.qmd
     - part: "Part III — Applications"
       chapters:
-        - chapters/09-ai-for-science.qmd
+        - chapters/10-ai-for-science.qmd
     - summary.qmd
     - references.qmd
 
