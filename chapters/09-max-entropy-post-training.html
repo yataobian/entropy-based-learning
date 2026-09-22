@@ -6,10 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-08-04">
+<meta name="dcterms.date" content="2026-09-21">
 <meta name="description" content="An introduction to modern entropy- and energy-based learning, spanning the maximum-entropy, minimum-entropy, and minimax-entropy principles, and their applications to scientific and reasoning-oriented AI.">
 
-<title>9&nbsp; Entropy-Based Learning for Science – Entropy-Based Learning</title>
+<title>9&nbsp; Maximum-Entropy Post-Training – Entropy-Based Learning</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -57,7 +57,7 @@ div.csl-indent {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../summary.html" rel="next">
+<link href="../chapters/10-ai-for-science.html" rel="next">
 <link href="../chapters/08-energy-reasoning.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -97,13 +97,42 @@ div.csl-indent {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <meta name="citation_title" content="Entropy-Based Learning">
 <meta name="citation_author" content="Yatao Bian">
 <meta name="citation_publication_date" content="2026">
 <meta name="citation_cover_date" content="2026">
 <meta name="citation_year" content="2026">
-<meta name="citation_online_date" content="2026-08-04">
+<meta name="citation_online_date" content="2026-09-21">
 <meta name="citation_fulltext_html_url" content="https://yataobian.github.io/entropy-based-learning/">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=Energy-based learning for cooperative games, with applications to valuation problems in machine learning;,citation_author=Yatao Bian;,citation_author=Yu Rong;,citation_author=Tingyang Xu;,citation_author=Jiaxiang Wu;,citation_author=Andreas Krause;,citation_author=Junzhou Huang;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_fulltext_html_url=https://openreview.net/forum?id=xLfAgCroImw;,citation_conference_title=International conference on learning representations (ICLR);">
@@ -305,6 +334,47 @@ div.csl-indent {
 <meta name="citation_reference" content="citation_title=A theory of generative ConvNet;,citation_author=Jianwen Xie;,citation_author=Yang Lu;,citation_author=Song-Chun Zhu;,citation_author=Ying Nian Wu;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_volume=48;,citation_conference_title=International conference on machine learning (ICML);,citation_series_title=Proceedings of machine learning research;">
 <meta name="citation_reference" content="citation_title=Defining the curvature of a statistical problem (with applications to second order efficiency);,citation_author=Bradley Efron;,citation_publication_date=1975;,citation_cover_date=1975;,citation_year=1975;,citation_issue=6;,citation_doi=10.1214/aos/1176343282;,citation_volume=3;,citation_journal_title=Annals of Statistics;">
 <meta name="citation_reference" content="citation_title=Prior probabilities;,citation_author=Edwin T. Jaynes;,citation_publication_date=1968;,citation_cover_date=1968;,citation_year=1968;,citation_issue=3;,citation_volume=4;,citation_journal_title=IEEE Transactions on Systems Science and Cybernetics;">
+<meta name="citation_reference" content="citation_title=Classifier-free diffusion guidance;,citation_author=Jonathan Ho;,citation_author=Tim Salimans;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_journal_title=arXiv preprint arXiv:2207.12598;">
+<meta name="citation_reference" content="citation_title=Contrastive energy prediction for exact energy-guided diffusion sampling in offline reinforcement learning;,citation_author=Cheng Lu;,citation_author=Huayu Chen;,citation_author=Jianfei Chen;,citation_author=Hang Su;,citation_author=Chongxuan Li;,citation_author=Jun Zhu;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_volume=202;,citation_conference_title=Proceedings of the 40th international conference on machine learning (ICML);,citation_series_title=Proceedings of machine learning research;">
+<meta name="citation_reference" content="citation_title=On the guidance of flow matching;,citation_author=Ruiqi Feng;,citation_author=Chenglei Yu;,citation_author=Wenhao Deng;,citation_author=Peiyan Hu;,citation_author=Tailin Wu;,citation_publication_date=2025;,citation_cover_date=2025;,citation_year=2025;,citation_volume=267;,citation_conference_title=Proceedings of the 42nd international conference on machine learning (ICML);,citation_series_title=Proceedings of machine learning research;">
+<meta name="citation_reference" content="citation_title=Reduce, reuse, recycle: Compositional generation with energy-based diffusion models and MCMC;,citation_author=Yilun Du;,citation_author=Conor Durkan;,citation_author=Robin Strudel;,citation_author=Joshua B. Tenenbaum;,citation_author=Sander Dieleman;,citation_author=Rob Fergus;,citation_author=Jascha Sohl-Dickstein;,citation_author=Arnaud Doucet;,citation_author=Will Grathwohl;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_volume=202;,citation_conference_title=Proceedings of the 40th international conference on machine learning (ICML);,citation_series_title=Proceedings of machine learning research;">
+<meta name="citation_reference" content="citation_title=Energy matching: Unifying flow matching and energy-based models for generative modeling;,citation_author=Michal Balcerak;,citation_author=Tamaz Amiranashvili;,citation_author=Antonio Terpin;,citation_author=Suprosanna Shit;,citation_author=Lea Bogensperger;,citation_author=Sebastian Kaltenbach;,citation_author=Petros Koumoutsakos;,citation_author=Bjoern Menze;,citation_publication_date=2025;,citation_cover_date=2025;,citation_year=2025;,citation_conference_title=Advances in neural information processing systems 38 (NeurIPS);">
+<meta name="citation_reference" content="citation_title=Pre-training transformers as energy-based cloze models;,citation_author=Kevin Clark;,citation_author=Minh-Thang Luong;,citation_author=Quoc V. Le;,citation_author=Christopher D. Manning;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_conference_title=Proceedings of the 2020 conference on empirical methods in natural language processing (EMNLP);">
+<meta name="citation_reference" content="citation_title=ELECTRA: Pre-training text encoders as discriminators rather than generators;,citation_author=Kevin Clark;,citation_author=Minh-Thang Luong;,citation_author=Quoc V. Le;,citation_author=Christopher D. Manning;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_conference_title=International conference on learning representations (ICLR);">
+<meta name="citation_reference" content="citation_title=Energy-based diffusion language models for text generation;,citation_author=Minkai Xu;,citation_author=Tomas Geffner;,citation_author=Karsten Kreis;,citation_author=Weili Nie;,citation_author=Yilun Xu;,citation_author=Jure Leskovec;,citation_author=Stefano Ermon;,citation_author=Arash Vahdat;,citation_publication_date=2025;,citation_cover_date=2025;,citation_year=2025;,citation_conference_title=International conference on learning representations (ICLR);">
+<meta name="citation_reference" content="citation_title=Unified energy for invariant and independent decoding in diffusion language models;,citation_author=Yuchen Yan;,citation_author=Minkai Xu;,citation_author=Zaiquan Yang;,citation_author=Yatao Bian;,citation_publication_date=2026;,citation_cover_date=2026;,citation_year=2026;,citation_journal_title=arXiv preprint arXiv:2606.09159;">
+<meta name="citation_reference" content="citation_title=Training verifiers to solve math word problems;,citation_author=Karl Cobbe;,citation_author=Vineet Kosaraju;,citation_author=Mohammad Bavarian;,citation_author=Mark Chen;,citation_author=Heewoo Jun;,citation_author=Lukasz Kaiser;,citation_author=Matthias Plappert;,citation_author=Jerry Tworek;,citation_author=Jacob Hilton;,citation_author=Reiichiro Nakano;,citation_author=Christopher Hesse;,citation_author=John Schulman;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_journal_title=arXiv preprint arXiv:2110.14168;">
+<meta name="citation_reference" content="citation_title=Let’s verify step by step;,citation_author=Hunter Lightman;,citation_author=Vineet Kosaraju;,citation_author=Yuri Burda;,citation_author=Harrison Edwards;,citation_author=Bowen Baker;,citation_author=Teddy Lee;,citation_author=Jan Leike;,citation_author=John Schulman;,citation_author=Ilya Sutskever;,citation_author=Karl Cobbe;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_conference_title=International conference on learning representations (ICLR);">
+<meta name="citation_reference" content="citation_title=Rank analysis of incomplete block designs: I. The method of paired comparisons;,citation_author=Ralph Allan Bradley;,citation_author=Milton E. Terry;,citation_publication_date=1952;,citation_cover_date=1952;,citation_year=1952;,citation_issue=3/4;,citation_volume=39;,citation_journal_title=Biometrika;">
+<meta name="citation_reference" content="citation_title=Learning to rank chain-of-thought: Using a small model;,citation_author=Eric H. Jiang;,citation_author=Haozheng Luo;,citation_author=Shengyuan Pang;,citation_author=Xiaomin Li;,citation_author=Zhengting Qi;,citation_author=Hengli Li;,citation_author=Cheng-Fu Yang;,citation_author=Zongyu Lin;,citation_author=Xinfeng Li;,citation_author=Hao Xu;,citation_author=Kai-Wei Chang;,citation_author=Ying Nian Wu;,citation_publication_date=2025;,citation_cover_date=2025;,citation_year=2025;,citation_journal_title=arXiv preprint arXiv:2505.14999;">
+<meta name="citation_reference" content="citation_title=Theoretical guarantees on the best-of-$n$ alignment policy;,citation_author=Ahmad Beirami;,citation_author=Alekh Agarwal;,citation_author=Jonathan Berant;,citation_author=Alexander D’Amour;,citation_author=Jacob Eisenstein;,citation_author=Chirag Nagpal;,citation_author=Ananda Theertha Suresh;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_journal_title=arXiv preprint arXiv:2401.01879;">
+<meta name="citation_reference" content="citation_title=BoNBoN alignment for large language models and the sweetness of best-of-$n$ sampling;,citation_author=Lin Gui;,citation_author=Cristina Gârbacea;,citation_author=Victor Veitch;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_conference_title=Advances in neural information processing systems 37 (NeurIPS);">
+<meta name="citation_reference" content="citation_title=Distributional reinforcement learning for energy-based sequential models;,citation_author=Tetiana Parshakova;,citation_author=Jean-Marc Andreoli;,citation_author=Marc Dymetman;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_conference_title=Optimization foundations for reinforcement learning workshop at NeurIPS 2019;">
+<meta name="citation_reference" content="citation_title=TTRL: Test-time reinforcement learning;,citation_author=Yuxin Zuo;,citation_author=Kaiyan Zhang;,citation_author=Li Sheng;,citation_author=Shang Qu;,citation_author=Ganqu Cui;,citation_author=Xuekai Zhu;,citation_author=Haozhan Li;,citation_author=Yuchen Zhang;,citation_author=Xinwei Long;,citation_author=Ermo Hua;,citation_author=Biqing Qi;,citation_author=Youbang Sun;,citation_author=Zhiyuan Ma;,citation_author=Lifan Yuan;,citation_author=Ning Ding;,citation_author=Bowen Zhou;,citation_publication_date=2025;,citation_cover_date=2025;,citation_year=2025;,citation_conference_title=Advances in neural information processing systems 38 (NeurIPS);">
+<meta name="citation_reference" content="citation_title=DPOK: Reinforcement learning for fine-tuning text-to-image diffusion models;,citation_author=Ying Fan;,citation_author=Olivia Watkins;,citation_author=Yuqing Du;,citation_author=Hao Liu;,citation_author=Moonkyung Ryu;,citation_author=Craig Boutilier;,citation_author=Pieter Abbeel;,citation_author=Mohammad Ghavamzadeh;,citation_author=Kangwook Lee;,citation_author=Kimin Lee;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_conference_title=Advances in neural information processing systems 36 (NeurIPS);">
+<meta name="citation_reference" content="citation_title=Probabilistic inference in language models via twisted sequential Monte Carlo;,citation_author=Stephen Zhao;,citation_author=Rob Brekelmans;,citation_author=Alireza Makhzani;,citation_author=Roger Grosse;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_volume=235;,citation_conference_title=Proceedings of the 41st international conference on machine learning (ICML);,citation_series_title=Proceedings of machine learning research;">
+<meta name="citation_reference" content="citation_title=Controlled decoding from language models;,citation_author=Sidharth Mudgal;,citation_author=Jong Lee;,citation_author=Harish Ganapathy;,citation_author=YaGuang Li;,citation_author=Tao Wang;,citation_author=Yanping Huang;,citation_author=Zhifeng Chen;,citation_author=Heng-Tze Cheng;,citation_author=Michael Collins;,citation_author=Trevor Strohman;,citation_author=Jilin Chen;,citation_author=Alex Beutel;,citation_author=Ahmad Beirami;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_volume=235;,citation_conference_title=Proceedings of the 41st international conference on machine learning (ICML);,citation_series_title=Proceedings of machine learning research;">
+<meta name="citation_reference" content="citation_title=Energy-based transformers are scalable learners and thinkers;,citation_author=Alexi Gladstone;,citation_author=Ganesh Nanduru;,citation_author=Md Mofijul Islam;,citation_author=Peixuan Han;,citation_author=Hyeonjeong Ha;,citation_author=Aman Chadha;,citation_author=Yilun Du;,citation_author=Heng Ji;,citation_author=Jundong Li;,citation_author=Tariq Iqbal;,citation_publication_date=2026;,citation_cover_date=2026;,citation_year=2026;,citation_conference_title=International conference on learning representations (ICLR);">
+<meta name="citation_reference" content="citation_title=Sequence tutor: Conservative fine-tuning of sequence generation models with KL-control;,citation_author=Natasha Jaques;,citation_author=Shixiang Gu;,citation_author=Dzmitry Bahdanau;,citation_author=José Miguel Hernández-Lobato;,citation_author=Richard E. Turner;,citation_author=Douglas Eck;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_volume=70;,citation_conference_title=Proceedings of the 34th international conference on machine learning (ICML);,citation_series_title=Proceedings of machine learning research;">
+<meta name="citation_reference" content="citation_title=Fine-tuning language models from human preferences;,citation_author=Daniel M. Ziegler;,citation_author=Nisan Stiennon;,citation_author=Jeffrey Wu;,citation_author=Tom B. Brown;,citation_author=Alec Radford;,citation_author=Dario Amodei;,citation_author=Paul Christiano;,citation_author=Geoffrey Irving;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_journal_title=arXiv preprint arXiv:1909.08593;">
+<meta name="citation_reference" content="citation_title=Deep reinforcement learning from human preferences;,citation_author=Paul F. Christiano;,citation_author=Jan Leike;,citation_author=Tom B. Brown;,citation_author=Miljan Martic;,citation_author=Shane Legg;,citation_author=Dario Amodei;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_conference_title=Advances in neural information processing systems 30 (NeurIPS);">
+<meta name="citation_reference" content="citation_title=Training language models to follow instructions with human feedback;,citation_author=Long Ouyang;,citation_author=Jeff Wu;,citation_author=Xu Jiang;,citation_author=Diogo Almeida;,citation_author=Carroll L. Wainwright;,citation_author=Pamela Mishkin;,citation_author=Chong Zhang;,citation_author=Sandhini Agarwal;,citation_author=Katarina Slama;,citation_author=Alex Ray;,citation_author=John Schulman;,citation_author=Jacob Hilton;,citation_author=Fraser Kelton;,citation_author=Luke Miller;,citation_author=Maddie Simens;,citation_author=Amanda Askell;,citation_author=Peter Welinder;,citation_author=Paul Christiano;,citation_author=Jan Leike;,citation_author=Ryan Lowe;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_conference_title=Advances in neural information processing systems 35 (NeurIPS);">
+<meta name="citation_reference" content="citation_title=RL with KL penalties is better viewed as Bayesian inference;,citation_author=Tomasz Korbak;,citation_author=Ethan Perez;,citation_author=Christopher L. Buckley;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_conference_title=Findings of the association for computational linguistics: EMNLP 2022;">
+<meta name="citation_reference" content="citation_title=A distributional approach to controlled text generation;,citation_author=Muhammad Khalifa;,citation_author=Hady Elsahar;,citation_author=Marc Dymetman;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_conference_title=International conference on learning representations (ICLR);">
+<meta name="citation_reference" content="citation_title=Aligning language models with preferences through $f$-divergence minimization;,citation_author=Dongyoung Go;,citation_author=Tomasz Korbak;,citation_author=Germán Kruszewski;,citation_author=Jos Rozen;,citation_author=Nahyeon Ryu;,citation_author=Marc Dymetman;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_volume=202;,citation_conference_title=Proceedings of the 40th international conference on machine learning (ICML);,citation_series_title=Proceedings of machine learning research;">
+<meta name="citation_reference" content="citation_title=Simple statistical gradient-following algorithms for connectionist reinforcement learning;,citation_author=Ronald J. Williams;,citation_publication_date=1992;,citation_cover_date=1992;,citation_year=1992;,citation_issue=3–4;,citation_volume=8;,citation_journal_title=Machine Learning;">
+<meta name="citation_reference" content="citation_title=Proximal policy optimization algorithms;,citation_author=John Schulman;,citation_author=Filip Wolski;,citation_author=Prafulla Dhariwal;,citation_author=Alec Radford;,citation_author=Oleg Klimov;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_journal_title=arXiv preprint arXiv:1707.06347;">
+<meta name="citation_reference" content="citation_title=Back to basics: Revisiting REINFORCE-style optimization for learning from human feedback in LLMs;,citation_author=Arash Ahmadian;,citation_author=Chris Cremer;,citation_author=Matthias Gallé;,citation_author=Marzieh Fadaee;,citation_author=Julia Kreutzer;,citation_author=Olivier Pietquin;,citation_author=Ahmet Üstün;,citation_author=Sara Hooker;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_conference_title=Proceedings of the 62nd annual meeting of the association for computational linguistics (volume 1: Long papers);">
+<meta name="citation_reference" content="citation_title=Amortizing intractable inference in large language models;,citation_author=Edward J. Hu;,citation_author=Moksh Jain;,citation_author=Eric Elmoznino;,citation_author=Younesse Kaddar;,citation_author=Guillaume Lajoie;,citation_author=Yoshua Bengio;,citation_author=Nikolay Malkin;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_conference_title=International conference on learning representations (ICLR);">
+<meta name="citation_reference" content="citation_title=RAFT: Reward rAnked FineTuning for generative foundation model alignment;,citation_author=Hanze Dong;,citation_author=Wei Xiong;,citation_author=Deepanshu Goyal;,citation_author=Yihan Zhang;,citation_author=Winnie Chow;,citation_author=Rui Pan;,citation_author=Shizhe Diao;,citation_author=Jipeng Zhang;,citation_author=KaShun Shum;,citation_author=Tong Zhang;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_journal_title=Transactions on Machine Learning Research;">
+<meta name="citation_reference" content="citation_title=Reinforced self-training (ReST) for language modeling;,citation_author=Caglar Gulcehre;,citation_author=Tom Le Paine;,citation_author=Srivatsan Srinivasan;,citation_author=Ksenia Konyushkova;,citation_author=Lotte Weerts;,citation_author=Abhishek Sharma;,citation_author=Aditya Siddhant;,citation_author=Alex Ahern;,citation_author=Miaosen Wang;,citation_author=Chenjie Gu;,citation_author=Wolfgang Macherey;,citation_author=Arnaud Doucet;,citation_author=Orhan Firat;,citation_author=Nando Freitas;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_journal_title=arXiv preprint arXiv:2308.08998;">
+<meta name="citation_reference" content="citation_title=Direct preference optimization: Your language model is secretly a reward model;,citation_author=Rafael Rafailov;,citation_author=Archit Sharma;,citation_author=Eric Mitchell;,citation_author=Stefano Ermon;,citation_author=Christopher D. Manning;,citation_author=Chelsea Finn;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_conference_title=Advances in neural information processing systems 36 (NeurIPS);">
+<meta name="citation_reference" content="citation_title=From $r$ to $Q^*$: Your language model is secretly a Q-function;,citation_author=Rafael Rafailov;,citation_author=Joey Hejna;,citation_author=Ryan Park;,citation_author=Chelsea Finn;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_journal_title=arXiv preprint arXiv:2404.12358;">
+<meta name="citation_reference" content="citation_title=Rethinking entropy in test-time adaptation: The missing piece from energy duality;,citation_author=Mincheol Park;,citation_author=Heeji Won;,citation_author=Won Woo Ro;,citation_author=Suhyun Kim;,citation_publication_date=2025;,citation_cover_date=2025;,citation_year=2025;,citation_conference_title=Advances in neural information processing systems 38 (NeurIPS);">
+<meta name="citation_reference" content="citation_title=Training diffusion models with reinforcement learning;,citation_author=Kevin Black;,citation_author=Michael Janner;,citation_author=Yilun Du;,citation_author=Ilya Kostrikov;,citation_author=Sergey Levine;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_conference_title=International conference on learning representations (ICLR);">
+<meta name="citation_reference" content="citation_title=Diffusion model alignment using direct preference optimization;,citation_author=Bram Wallace;,citation_author=Meihua Dang;,citation_author=Rafael Rafailov;,citation_author=Linqi Zhou;,citation_author=Aaron Lou;,citation_author=Senthil Purushwalkam;,citation_author=Stefano Ermon;,citation_author=Caiming Xiong;,citation_author=Shafiq Joty;,citation_author=Nikhil Naik;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_conference_title=Proceedings of the IEEE/CVF conference on computer vision and pattern recognition (CVPR);">
+<meta name="citation_reference" content="citation_title=Fine-tuning of continuous-time diffusion models as entropy-regularized control;,citation_author=Masatoshi Uehara;,citation_author=Yulai Zhao;,citation_author=Kevin Black;,citation_author=Ehsan Hajiramezanali;,citation_author=Gabriele Scalia;,citation_author=Nathaniel Lee Diamant;,citation_author=Alex M. Tseng;,citation_author=Tommaso Biancalani;,citation_author=Sergey Levine;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_journal_title=arXiv preprint arXiv:2402.15194;">
+<meta name="citation_reference" content="citation_title=Adjoint matching: Fine-tuning flow and diffusion generative models with memoryless stochastic optimal control;,citation_author=Carles Domingo-Enrich;,citation_author=Michal Drozdzal;,citation_author=Brian Karrer;,citation_author=Ricky T. Q. Chen;,citation_publication_date=2025;,citation_cover_date=2025;,citation_year=2025;,citation_conference_title=International conference on learning representations (ICLR);">
 </head>
 
 <body class="nav-sidebar floating quarto-light">
@@ -316,7 +386,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/09-ai-for-science.html">Part III — Applications</a></li><li class="breadcrumb-item"><a href="../chapters/09-ai-for-science.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/05-max-entropy.html">Part II — Methods</a></li><li class="breadcrumb-item"><a href="../chapters/09-max-entropy-post-training.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Maximum-Entropy Post-Training</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -422,7 +492,13 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/08-energy-reasoning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Energy-Based Guidance and Refinement</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/09-max-entropy-post-training.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Maximum-Entropy Post-Training</span></span></a>
   </div>
 </li>
       </ul>
@@ -438,8 +514,8 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/09-ai-for-science.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></span></a>
+  <a href="../chapters/10-ai-for-science.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></span></a>
   </div>
 </li>
       </ul>
@@ -447,7 +523,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -466,18 +542,22 @@ div.csl-indent {
     <h2 id="toc-title">On This Page</h2>
    
   <ul>
-  <li><a href="#two-synergistic-directions" id="toc-two-synergistic-directions" class="nav-link active" data-scroll-target="#two-synergistic-directions"><span class="header-section-number">9.1</span> Two synergistic directions</a></li>
-  <li><a href="#molecular-foundation-models" id="toc-molecular-foundation-models" class="nav-link" data-scroll-target="#molecular-foundation-models"><span class="header-section-number">9.2</span> Molecular foundation models</a></li>
-  <li><a href="#outlook" id="toc-outlook" class="nav-link" data-scroll-target="#outlook"><span class="header-section-number">9.3</span> Outlook</a></li>
+  <li><a href="#sec-post-tilt" id="toc-sec-post-tilt" class="nav-link active" data-scroll-target="#sec-post-tilt"><span class="header-section-number">9.1</span> From the reference to its tilt</a></li>
+  <li><a href="#sec-post-amortize" id="toc-sec-post-amortize" class="nav-link" data-scroll-target="#sec-post-amortize"><span class="header-section-number">9.2</span> Amortizing the tilt</a></li>
+  <li><a href="#sec-post-energy" id="toc-sec-post-energy" class="nav-link" data-scroll-target="#sec-post-energy"><span class="header-section-number">9.3</span> Learning the energy</a></li>
+  <li><a href="#sec-post-self" id="toc-sec-post-self" class="nav-link" data-scroll-target="#sec-post-self"><span class="header-section-number">9.4</span> Self-referential energies</a></li>
+  <li><a href="#sec-post-continuous" id="toc-sec-post-continuous" class="nav-link" data-scroll-target="#sec-post-continuous"><span class="header-section-number">9.5</span> The continuous case</a></li>
+  <li><a href="#sec-post-levels" id="toc-sec-post-levels" class="nav-link" data-scroll-target="#sec-post-levels"><span class="header-section-number">9.6</span> Post-training on the three levels, and where it stops</a></li>
+  <li><a href="#sec-post-takeaway" id="toc-sec-post-takeaway" class="nav-link" data-scroll-target="#sec-post-takeaway"><span class="header-section-number">9.7</span> Takeaway</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/09-ai-for-science.html">Part III — Applications</a></li><li class="breadcrumb-item"><a href="../chapters/09-ai-for-science.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/05-max-entropy.html">Part II — Methods</a></li><li class="breadcrumb-item"><a href="../chapters/09-max-entropy-post-training.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Maximum-Entropy Post-Training</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="sec-ai-for-science" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></span></h1>
+<h1 class="title"><span id="sec-post-training" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Maximum-Entropy Post-Training</span></span></h1>
 </div>
 
 
@@ -488,14 +568,14 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Released</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 4, 2026</p>
+      <p class="date">September 21, 2026</p>
     </div>
   </div>
   
     <div>
     <div class="quarto-title-meta-heading">Last updated</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">August 22, 2026</p>
+      <p class="date-modified">September 22, 2026</p>
     </div>
   </div>
     
@@ -506,28 +586,400 @@ div.csl-indent {
 </header>
 
 
-<p>The ultimate aim of this research program is <strong>scientific intelligence</strong> — AI that is not only accurate and robust, but increasingly endowed with reasoning capabilities that enable new modes of scientific inquiry. Entropy- and energy-based learning offer principled tools for this goal.</p>
-<section id="two-synergistic-directions" class="level2" data-number="9.1">
-<h2 data-number="9.1" class="anchored" data-anchor-id="two-synergistic-directions"><span class="header-section-number">9.1</span> Two synergistic directions</h2>
-<ul>
-<li><strong>Advancing AI with Science.</strong> Fundamental scientific and mathematical theories — statistical physics, information theory, the maximum-entropy principle — inspire principled AI methodologies. Energy-based games (<a href="05-max-entropy.html" class="quarto-xref"><span>Chapter 5</span></a>), entropy-minimized reasoning (<a href="06-min-entropy.html" class="quarto-xref"><span>Chapter 6</span></a>), and minimax-entropy model selection (<a href="07-minimax-entropy.html" class="quarto-xref"><span>Chapter 7</span></a>) are three examples.</li>
-<li><strong>Advancing Science with AI.</strong> The same methods accelerate discovery in the sciences, from molecular representation learning to chemical reasoning.</li>
-</ul>
+<p><em>Post-training</em> is the name that has become standard for everything done to a pretrained model after pre-training: supervised fine-tuning on demonstrations, reinforcement learning from human or verifier feedback, preference optimization, and their many variants. The methods look different and are usually presented as a list. In this chapter we argue that most of them are one thing, and that the one thing is maximum-entropy learning in the sense of <a href="05-max-entropy.html#sec-max-definition" class="quarto-xref"><span>Section 5.1</span></a> with the pretrained model as base measure. Specifically, the object every method approximates is the tilt of the reference policy,</p>
+<p><span id="eq-post-tilt"><span class="math display">\[
+\begin{aligned}
+\pi^{\star}(y \mid x) \;&amp;=\;
+\frac{\pi_{\mathrm{ref}}(y \mid x)\, \exp\big(r(x, y)/\beta\big)}{Z_\beta(x)} \\
+&amp;=\;
+\arg\min_{\pi}\; \mathbb{E}_{\pi}\big[-r(x, y)\big] + \beta\, \mathrm{KL}\big(\pi(\cdot \mid x) \,\Vert\, \pi_{\mathrm{ref}}(\cdot \mid x)\big),
+\end{aligned}
+\tag{9.1}\]</span></span></p>
+<p>which is <a href="08-energy-reasoning.html#eq-guid-tilt" class="quarto-xref">Equation&nbsp;<span>8.1</span></a> with the pretrained model as reference, the negative reward as energy, and the KL coefficient <span class="math inline">\(\beta\)</span> as temperature; it was derived in <a href="06-min-entropy.html#sec-min-collapse" class="quarto-xref"><span>Section 6.6</span></a> as <a href="06-min-entropy.html#eq-min-gibbs" class="quarto-xref">Equation&nbsp;<span>6.2</span></a>. <a href="08-energy-reasoning.html" class="quarto-xref"><span>Chapter 8</span></a> sampled from this tilt at inference time with the reference frozen. Post-training moves to the learning level: either the reference is fitted so that a single forward pass approximates <span class="math inline">\(\pi^\star\)</span> — we call this <em>amortizing</em> the tilt — or the energy <span class="math inline">\(r\)</span> is itself learned from preferences, outcomes, or the model’s own behaviour. We treat the two in turn, then the continuous case of diffusion and flow models, and finally the boundary of the family.</p>
+<section id="sec-post-tilt" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="sec-post-tilt"><span class="header-section-number">9.1</span> From the reference to its tilt</h2>
+<p>The KL-regularized objective on the right of <a href="#eq-post-tilt" class="quarto-xref">Equation&nbsp;<span>9.1</span></a> has a longer history than its current use. In control it is the KL-control problem of <a href="05-max-entropy.html#sec-max-rl-model" class="quarto-xref"><span>Section 5.5.1</span></a>, in which the base measure is the passive dynamics <span class="citation" data-cites="todorov2006lmdp todorov2009efficient">(<a href="../references.html#ref-todorov2006lmdp" role="doc-biblioref">Todorov 2006</a>, <a href="../references.html#ref-todorov2009efficient" role="doc-biblioref">2009</a>)</span>. For sequence models it was introduced by Jaques et al. <span class="citation" data-cites="jaques2017sequencetutor">(<a href="../references.html#ref-jaques2017sequencetutor" role="doc-biblioref">Jaques et al. 2017</a>)</span>, who fine-tuned a recurrent network with a reward while penalizing the divergence from the maximum-likelihood model it started from, precisely to keep what the model had learned from data. Ziegler et al. <span class="citation" data-cites="ziegler2019finetuning">(<a href="../references.html#ref-ziegler2019finetuning" role="doc-biblioref">Ziegler et al. 2019</a>)</span> used the same penalty to fine-tune language models from human preferences, and the recipe of reward model plus KL-regularized policy optimization became reinforcement learning from human feedback (RLHF) <span class="citation" data-cites="christiano2017preferences ouyang2022instructgpt">(<a href="../references.html#ref-christiano2017preferences" role="doc-biblioref">Christiano et al. 2017</a>; <a href="../references.html#ref-ouyang2022instructgpt" role="doc-biblioref">Ouyang et al. 2022</a>)</span>. It is worth noting why the penalty is not optional. Without it, maximizing <span class="math inline">\(\mathbb{E}_\pi[r]\)</span> over all policies places the entire mass on the arg-max of the reward, a degenerate distribution; Korbak, Perez, and Buckley <span class="citation" data-cites="korbak2022rlkl">(<a href="../references.html#ref-korbak2022rlkl" role="doc-biblioref">Korbak et al. 2022</a>)</span> make the point sharply and show that the KL-regularized problem is equivalent to variational inference: minimizing <span class="math inline">\(\mathrm{KL}(\pi \,\Vert\, \pi^\star)\)</span> for the target <a href="#eq-post-tilt" class="quarto-xref">Equation&nbsp;<span>9.1</span></a>, i.e., approximating a Bayesian posterior in which the reference is the prior and <span class="math inline">\(e^{r/\beta}\)</span> the likelihood. In the terms of this book, the entropy term is load-bearing (<a href="05-max-entropy.html#sec-max-def-family" class="quarto-xref"><span>Section 5.1.4</span></a>), and removing it is the zero-temperature boundary of <a href="05-max-entropy.html#sec-max-boundary" class="quarto-xref"><span>Section 5.6.3</span></a>.</p>
+<p>The constrained form of <a href="05-max-entropy.html#sec-max-def-representation" class="quarto-xref"><span>Section 5.1.1</span></a> has an instance of its own. Generation with distributional control (GDC) <span class="citation" data-cites="khalifa2021gdc">(<a href="../references.html#ref-khalifa2021gdc" role="doc-biblioref">Khalifa et al. 2021</a>)</span> asks for the distribution <span class="math inline">\(p\)</span> closest to a pretrained language model <span class="math inline">\(a\)</span> that satisfies moment constraints on chosen features,</p>
+<p><span id="eq-post-gdc"><span class="math display">\[
+\begin{aligned}
+&amp;\min_{p}\; \mathrm{KL}(p \,\Vert\, a)
+\quad \text{s.t.} \quad
+\mathbb{E}_{p}\big[\phi_i(x)\big] = \bar\mu_i,\; i = 1, \dots, K, \\
+&amp;\qquad\Longrightarrow\qquad
+p(x) \;=\; \frac{a(x)\, \exp\big(\boldsymbol{\lambda}^{\top} \boldsymbol{\phi}(x)\big)}{Z} .
+\end{aligned}
+\tag{9.2}\]</span></span></p>
+<p>The constraints can be pointwise (every sample mentions sports) or distributional (half of the samples mention female characters), the solution is an energy-based model over the reference, and the authors describe the framework as a generalization of the maximum-entropy principle — which it is: <a href="#eq-post-gdc" class="quarto-xref">Equation&nbsp;<span>9.2</span></a> is <a href="05-max-entropy.html#eq-max-def-constrained" class="quarto-xref">Equation&nbsp;<span>5.1</span></a> with <span class="math inline">\(h = a\)</span>. The two forms sit side by side in <a href="#tbl-post-forms" class="quarto-xref">Table&nbsp;<span>9.1</span></a>. RLHF declares an energy and a temperature; GDC declares features and moments; the multipliers of one are the temperature of the other, and both are tilts of the same reference. Go et al. <span class="citation" data-cites="go2023fdpg">(<a href="../references.html#ref-go2023fdpg" role="doc-biblioref">Go et al. 2023</a>)</span> close the circle by showing that RLHF minimizes the reverse KL divergence to its implicit target while GDC minimizes the forward KL divergence to its explicit one, and by allowing any <span class="math inline">\(f\)</span>-divergence in between; in their experiments the Jensen–Shannon divergence often gives the best balance between alignment and diversity. In the vocabulary of <a href="05-max-entropy.html#sec-max-boundary" class="quarto-xref"><span>Section 5.6.3</span></a>, the choice of divergence at the amortization step is the generalized sense of maximum-entropy learning, now applied to the fitting of the policy rather than of the energy.</p>
+<div id="tbl-post-forms" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-post-forms-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;9.1: The two forms of the maximum-entropy model, instantiated in post-training.
+</figcaption>
+<div aria-describedby="tbl-post-forms-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Free-energy form (RLHF, KL-control)</th>
+<th>Constrained form (GDC)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Declared</td>
+<td>reward <span class="math inline">\(r\)</span>, temperature <span class="math inline">\(\beta\)</span></td>
+<td>features <span class="math inline">\(\boldsymbol{\phi}\)</span>, moments <span class="math inline">\(\bar{\boldsymbol{\mu}}\)</span></td>
+</tr>
+<tr class="even">
+<td>Target</td>
+<td><span class="math inline">\(\pi_{\mathrm{ref}}\, e^{r/\beta} / Z\)</span></td>
+<td><span class="math inline">\(a\, e^{\boldsymbol{\lambda}^\top \boldsymbol{\phi}} / Z\)</span></td>
+</tr>
+<tr class="odd">
+<td>Temperature</td>
+<td>a genuine dial</td>
+<td>determined by the moments</td>
+</tr>
+<tr class="even">
+<td>Amortization</td>
+<td>reverse KL, policy gradient</td>
+<td>forward KL, distributional policy gradient</td>
+</tr>
+<tr class="odd">
+<td>Generalization</td>
+<td>any <span class="math inline">\(f\)</span>-divergence <span class="citation" data-cites="go2023fdpg">(<a href="../references.html#ref-go2023fdpg" role="doc-biblioref">Go et al. 2023</a>)</span></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The temperature of <a href="#eq-post-tilt" class="quarto-xref">Equation&nbsp;<span>9.1</span></a> is a genuine dial in the sense of <a href="05-max-entropy.html#sec-max-def-family" class="quarto-xref"><span>Section 5.1.4</span></a>: the reward is given, no level is prescribed, and <span class="math inline">\(\beta\)</span> is chosen. Small <span class="math inline">\(\beta\)</span> moves the policy far from the reference and toward the arg-max of the reward; large <span class="math inline">\(\beta\)</span> leaves it nearly unchanged. The same trade-off appears as a KL constraint rather than a penalty in trust-region methods <span class="citation" data-cites="schulman2015trpo">(<a href="../references.html#ref-schulman2015trpo" role="doc-biblioref">Schulman et al. 2015</a>)</span>, which is the constrained form once more.</p>
 </section>
-<section id="molecular-foundation-models" class="level2" data-number="9.2">
-<h2 data-number="9.2" class="anchored" data-anchor-id="molecular-foundation-models"><span class="header-section-number">9.2</span> Molecular foundation models</h2>
-<p>A concrete thread runs from <strong>self-supervised graph transformers</strong> for molecular representation learning toward <strong>molecule–language</strong> models with reasoning capabilities. The trajectory mirrors the broader shift from <em>pretraining–finetuning</em> to <em>LLM-style reasoning</em>, and entropy-based objectives provide label-efficient signals where annotated data are scarce.</p>
+<section id="sec-post-amortize" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="sec-post-amortize"><span class="header-section-number">9.2</span> Amortizing the tilt</h2>
+<p>Amortization fits a parametric policy <span class="math inline">\(\pi_\theta\)</span> to <span class="math inline">\(\pi^\star\)</span> so that generation is one forward pass. The methods differ in the divergence they minimize and in how they estimate its gradient; none of them changes the target.</p>
+<p><strong>Reverse KL and policy gradients.</strong> Minimizing <span class="math inline">\(\mathrm{KL}(\pi_\theta \,\Vert\, \pi^\star)\)</span> is, up to a constant, maximizing the right-hand side of <a href="#eq-post-tilt" class="quarto-xref">Equation&nbsp;<span>9.1</span></a> in <span class="math inline">\(\theta\)</span>, and its gradient is a policy gradient with a shaped reward,</p>
+<p><span id="eq-post-pg"><span class="math display">\[
+\nabla_\theta\, \mathcal{J}(\theta) \;=\;
+\mathbb{E}_{y \sim \pi_\theta(\cdot \mid x)}\Big[
+\Big( r(x, y) - \beta \log \frac{\pi_\theta(y \mid x)}{\pi_{\mathrm{ref}}(y \mid x)} - b(x) \Big)
+\nabla_\theta \log \pi_\theta(y \mid x) \Big],
+\tag{9.3}\]</span></span></p>
+<p>with any baseline <span class="math inline">\(b(x)\)</span> <span class="citation" data-cites="williams1992reinforce">(<a href="../references.html#ref-williams1992reinforce" role="doc-biblioref">Williams 1992</a>)</span>. Proximal policy optimization <span class="citation" data-cites="schulman2017ppo">(<a href="../references.html#ref-schulman2017ppo" role="doc-biblioref">Schulman et al. 2017</a>)</span> estimates this with a learned value baseline and a clipped surrogate, and is the algorithm behind the RLHF of <span class="citation" data-cites="ouyang2022instructgpt">Ouyang et al. (<a href="../references.html#ref-ouyang2022instructgpt" role="doc-biblioref">2022</a>)</span>. Two recent variants remove the value network. Group relative policy optimization (GRPO) <span class="citation" data-cites="shao2024grpo">(<a href="../references.html#ref-shao2024grpo" role="doc-biblioref">Shao et al. 2024</a>)</span> samples a group of <span class="math inline">\(G\)</span> outputs <span class="math inline">\(\{o_i\}\)</span> for each prompt and uses the group as its own baseline,</p>
+<p><span id="eq-post-grpo"><span class="math display">\[
+\begin{aligned}
+\hat{A}_i \;&amp;=\; \frac{r_i - \operatorname{mean}(r_1, \dots, r_G)}{\operatorname{std}(r_1, \dots, r_G)}, \\
+\mathcal{L}_{\mathrm{GRPO}}
+\;&amp;=\; -\frac{1}{G}\sum_{i=1}^{G} \frac{1}{|o_i|} \sum_{t=1}^{|o_i|}
+\Big[ \min\big(\rho_{i,t}\hat{A}_i,\ \operatorname{clip}(\rho_{i,t}, 1-\epsilon, 1+\epsilon)\hat{A}_i\big)
+- \beta\, \widehat{\mathrm{KL}}_{i,t} \Big],
+\end{aligned}
+\tag{9.4}\]</span></span></p>
+<p>where <span class="math inline">\(\rho_{i,t}\)</span> is the token-level probability ratio to the sampling policy and the KL term is estimated per token by the unbiased, non-negative estimator</p>
+<p><span id="eq-post-k3"><span class="math display">\[
+\widehat{\mathrm{KL}}_{i,t} \;=\;
+\frac{\pi_{\mathrm{ref}}(o_{i,t} \mid \cdot)}{\pi_\theta(o_{i,t} \mid \cdot)}
+- \log \frac{\pi_{\mathrm{ref}}(o_{i,t} \mid \cdot)}{\pi_\theta(o_{i,t} \mid \cdot)} - 1 .
+\tag{9.5}\]</span></span></p>
+<p>REINFORCE leave-one-out (RLOO) <span class="citation" data-cites="ahmadian2024rloo">(<a href="../references.html#ref-ahmadian2024rloo" role="doc-biblioref">Ahmadian et al. 2024</a>)</span> is the sequence-level version: the baseline for each sample is the mean reward of the other <span class="math inline">\(G - 1\)</span> samples, there is no clipping, and the authors show that this simpler estimator matches or outperforms PPO in the RLHF setting. What we want the reader to see is that <a href="#eq-post-grpo" class="quarto-xref">Equation&nbsp;<span>9.4</span></a> and RLOO are estimators of the same gradient <a href="#eq-post-pg" class="quarto-xref">Equation&nbsp;<span>9.3</span></a>. The group normalization and the clipping are variance reduction; the target is unchanged, and the KL term is the entropy term of the free energy, estimated rather than computed. Every variant in this family is therefore an approximate maximum-entropy learner in the strict sense of <a href="05-max-entropy.html#sec-max-def-family" class="quarto-xref"><span>Section 5.1.4</span></a>, in which the inner problem is solved by amortization rather than by sampling.</p>
+<p><strong>Forward KL and distribution matching.</strong> The distributional policy gradient (DPG) of Parshakova, Andreoli, and Dymetman <span class="citation" data-cites="parshakova2019dpg">(<a href="../references.html#ref-parshakova2019dpg" role="doc-biblioref">Parshakova et al. 2019</a>)</span>, which GDC <span class="citation" data-cites="khalifa2021gdc">(<a href="../references.html#ref-khalifa2021gdc" role="doc-biblioref">Khalifa et al. 2021</a>)</span> adopts, minimizes the forward divergence <span class="math inline">\(\mathrm{KL}(p \,\Vert\, \pi_\theta)\)</span> to the explicit target <a href="#eq-post-gdc" class="quarto-xref">Equation&nbsp;<span>9.2</span></a> by importance sampling,</p>
+<p><span id="eq-post-dpg"><span class="math display">\[
+\nabla_\theta\, \mathrm{KL}(p \,\Vert\, \pi_\theta)
+\;=\; -\,\mathbb{E}_{x \sim q}\Big[ \frac{p(x)}{q(x)}\, \nabla_\theta \log \pi_\theta(x) \Big],
+\tag{9.6}\]</span></span></p>
+<p>with a proposal <span class="math inline">\(q\)</span> that is periodically updated to the current policy and an estimate of <span class="math inline">\(Z\)</span>. GFlowNet fine-tuning <span class="citation" data-cites="hu2024gflownet">(<a href="../references.html#ref-hu2024gflownet" role="doc-biblioref">Hu et al. 2024</a>)</span> trains the policy so that complete sequences are sampled with probability proportional to a reward, <span class="math inline">\(\pi_\theta(x) \propto R(x)\)</span>, which is the tilt at <span class="math inline">\(\beta = 1\)</span> with <span class="math inline">\(r = \log R\)</span> and the reference absorbed into <span class="math inline">\(R\)</span>; the training objective is a subtrajectory-balance loss rather than a divergence, and the authors call the result amortized inference, which is the exact name. Rejection-sampling fine-tuning — sample from the current model, keep the outputs the reward accepts, and fit by maximum likelihood on the survivors <span class="citation" data-cites="dong2023raft gulcehre2023rest">(<a href="../references.html#ref-dong2023raft" role="doc-biblioref">Dong et al. 2023</a>; <a href="../references.html#ref-gulcehre2023rest" role="doc-biblioref">Gulcehre et al. 2023</a>)</span> — is forward-KL amortization of a truncated tilt, and distilling the best-of-<span class="math inline">\(N\)</span> distribution of <a href="08-energy-reasoning.html#sec-guid-verifiers" class="quarto-xref"><span>Section 8.4</span></a> into the weights <span class="citation" data-cites="gui2024bonbon">(<a href="../references.html#ref-gui2024bonbon" role="doc-biblioref">Gui et al. 2024</a>)</span> is the same move with the best-of-<span class="math inline">\(N\)</span> tilt as target, implemented as maximum likelihood on the best sample together with a pairwise term on the best and the worst of the <span class="math inline">\(N\)</span>. The divergence matters: reverse KL is mode-seeking and drives the policy toward the reward’s arg-max as <span class="math inline">\(\beta\)</span> falls, whereas forward KL is mass-covering and needs samples from, or importance weights for, the target. Neither is right in general, which is the empirical finding of <span class="citation" data-cites="go2023fdpg">Go et al. (<a href="../references.html#ref-go2023fdpg" role="doc-biblioref">2023</a>)</span>.</p>
 </section>
-<section id="outlook" class="level2" data-number="9.3">
-<h2 data-number="9.3" class="anchored" data-anchor-id="outlook"><span class="header-section-number">9.3</span> Outlook</h2>
-<p>A deeper unification may be within reach. The minimax view (<a href="07-minimax-entropy.html" class="quarto-xref"><span>Chapter 7</span></a>) suggests that modelling the world and committing to a decision are two halves of one objective — an idea that echoes the <strong>free-energy principle</strong> proposed as a unified account of perception and action in the brain <span class="citation" data-cites="friston2010free">(<a href="../references.html#ref-friston2010free" role="doc-biblioref">Friston 2010</a>)</span>. The quantity that principle asks the brain to minimize is the variational free energy of <a href="03-free-energy.html" class="quarto-xref"><span>Chapter 3</span></a>, which is what makes the correspondence more than a metaphor. Making it precise, and scaling it to LLMs, agents, and multimodal scientific models, is an open and appealing direction.</p>
-<p>As the research matures, this book will grow to include worked examples, executable code, and reproducible experiments.</p>
-<p>See the <a href="https://bluewhale.yataobian.com/">Blue Whale Lab</a> and <a href="https://yataobian.com/" class="uri">https://yataobian.com/</a> for the latest developments.</p>
+<section id="sec-post-energy" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="sec-post-energy"><span class="header-section-number">9.3</span> Learning the energy</h2>
+<p>The reward of <a href="#eq-post-tilt" class="quarto-xref">Equation&nbsp;<span>9.1</span></a> is rarely given. It is learned, and the way it is learned is where post-training becomes a maximum-entropy learner in the sense of iii) in <a href="05-max-entropy.html#sec-max-def-family" class="quarto-xref"><span>Section 5.1.4</span></a>.</p>
+<p><strong>Reward models from pairs.</strong> The standard supervision is a comparison: for a prompt <span class="math inline">\(x\)</span>, a preferred response <span class="math inline">\(y_w\)</span> and a rejected one <span class="math inline">\(y_l\)</span>. The Bradley–Terry model <span class="citation" data-cites="bradley1952rank">(<a href="../references.html#ref-bradley1952rank" role="doc-biblioref">Bradley and Terry 1952</a>)</span></p>
+<p><span id="eq-post-bt"><span class="math display">\[
+P(y_w \succ y_l \mid x) \;=\; \sigma\big( r_\theta(x, y_w) - r_\theta(x, y_l) \big)
+\tag{9.7}\]</span></span></p>
+<p>is fitted by maximum likelihood, which is logistic regression on the difference of rewards and hence the maximum-entropy classifier of <a href="05-max-entropy.html#sec-max-def-family" class="quarto-xref"><span>Section 5.1.4</span></a> applied to pairs; its likelihood equations match the empirical and predicted win frequencies. Outcome and process reward models <span class="citation" data-cites="cobbe2021verifiers lightman2023verify">(<a href="../references.html#ref-cobbe2021verifiers" role="doc-biblioref">Cobbe et al. 2021</a>; <a href="../references.html#ref-lightman2023verify" role="doc-biblioref">Lightman et al. 2024</a>)</span> and the small verifier of <a href="08-energy-reasoning.html#sec-guid-verifiers" class="quarto-xref"><span>Section 8.4</span></a> are trained in this way, and the trained reward is then either handed to a sampler (<a href="08-energy-reasoning.html" class="quarto-xref"><span>Chapter 8</span></a>) or amortized (<a href="#sec-post-amortize" class="quarto-xref"><span>Section 9.2</span></a>).</p>
+<p><strong>Direct preference optimization: the energy through the closed form.</strong> Direct preference optimization (DPO) <span class="citation" data-cites="rafailov2023dpo">(<a href="../references.html#ref-rafailov2023dpo" role="doc-biblioref">Rafailov et al. 2023</a>)</span> removes the separate reward model by substituting the representation level into the learning level. Inverting <a href="#eq-post-tilt" class="quarto-xref">Equation&nbsp;<span>9.1</span></a> gives</p>
+<p><span id="eq-post-dpo-reward"><span class="math display">\[
+r(x, y) \;=\; \beta \log \frac{\pi^\star(y \mid x)}{\pi_{\mathrm{ref}}(y \mid x)} + \beta \log Z_\beta(x),
+\tag{9.8}\]</span></span></p>
+<p>and the partition function cancels in the difference that enters <a href="#eq-post-bt" class="quarto-xref">Equation&nbsp;<span>9.7</span></a>. Replacing <span class="math inline">\(\pi^\star\)</span> by the policy being trained yields the loss</p>
+<p><span id="eq-post-dpo"><span class="math display">\[
+\mathcal{L}_{\mathrm{DPO}}(\theta) \;=\;
+-\,\mathbb{E}_{(x, y_w, y_l)}\Big[ \log \sigma\Big(
+\beta \log \frac{\pi_\theta(y_w \mid x)}{\pi_{\mathrm{ref}}(y_w \mid x)}
+- \beta \log \frac{\pi_\theta(y_l \mid x)}{\pi_{\mathrm{ref}}(y_l \mid x)} \Big) \Big],
+\tag{9.9}\]</span></span></p>
+<p>whose gradient weights each pair by how wrongly the implicit reward <span class="math inline">\(\hat{r}_\theta = \beta \log(\pi_\theta / \pi_{\mathrm{ref}})\)</span> currently orders it. Nothing is sampled during training, which is the practical appeal; the conceptual point is that the log-ratio of the policy to the reference <em>is</em> the energy, so that learning the policy and learning the energy are one step. Rafailov et al. <span class="citation" data-cites="rafailov2024rtoq">(<a href="../references.html#ref-rafailov2024rtoq" role="doc-biblioref">Rafailov et al. 2024</a>)</span> extend the reading to the token level: in the token Markov decision process, the token-wise log-ratio <span class="math inline">\(\beta \log \pi^\star(a_t \mid s_t)/\pi_{\mathrm{ref}}(a_t \mid s_t)\)</span> is the soft advantage <span class="math inline">\(Q^\star - V^\star\)</span> of maximum-entropy reinforcement learning, so DPO fits soft <span class="math inline">\(Q\)</span>-values of <a href="05-max-entropy.html#sec-max-rl-inference" class="quarto-xref"><span>Section 5.5.2</span></a> with the reference as base measure. The limitations are those of any learned energy: the implicit reward is defined only relative to <span class="math inline">\(\pi_{\mathrm{ref}}\)</span>, the data are off-policy, and a small <span class="math inline">\(\beta\)</span> lets the policy travel far from the reference on the strength of a few comparisons.</p>
+<p><strong>Energies from contrastive noise.</strong> The residual energies of <a href="08-energy-reasoning.html#sec-guid-discrete" class="quarto-xref"><span>Section 8.3</span></a> are the third route: noise-contrastive estimation with the reference as noise distribution <span class="citation" data-cites="deng2020residual xu2025edlm yan2026unie">(<a href="../references.html#ref-deng2020residual" role="doc-biblioref">Deng et al. 2020</a>; <a href="../references.html#ref-xu2025edlm" role="doc-biblioref">Xu et al. 2025</a>; <a href="../references.html#ref-yan2026unie" role="doc-biblioref">Yan et al. 2026</a>)</span>. This is a maximum-entropy learner in the generalized sense of <a href="05-max-entropy.html#sec-max-boundary" class="quarto-xref"><span>Section 5.6.3</span></a>, and its output is used at inference time, so it belongs to both chapters — learned here, applied there.</p>
+</section>
+<section id="sec-post-self" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="sec-post-self"><span class="header-section-number">9.4</span> Self-referential energies</h2>
+<p>A last class of methods takes the reward from the model itself. EMPO <span class="citation" data-cites="zhang2025empo">(<a href="../references.html#ref-zhang2025empo" role="doc-biblioref">Zhang et al. 2025</a>)</span> rewards a response by the frequency of its semantic cluster among the model’s own samples; test-time reinforcement learning (TTRL) <span class="citation" data-cites="zuo2025ttrl">(<a href="../references.html#ref-zuo2025ttrl" role="doc-biblioref">Zuo et al. 2025</a>)</span> does the same with an exact-match majority vote as the pseudo-label; and in test-time adaptation the analogous move is to minimize the entropy of the model’s predictions on the test stream, which Park et al. <span class="citation" data-cites="park2025retta">(<a href="../references.html#ref-park2025retta" role="doc-biblioref">Park et al. 2025</a>)</span> show should be paired with an explicit energy objective to be reliable. Formally these are instances of <a href="#eq-post-tilt" class="quarto-xref">Equation&nbsp;<span>9.1</span></a> with <span class="math inline">\(r\)</span> replaced by a functional of <span class="math inline">\(\pi\)</span> itself, and the closed form becomes the self-consistency equation <a href="06-min-entropy.html#eq-min-selfconsistent" class="quarto-xref">Equation&nbsp;<span>6.3</span></a>. The consequence, worked out in <a href="06-min-entropy.html#sec-min-collapse" class="quarto-xref"><span>Section 6.6</span></a>, is a rich-get-richer dynamics with a collapse threshold, and the reason is that the outer criterion has been reversed: an external reward tilts the reference toward what the world values, whereas an internal one tilts it toward what the model already believes, and the entropy term now fights the objective rather than regularizing it. This is why we place these methods in <a href="06-min-entropy.html" class="quarto-xref"><span>Chapter 6</span></a> and not here. They share the inner Gibbs tilt with maximum-entropy post-training and differ in the sign of the outer problem; the two chapters are the two directions of the dial of <a href="03-free-energy.html" class="quarto-xref"><span>Chapter 3</span></a>.</p>
+</section>
+<section id="sec-post-continuous" class="level2" data-number="9.5">
+<h2 data-number="9.5" class="anchored" data-anchor-id="sec-post-continuous"><span class="header-section-number">9.5</span> The continuous case</h2>
+<p>The same structure recurs, almost verbatim, for diffusion and flow models, with the pretrained generator <span class="math inline">\(p_{\mathrm{base}}\)</span> as reference and a reward on clean samples as energy. Black et al. <span class="citation" data-cites="black2024ddpo">(<a href="../references.html#ref-black2024ddpo" role="doc-biblioref">Black et al. 2024</a>)</span> cast denoising as a multi-step decision process and optimize a reward by policy gradient (DDPO). It is worth noting that DDPO has no KL term: the authors control over-optimization by stopping early, so that on its own the method sits at the boundary of the family described in <a href="#sec-post-levels" class="quarto-xref"><span>Section 9.6</span></a>, and it is the concurrent DPOK of Fan et al. <span class="citation" data-cites="fan2023dpok">(<a href="../references.html#ref-fan2023dpok" role="doc-biblioref">Fan et al. 2023</a>)</span>, which adds a per-step KL penalty to the pretrained model, that brings the construction back inside. Wallace et al. <span class="citation" data-cites="wallace2024diffusiondpo">(<a href="../references.html#ref-wallace2024diffusiondpo" role="doc-biblioref">Wallace et al. 2024</a>)</span> carry DPO over to diffusion models by writing the preference likelihood on denoising trajectories. Uehara et al. <span class="citation" data-cites="uehara2024entropy">(<a href="../references.html#ref-uehara2024entropy" role="doc-biblioref">Uehara et al. 2024</a>)</span> make the target explicit: fine-tuning as entropy-regularized control against the pretrained model has the tilt <span class="math inline">\(p_{\mathrm{base}}(x)\, e^{r(x)/\alpha}\)</span> as its solution, and the regularization is what prevents the “reward collapse” of over-optimizing an imperfect learned reward. Domingo-Enrich et al. <span class="citation" data-cites="domingoenrich2025adjoint">(<a href="../references.html#ref-domingoenrich2025adjoint" role="doc-biblioref">Domingo-Enrich et al. 2025</a>)</span> then show that the naive stochastic-optimal-control formulation carries an <em>initial value function bias</em>: the generated distribution picks up a term that depends on the initial noise and is not the tilt. The remedy is a particular memoryless noise schedule, under which the fine-tuned flow or diffusion model provably converges to <span class="math inline">\(p_{\mathrm{base}}\, e^{r}\)</span>, and their adjoint matching algorithm turns the control problem into a regression. Seen in light of <a href="08-energy-reasoning.html#sec-guid-continuous" class="quarto-xref"><span>Section 8.2</span></a>, guidance and reward fine-tuning are two perspectives on the same underlying tilt: guidance injects the gradient correction from <a href="08-energy-reasoning.html#eq-guid-intermediate" class="quarto-xref">Equation&nbsp;<span>8.3</span></a> during sampling, while fine-tuning incorporates that same adjustment directly into the model’s drift.</p>
+</section>
+<section id="sec-post-levels" class="level2" data-number="9.6">
+<h2 data-number="9.6" class="anchored" data-anchor-id="sec-post-levels"><span class="header-section-number">9.6</span> Post-training on the three levels, and where it stops</h2>
+<p><a href="#tbl-post-levels" class="quarto-xref">Table&nbsp;<span>9.2</span></a> places the methods of this chapter on the three levels of <a href="05-max-entropy.html#sec-max-definition" class="quarto-xref"><span>Section 5.1</span></a>. The representation level is the same in every row; the rows differ in what is computed and in whether the energy is given, learned, or self-referential.</p>
+<div id="tbl-post-levels" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-post-levels-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;9.2: Post-training methods on the three levels. Amortization fits the reference to a fixed tilt; energy learning fits the tilt itself; self-referential rewards reverse the outer criterion and belong to minimum-entropy learning. DDPO is listed for contrast: without a KL term it sits at the boundary of the family.
+</figcaption>
+<div aria-describedby="tbl-post-levels-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Base measure <span class="math inline">\(\pi_{\mathrm{ref}}\)</span></th>
+<th>Energy</th>
+<th>What is fitted</th>
+<th>Level</th>
+<th>Divergence or objective</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>RLHF with PPO <span class="citation" data-cites="ouyang2022instructgpt">(<a href="../references.html#ref-ouyang2022instructgpt" role="doc-biblioref">Ouyang et al. 2022</a>)</span>; GRPO <span class="citation" data-cites="shao2024grpo">(<a href="../references.html#ref-shao2024grpo" role="doc-biblioref">Shao et al. 2024</a>)</span>; RLOO <span class="citation" data-cites="ahmadian2024rloo">(<a href="../references.html#ref-ahmadian2024rloo" role="doc-biblioref">Ahmadian et al. 2024</a>)</span></td>
+<td>pretrained LM</td>
+<td>reward, given: a learned reward model or a rule-based verifier</td>
+<td>policy <span class="math inline">\(\pi_\theta \approx \pi^\star\)</span></td>
+<td>amortized inference</td>
+<td>reverse KL, by KL-penalized policy gradient</td>
+</tr>
+<tr class="even">
+<td>GDC, trained by DPG <span class="citation" data-cites="khalifa2021gdc parshakova2019dpg">(<a href="../references.html#ref-khalifa2021gdc" role="doc-biblioref">Khalifa et al. 2021</a>; <a href="../references.html#ref-parshakova2019dpg" role="doc-biblioref">Parshakova et al. 2019</a>)</span></td>
+<td>pretrained LM <span class="math inline">\(a\)</span></td>
+<td>moments of declared features, i.e., <span class="math inline">\(\boldsymbol{\lambda}^\top \boldsymbol{\phi}\)</span></td>
+<td>policy</td>
+<td>amortized inference (constrained form)</td>
+<td>forward KL, importance-weighted</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(f\)</span>-DPG <span class="citation" data-cites="go2023fdpg">(<a href="../references.html#ref-go2023fdpg" role="doc-biblioref">Go et al. 2023</a>)</span></td>
+<td>pretrained LM</td>
+<td>any unnormalized target <span class="math inline">\(P\)</span></td>
+<td>policy</td>
+<td>amortized inference</td>
+<td>any <span class="math inline">\(f\)</span>-divergence</td>
+</tr>
+<tr class="even">
+<td>GFlowNet fine-tuning <span class="citation" data-cites="hu2024gflownet">(<a href="../references.html#ref-hu2024gflownet" role="doc-biblioref">Hu et al. 2024</a>)</span></td>
+<td>pretrained LM (initialization; also evaluates <span class="math inline">\(R\)</span>)</td>
+<td>reward <span class="math inline">\(R\)</span>, e.g., a posterior of the same LM</td>
+<td>policy <span class="math inline">\(\propto R\)</span></td>
+<td>amortized inference</td>
+<td>subtrajectory-balance objective</td>
+</tr>
+<tr class="odd">
+<td>RAFT <span class="citation" data-cites="dong2023raft">(<a href="../references.html#ref-dong2023raft" role="doc-biblioref">Dong et al. 2023</a>)</span>, ReST <span class="citation" data-cites="gulcehre2023rest">(<a href="../references.html#ref-gulcehre2023rest" role="doc-biblioref">Gulcehre et al. 2023</a>)</span></td>
+<td>current / pretrained LM</td>
+<td>reward, given</td>
+<td>policy</td>
+<td>amortized inference</td>
+<td>forward KL to a truncated tilt: maximum likelihood on accepted samples</td>
+</tr>
+<tr class="even">
+<td>BoNBoN <span class="citation" data-cites="gui2024bonbon">(<a href="../references.html#ref-gui2024bonbon" role="doc-biblioref">Gui et al. 2024</a>)</span></td>
+<td>pretrained LM</td>
+<td>reward, given</td>
+<td>policy <span class="math inline">\(\approx \pi_{\mathrm{BoN}}\)</span></td>
+<td>amortized inference</td>
+<td>maximum likelihood on the best of <span class="math inline">\(n\)</span> plus an IPO-type term on best–worst pairs</td>
+</tr>
+<tr class="odd">
+<td>Reward models <span class="citation" data-cites="christiano2017preferences ouyang2022instructgpt">(<a href="../references.html#ref-christiano2017preferences" role="doc-biblioref">Christiano et al. 2017</a>; <a href="../references.html#ref-ouyang2022instructgpt" role="doc-biblioref">Ouyang et al. 2022</a>)</span>; ORM <span class="citation" data-cites="cobbe2021verifiers">(<a href="../references.html#ref-cobbe2021verifiers" role="doc-biblioref">Cobbe et al. 2021</a>)</span>; PRM <span class="citation" data-cites="lightman2023verify">(<a href="../references.html#ref-lightman2023verify" role="doc-biblioref">Lightman et al. 2024</a>)</span>; EORM <span class="citation" data-cites="jiang2025eorm">(<a href="../references.html#ref-jiang2025eorm" role="doc-biblioref">Jiang et al. 2025</a>)</span></td>
+<td>—</td>
+<td>learned from pairs, or from outcome / step labels</td>
+<td>energy</td>
+<td>learning</td>
+<td>log score on pairs (Bradley–Terry) or on labels</td>
+</tr>
+<tr class="even">
+<td>DPO <span class="citation" data-cites="rafailov2023dpo rafailov2024rtoq">(<a href="../references.html#ref-rafailov2023dpo" role="doc-biblioref">Rafailov et al. 2023</a>, <a href="../references.html#ref-rafailov2024rtoq" role="doc-biblioref">2024</a>)</span></td>
+<td>pretrained LM</td>
+<td>implicit: <span class="math inline">\(\beta \log \pi_\theta / \pi_{\mathrm{ref}}\)</span></td>
+<td>policy <span class="math inline">\(=\)</span> energy</td>
+<td>learning through the closed form</td>
+<td>log score on pairs</td>
+</tr>
+<tr class="odd">
+<td>Residual energies <span class="citation" data-cites="deng2020residual">(<a href="../references.html#ref-deng2020residual" role="doc-biblioref">Deng et al. 2020</a>)</span>; EDLM <span class="citation" data-cites="xu2025edlm">(<a href="../references.html#ref-xu2025edlm" role="doc-biblioref">Xu et al. 2025</a>)</span>; Uni-E <span class="citation" data-cites="yan2026unie">(<a href="../references.html#ref-yan2026unie" role="doc-biblioref">Yan et al. 2026</a>)</span></td>
+<td>AR LM / DLM denoiser</td>
+<td>residual, NCE-trained or read off a proxy AR model</td>
+<td>energy</td>
+<td>learning (generalized sense), or none when read off</td>
+<td>NCE, i.e., the logistic score</td>
+</tr>
+<tr class="even">
+<td>DDPO <span class="citation" data-cites="black2024ddpo">(<a href="../references.html#ref-black2024ddpo" role="doc-biblioref">Black et al. 2024</a>)</span></td>
+<td>diffusion prior</td>
+<td>reward, given</td>
+<td>denoising policy</td>
+<td>reward maximization with no KL term (boundary case; early stopping)</td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td>DPOK <span class="citation" data-cites="fan2023dpok">(<a href="../references.html#ref-fan2023dpok" role="doc-biblioref">Fan et al. 2023</a>)</span>; entropy-regularized control <span class="citation" data-cites="uehara2024entropy">(<a href="../references.html#ref-uehara2024entropy" role="doc-biblioref">Uehara et al. 2024</a>)</span>; adjoint matching <span class="citation" data-cites="domingoenrich2025adjoint">(<a href="../references.html#ref-domingoenrich2025adjoint" role="doc-biblioref">Domingo-Enrich et al. 2025</a>)</span></td>
+<td>diffusion / flow prior</td>
+<td>reward, given</td>
+<td>denoising policy / generator drift</td>
+<td>amortized inference</td>
+<td>reverse KL: per-step KL penalty, or stochastic optimal control</td>
+</tr>
+<tr class="even">
+<td>Diffusion-DPO <span class="citation" data-cites="wallace2024diffusiondpo">(<a href="../references.html#ref-wallace2024diffusiondpo" role="doc-biblioref">Wallace et al. 2024</a>)</span></td>
+<td>diffusion prior</td>
+<td>implicit, from pairs</td>
+<td>generator <span class="math inline">\(=\)</span> energy</td>
+<td>learning through the closed form</td>
+<td>log score on pairs</td>
+</tr>
+<tr class="odd">
+<td>EMPO <span class="citation" data-cites="zhang2025empo">(<a href="../references.html#ref-zhang2025empo" role="doc-biblioref">Zhang et al. 2025</a>)</span>; TTRL <span class="citation" data-cites="zuo2025ttrl">(<a href="../references.html#ref-zuo2025ttrl" role="doc-biblioref">Zuo et al. 2025</a>)</span>; ReTTA <span class="citation" data-cites="park2025retta">(<a href="../references.html#ref-park2025retta" role="doc-biblioref">Park et al. 2025</a>)</span></td>
+<td>pretrained model</td>
+<td>the model’s own agreement (EMPO, TTRL) or its own free energy (ReTTA)</td>
+<td>policy</td>
+<td>reversed outer criterion</td>
+<td>— (<a href="06-min-entropy.html" class="quarto-xref"><span>Chapter 6</span></a>)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The definition also says what is <em>not</em> maximum-entropy post-training. Reward maximization without a KL term is the zero-temperature boundary: its optimum is the degenerate distribution on the arg-max, which is the distribution collapse of <span class="citation" data-cites="korbak2022rlkl">Korbak et al. (<a href="../references.html#ref-korbak2022rlkl" role="doc-biblioref">2022</a>)</span>. Best-of-<span class="math inline">\(N\)</span> with <span class="math inline">\(N \to \infty\)</span> is the same limit reached from the sampling side. Supervised fine-tuning on demonstrations is maximum likelihood, i.e., forward KL from the data to the model, and involves no reference and no tilt; it is a maximum-entropy learner only in the trivial sense of <a href="05-max-entropy.html#sec-max-def-family" class="quarto-xref"><span>Section 5.1.4</span></a>, and it becomes part of the family here only as the fitting step of rejection-sampling fine-tuning, where the “data” are samples from a tilt. DPO with <span class="math inline">\(\beta \to 0\)</span> leaves the family in the same way as RLHF without a penalty.</p>
+<p>What is open is, again, at least as interesting. Reward hacking is energy misspecification: the tilt faithfully concentrates on what the learned energy rewards, and the entropy term is the only thing that keeps an imperfect energy from being exploited, which is why the KL budget, the choice of <span class="math inline">\(\beta\)</span>, and the choice of divergence <span class="citation" data-cites="go2023fdpg">(<a href="../references.html#ref-go2023fdpg" role="doc-biblioref">Go et al. 2023</a>)</span> are not implementation details. The trade-off between test-time computation (<a href="08-energy-reasoning.html" class="quarto-xref"><span>Chapter 8</span></a>) and train-time amortization has no theory yet beyond the KL accounting of best-of-<span class="math inline">\(N\)</span>; a principled answer would say, for a given energy and budget, how much of the tilt to execute at inference and how much to store. And the self-referential methods of <a href="#sec-post-self" class="quarto-xref"><span>Section 9.4</span></a> show that the boundary between maximum- and minimum-entropy learning runs through post-training itself: the same tilt, with an external or an internal energy, gives a method that stays honest or one that collapses.</p>
+</section>
+<section id="sec-post-takeaway" class="level2" data-number="9.7">
+<h2 data-number="9.7" class="anchored" data-anchor-id="sec-post-takeaway"><span class="header-section-number">9.7</span> Takeaway</h2>
+<p>Post-training is maximum-entropy learning with the pretrained model as base measure. Its object is the tilt <a href="#eq-post-tilt" class="quarto-xref">Equation&nbsp;<span>9.1</span></a>, which has both forms of <a href="05-max-entropy.html#sec-max-def-representation" class="quarto-xref"><span>Section 5.1.1</span></a> as instances — RLHF and KL-control declare a reward and a temperature, GDC declares features and moments. Amortization (PPO, GRPO, RLOO, DPG, GFlowNet fine-tuning, rejection sampling) fits the reference to the tilt and differs only in the divergence and its estimator; energy learning (reward models, DPO, contrastive residual energies) fits the tilt itself, and in DPO the two coincide because the policy’s log-ratio to the reference is the energy. The KL term is where the entropy is load-bearing, and removing it, or sending <span class="math inline">\(N\)</span> or <span class="math inline">\(1/\beta\)</span> to infinity, is where the method leaves the family. The story so far is of a single distribution, accessible by paying in either of two currencies: computation expended at inference time, or training and storage invested in advance. The next part explores how and where these approaches enable progress in scientific discovery.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
-<div id="ref-friston2010free" class="csl-entry" role="listitem">
-Friston, Karl. 2010. <span>“The Free-Energy Principle: A Unified Brain Theory?”</span> <em>Nature Reviews Neuroscience</em> 11 (2): 127–38.
+<div id="ref-ahmadian2024rloo" class="csl-entry" role="listitem">
+Ahmadian, Arash, Chris Cremer, Matthias Gallé, et al. 2024. <span>“Back to Basics: Revisiting <span>REINFORCE</span>-Style Optimization for Learning from Human Feedback in <span>LLMs</span>.”</span> <em>Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)</em>, 12248–67.
+</div>
+<div id="ref-black2024ddpo" class="csl-entry" role="listitem">
+Black, Kevin, Michael Janner, Yilun Du, Ilya Kostrikov, and Sergey Levine. 2024. <span>“Training Diffusion Models with Reinforcement Learning.”</span> <em>International Conference on Learning Representations (ICLR)</em>.
+</div>
+<div id="ref-bradley1952rank" class="csl-entry" role="listitem">
+Bradley, Ralph Allan, and Milton E. Terry. 1952. <span>“Rank Analysis of Incomplete Block Designs: <span>I</span>. The Method of Paired Comparisons.”</span> <em>Biometrika</em> 39 (3/4): 324–45.
+</div>
+<div id="ref-christiano2017preferences" class="csl-entry" role="listitem">
+Christiano, Paul F., Jan Leike, Tom B. Brown, Miljan Martic, Shane Legg, and Dario Amodei. 2017. <span>“Deep Reinforcement Learning from Human Preferences.”</span> <em>Advances in Neural Information Processing Systems 30 (NeurIPS)</em>.
+</div>
+<div id="ref-cobbe2021verifiers" class="csl-entry" role="listitem">
+Cobbe, Karl, Vineet Kosaraju, Mohammad Bavarian, et al. 2021. <span>“Training Verifiers to Solve Math Word Problems.”</span> <em>arXiv Preprint arXiv:2110.14168</em>.
+</div>
+<div id="ref-deng2020residual" class="csl-entry" role="listitem">
+Deng, Yuntian, Anton Bakhtin, Myle Ott, Arthur Szlam, and Marc’Aurelio Ranzato. 2020. <span>“Residual Energy-Based Models for Text Generation.”</span> <em>International Conference on Learning Representations (ICLR)</em>.
+</div>
+<div id="ref-domingoenrich2025adjoint" class="csl-entry" role="listitem">
+Domingo-Enrich, Carles, Michal Drozdzal, Brian Karrer, and Ricky T. Q. Chen. 2025. <span>“Adjoint Matching: Fine-Tuning Flow and Diffusion Generative Models with Memoryless Stochastic Optimal Control.”</span> <em>International Conference on Learning Representations (ICLR)</em>.
+</div>
+<div id="ref-dong2023raft" class="csl-entry" role="listitem">
+Dong, Hanze, Wei Xiong, Deepanshu Goyal, et al. 2023. <span>“<span>RAFT</span>: Reward r<span>A</span>nked <span>F</span>ine<span>T</span>uning for Generative Foundation Model Alignment.”</span> <em>Transactions on Machine Learning Research</em>.
+</div>
+<div id="ref-fan2023dpok" class="csl-entry" role="listitem">
+Fan, Ying, Olivia Watkins, Yuqing Du, et al. 2023. <span>“<span>DPOK</span>: Reinforcement Learning for Fine-Tuning Text-to-Image Diffusion Models.”</span> <em>Advances in Neural Information Processing Systems 36 (NeurIPS)</em>.
+</div>
+<div id="ref-go2023fdpg" class="csl-entry" role="listitem">
+Go, Dongyoung, Tomasz Korbak, Germán Kruszewski, Jos Rozen, Nahyeon Ryu, and Marc Dymetman. 2023. <span>“Aligning Language Models with Preferences Through <span class="math inline">\(f\)</span>-Divergence Minimization.”</span> <em>Proceedings of the 40th International Conference on Machine Learning (ICML)</em>, Proceedings of machine learning research, vol. 202.
+</div>
+<div id="ref-gui2024bonbon" class="csl-entry" role="listitem">
+Gui, Lin, Cristina Gârbacea, and Victor Veitch. 2024. <span>“<span>BoNBoN</span> Alignment for Large Language Models and the Sweetness of Best-of-<span class="math inline">\(n\)</span> Sampling.”</span> <em>Advances in Neural Information Processing Systems 37 (NeurIPS)</em>.
+</div>
+<div id="ref-gulcehre2023rest" class="csl-entry" role="listitem">
+Gulcehre, Caglar, Tom Le Paine, Srivatsan Srinivasan, et al. 2023. <span>“Reinforced Self-Training (<span>ReST</span>) for Language Modeling.”</span> <em>arXiv Preprint arXiv:2308.08998</em>.
+</div>
+<div id="ref-hu2024gflownet" class="csl-entry" role="listitem">
+Hu, Edward J., Moksh Jain, Eric Elmoznino, et al. 2024. <span>“Amortizing Intractable Inference in Large Language Models.”</span> <em>International Conference on Learning Representations (ICLR)</em>.
+</div>
+<div id="ref-jaques2017sequencetutor" class="csl-entry" role="listitem">
+Jaques, Natasha, Shixiang Gu, Dzmitry Bahdanau, José Miguel Hernández-Lobato, Richard E. Turner, and Douglas Eck. 2017. <span>“Sequence Tutor: Conservative Fine-Tuning of Sequence Generation Models with <span>KL</span>-Control.”</span> <em>Proceedings of the 34th International Conference on Machine Learning (ICML)</em>, Proceedings of machine learning research, vol. 70: 1645–54.
+</div>
+<div id="ref-jiang2025eorm" class="csl-entry" role="listitem">
+Jiang, Eric H., Haozheng Luo, Shengyuan Pang, et al. 2025. <span>“Learning to Rank Chain-of-Thought: Using a Small Model.”</span> <em>arXiv Preprint arXiv:2505.14999</em>.
+</div>
+<div id="ref-khalifa2021gdc" class="csl-entry" role="listitem">
+Khalifa, Muhammad, Hady Elsahar, and Marc Dymetman. 2021. <span>“A Distributional Approach to Controlled Text Generation.”</span> <em>International Conference on Learning Representations (ICLR)</em>.
+</div>
+<div id="ref-korbak2022rlkl" class="csl-entry" role="listitem">
+Korbak, Tomasz, Ethan Perez, and Christopher L. Buckley. 2022. <span>“<span>RL</span> with <span>KL</span> Penalties Is Better Viewed as <span>B</span>ayesian Inference.”</span> <em>Findings of the Association for Computational Linguistics: EMNLP 2022</em>.
+</div>
+<div id="ref-lightman2023verify" class="csl-entry" role="listitem">
+Lightman, Hunter, Vineet Kosaraju, Yuri Burda, et al. 2024. <span>“Let’s Verify Step by Step.”</span> <em>International Conference on Learning Representations (ICLR)</em>.
+</div>
+<div id="ref-ouyang2022instructgpt" class="csl-entry" role="listitem">
+Ouyang, Long, Jeff Wu, Xu Jiang, et al. 2022. <span>“Training Language Models to Follow Instructions with Human Feedback.”</span> <em>Advances in Neural Information Processing Systems 35 (NeurIPS)</em>.
+</div>
+<div id="ref-park2025retta" class="csl-entry" role="listitem">
+Park, Mincheol, Heeji Won, Won Woo Ro, and Suhyun Kim. 2025. <span>“Rethinking Entropy in Test-Time Adaptation: The Missing Piece from Energy Duality.”</span> <em>Advances in Neural Information Processing Systems 38 (NeurIPS)</em>.
+</div>
+<div id="ref-parshakova2019dpg" class="csl-entry" role="listitem">
+Parshakova, Tetiana, Jean-Marc Andreoli, and Marc Dymetman. 2019. <span>“Distributional Reinforcement Learning for Energy-Based Sequential Models.”</span> <em>Optimization Foundations for Reinforcement Learning Workshop at NeurIPS 2019</em>.
+</div>
+<div id="ref-rafailov2024rtoq" class="csl-entry" role="listitem">
+Rafailov, Rafael, Joey Hejna, Ryan Park, and Chelsea Finn. 2024. <span>“From <span class="math inline">\(r\)</span> to <span><span class="math inline">\(Q^*\)</span></span>: Your Language Model Is Secretly a <span>Q</span>-Function.”</span> <em>arXiv Preprint arXiv:2404.12358</em>.
+</div>
+<div id="ref-rafailov2023dpo" class="csl-entry" role="listitem">
+Rafailov, Rafael, Archit Sharma, Eric Mitchell, Stefano Ermon, Christopher D. Manning, and Chelsea Finn. 2023. <span>“Direct Preference Optimization: Your Language Model Is Secretly a Reward Model.”</span> <em>Advances in Neural Information Processing Systems 36 (NeurIPS)</em>.
+</div>
+<div id="ref-schulman2015trpo" class="csl-entry" role="listitem">
+Schulman, John, Sergey Levine, Pieter Abbeel, Michael I. Jordan, and Philipp Moritz. 2015. <span>“Trust Region Policy Optimization.”</span> <em>International Conference on Machine Learning (ICML)</em>.
+</div>
+<div id="ref-schulman2017ppo" class="csl-entry" role="listitem">
+Schulman, John, Filip Wolski, Prafulla Dhariwal, Alec Radford, and Oleg Klimov. 2017. <span>“Proximal Policy Optimization Algorithms.”</span> <em>arXiv Preprint arXiv:1707.06347</em>.
+</div>
+<div id="ref-shao2024grpo" class="csl-entry" role="listitem">
+Shao, Zhihong, Peiyi Wang, Qihao Zhu, et al. 2024. <span>“DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models.”</span> <em>arXiv Preprint arXiv:2402.03300</em>. <a href="https://arxiv.org/abs/2402.03300">https://arxiv.org/abs/2402.03300</a>.
+</div>
+<div id="ref-todorov2006lmdp" class="csl-entry" role="listitem">
+Todorov, Emanuel. 2006. <span>“Linearly-Solvable <span>M</span>arkov Decision Problems.”</span> <em>Advances in Neural Information Processing Systems (NeurIPS)</em> 19: 1369–76.
+</div>
+<div id="ref-todorov2009efficient" class="csl-entry" role="listitem">
+Todorov, Emanuel. 2009. <span>“Efficient Computation of Optimal Actions.”</span> <em>Proceedings of the National Academy of Sciences</em> 106 (28): 11478–83.
+</div>
+<div id="ref-uehara2024entropy" class="csl-entry" role="listitem">
+Uehara, Masatoshi, Yulai Zhao, Kevin Black, et al. 2024. <span>“Fine-Tuning of Continuous-Time Diffusion Models as Entropy-Regularized Control.”</span> <em>arXiv Preprint arXiv:2402.15194</em>.
+</div>
+<div id="ref-wallace2024diffusiondpo" class="csl-entry" role="listitem">
+Wallace, Bram, Meihua Dang, Rafael Rafailov, et al. 2024. <span>“Diffusion Model Alignment Using Direct Preference Optimization.”</span> <em>Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)</em>, 8228–38.
+</div>
+<div id="ref-williams1992reinforce" class="csl-entry" role="listitem">
+Williams, Ronald J. 1992. <span>“Simple Statistical Gradient-Following Algorithms for Connectionist Reinforcement Learning.”</span> <em>Machine Learning</em> 8 (3–4): 229–56.
+</div>
+<div id="ref-xu2025edlm" class="csl-entry" role="listitem">
+Xu, Minkai, Tomas Geffner, Karsten Kreis, et al. 2025. <span>“Energy-Based Diffusion Language Models for Text Generation.”</span> <em>International Conference on Learning Representations (ICLR)</em>.
+</div>
+<div id="ref-yan2026unie" class="csl-entry" role="listitem">
+Yan, Yuchen, Minkai Xu, Zaiquan Yang, and Yatao Bian. 2026. <span>“Unified Energy for Invariant and Independent Decoding in Diffusion Language Models.”</span> <em>arXiv Preprint arXiv:2606.09159</em>.
+</div>
+<div id="ref-zhang2025empo" class="csl-entry" role="listitem">
+Zhang, Qingyang, Haitao Wu, Changqing Zhang, Peilin Zhao, and Yatao Bian. 2025. <span>“Right Question Is Already Half the Answer: Fully Unsupervised LLM Reasoning Incentivization.”</span> <em>Advances in Neural Information Processing Systems (NeurIPS)</em>. <a href="https://arxiv.org/abs/2504.05812">https://arxiv.org/abs/2504.05812</a>.
+</div>
+<div id="ref-ziegler2019finetuning" class="csl-entry" role="listitem">
+Ziegler, Daniel M., Nisan Stiennon, Jeffrey Wu, et al. 2019. <span>“Fine-Tuning Language Models from Human Preferences.”</span> <em>arXiv Preprint arXiv:1909.08593</em>.
+</div>
+<div id="ref-zuo2025ttrl" class="csl-entry" role="listitem">
+Zuo, Yuxin, Kaiyan Zhang, Li Sheng, et al. 2025. <span>“<span>TTRL</span>: Test-Time Reinforcement Learning.”</span> <em>Advances in Neural Information Processing Systems 38 (NeurIPS)</em>.
 </div>
 </div>
 </section>
@@ -935,13 +1387,13 @@ Friston, Karl. 2010. <span>“The Free-Energy Principle: A Unified Brain Theory?
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../chapters/08-energy-reasoning.html" class="pagination-link" aria-label="Energy-Based Reasoning, Guidance, and Refinement">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Energy-Based Reasoning, Guidance, and Refinement</span></span>
+      <a href="../chapters/08-energy-reasoning.html" class="pagination-link" aria-label="Energy-Based Guidance and Refinement">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Energy-Based Guidance and Refinement</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../summary.html" class="pagination-link" aria-label="Summary">
-        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Summary</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../chapters/10-ai-for-science.html" class="pagination-link" aria-label="Entropy-Based Learning for Science">
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Entropy-Based Learning for Science</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

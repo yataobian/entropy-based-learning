@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://yataobian.github.io/entropy-based-learning/index.html</loc>
-    <lastmod>2026-09-20T14:07:31.000Z</lastmod>
+    <lastmod>2026-09-22T09:19:30.000Z</lastmod>
   </url>
   <url>
     <loc>https://yataobian.github.io/entropy-based-learning/contents.html</loc>
@@ -10,7 +10,7 @@
   </url>
   <url>
     <loc>https://yataobian.github.io/entropy-based-learning/01-intro.html</loc>
-    <lastmod>2026-09-20T14:03:39.000Z</lastmod>
+    <lastmod>2026-09-22T09:19:30.000Z</lastmod>
   </url>
   <url>
     <loc>https://yataobian.github.io/entropy-based-learning/chapters/02-entropy.html</loc>
@@ -22,11 +22,11 @@
   </url>
   <url>
     <loc>https://yataobian.github.io/entropy-based-learning/chapters/04-energy-models.html</loc>
-    <lastmod>2026-09-20T14:03:39.000Z</lastmod>
+    <lastmod>2026-09-22T09:19:30.000Z</lastmod>
   </url>
   <url>
     <loc>https://yataobian.github.io/entropy-based-learning/chapters/05-max-entropy.html</loc>
-    <lastmod>2026-09-20T15:20:06.000Z</lastmod>
+    <lastmod>2026-09-22T09:19:30.000Z</lastmod>
   </url>
   <url>
     <loc>https://yataobian.github.io/entropy-based-learning/chapters/06-min-entropy.html</loc>
@@ -38,15 +38,19 @@
   </url>
   <url>
     <loc>https://yataobian.github.io/entropy-based-learning/chapters/08-energy-reasoning.html</loc>
-    <lastmod>2026-09-20T14:03:39.000Z</lastmod>
+    <lastmod>2026-09-22T09:19:30.000Z</lastmod>
   </url>
   <url>
-    <loc>https://yataobian.github.io/entropy-based-learning/chapters/09-ai-for-science.html</loc>
-    <lastmod>2026-08-22T07:22:21.000Z</lastmod>
+    <loc>https://yataobian.github.io/entropy-based-learning/chapters/09-max-entropy-post-training.html</loc>
+    <lastmod>2026-09-22T09:19:30.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://yataobian.github.io/entropy-based-learning/chapters/10-ai-for-science.html</loc>
+    <lastmod>2026-09-22T09:19:30.000Z</lastmod>
   </url>
   <url>
     <loc>https://yataobian.github.io/entropy-based-learning/summary.html</loc>
-    <lastmod>2026-09-20T14:03:39.000Z</lastmod>
+    <lastmod>2026-09-22T09:19:30.000Z</lastmod>
   </url>
   <url>
     <loc>https://yataobian.github.io/entropy-based-learning/references.html</loc>
