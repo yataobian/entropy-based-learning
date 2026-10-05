@@ -41,6 +41,7 @@ doctrines.
 This book is an ongoing project, released early so you can follow its development. Most chapters are incomplete. The table below shows the current status of each chapter. Please keep this in mind before quoting or citing any part of the text, or before judging drafts that are still being written.
 :::
 
+
 | Chapter | Status |
 |---|---|
 | 1 — Introduction | early draft |
