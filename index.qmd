@@ -17,16 +17,27 @@ Three complementary principles organize the material in this book:
 
 - **The Maximum Entropy Principle** — among all models consistent with the
   observed constraints, prefer the one that is maximally noncommittal (highest
-  entropy). This principle underlies statistical physics, Boltzmann machines,
-  maximum-entropy reinforcement learning, and a principled class of
-  game-theoretic valuation methods.
+  entropy). This principle underlies statistical physics and Boltzmann
+  machines, and it defines a family of learning methods that includes a
+  principled class of game-theoretic valuations, neural set functions learned
+  from their optimal subsets, and maximum-entropy and inverse reinforcement
+  learning. With a pretrained model as the base measure, the same family
+  contains energy-based guidance at inference time and post-training methods
+  such as RLHF, GRPO, and DPO.
 - **The Minimum Entropy Principle** — when a model's own predictions can serve
   as a training signal, reducing predictive uncertainty can elicit capabilities
-  such as reasoning, *without* external supervision.
-- **The Minimax Entropy Principle** — maximize entropy given the features a model
-  includes, then choose the features that make that entropy as small as possible.
-  This couples the two principles above and turns model selection itself into a
-  well-posed problem [@zhu1997minimax; @carcamo2025minimax].
+  such as reasoning, *without* external supervision. It elicits but does not
+  add capability, since the training loop never touches ground truth, and,
+  left unchecked, it collapses the model onto one confident answer, right or
+  wrong.
+- **The Minimax Entropy Principle** — maximize entropy given the features a
+  model includes, then choose the features that make that entropy as small as
+  possible [@zhu1997minimax; @carcamo2025minimax]. This couples the two
+  principles above, and the same nesting answers two questions: *what to
+  measure*, by choosing the features that give the shortest description of
+  the data, and *what to commit to*, by minimizing the entropy of a
+  prediction, which is what a softmax classifier with a linear head already
+  does.
 
 Binding them together is the **free energy** $F = U - TS$, in which temperature $T$ 
 sets the exchange rate between energy and entropy. It is the equation that
@@ -50,7 +61,7 @@ This book is an ongoing project, released early so you can follow its developmen
 | 4 — Energy-Based Models | **mostly complete** |
 | 5 — Maximum-Entropy Learning | **mostly complete** |
 | 6 — Minimum-Entropy Learning | **mostly complete** |
-| 7 — Minimax-Entropy Learning | early draft |
+| 7 — Minimax-Entropy Learning | first full draft |
 | 8 — Energy-Based Guidance and Refinement | first full draft |
 | 9 — Maximum-Entropy Post-Training | first full draft |
 | 10 — Entropy-Based Learning for Science | early draft |
