@@ -19,27 +19,14 @@ book:
   repo-url: "https://github.com/yataobian/entropy-based-learning"
   output-file: "Entropy-Based-Learning"
   downloads: [pdf]
-  chapters:
-    - index.qmd
-    - contents.qmd
-    - 01-intro.qmd
-    - part: "Part I — Foundations"
-      chapters:
-        - chapters/02-entropy.qmd
-        - chapters/03-free-energy.qmd
-        - chapters/04-energy-models.qmd
-    - part: "Part II — Methods"
-      chapters:
-        - chapters/05-max-entropy.qmd
-        - chapters/06-min-entropy.qmd
-        - chapters/07-minimax-entropy.qmd
-        - chapters/08-energy-reasoning.qmd
-        - chapters/09-max-entropy-post-training.qmd
-    - part: "Part III — Applications"
-      chapters:
-        - chapters/10-ai-for-science.qmd
-    - summary.qmd
-    - references.qmd
+
+# Chapter lists live in the profile files. Quarto concatenates arrays
+# across a profile and this file, so a profile cannot drop contents.qmd
+# while the list is also written here. `site` is the default (HTML).
+# `pdf` is option 1 of scripts/render-pdf.sh; `pdf2` is option 2.
+profile:
+  group:
+    - [site, pdf, pdf2]
 
 bibliography: references.bib
 

@@ -1,6 +1,7 @@
 /.quarto/
 /_book/
 /_book-pdf/
+/_book-pdf-stix/
 /figures/*.pdf
 /site_libs/
 .DS_Store

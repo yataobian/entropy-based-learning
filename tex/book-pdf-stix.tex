@@ -1,0 +1,114 @@
+% Option 2 of scripts/render-pdf.sh (profile `pdf2`).
+% Typesetting borrowed from the FEP research note:
+% XeLaTeX, STIXGeneral, STIX Two Math, a generated contents
+% with dotted leaders, and a short paragraph skip.
+% Loaded only by _quarto-pdf2.yml. Option 1 does not use this file.
+
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{array}
+\usepackage{etoolbox}
+\usepackage{float}
+
+\captionsetup{
+  font=small,
+  labelfont={bf,small},
+  skip=6pt
+}
+
+\renewcommand{\arraystretch}{1.12}
+\AtBeginDocument{%
+  \setlength{\parskip}{0.35em}%
+  \AtBeginEnvironment{longtable}{%
+    \small
+    \setlength{\tabcolsep}{5pt}%
+  }%
+}
+
+% unicode-math (loaded by Quarto with mathfont) defines \symbfit.
+\renewcommand{\boldsymbol}[1]{\symbfit{#1}}
+
+% Long \texttt labels, as in the FEP note: allow a hyphen break.
+\makeatletter
+\NewCommandCopy\stix@ttfamily\ttfamily
+\DeclareRobustCommand\ttfamily{\stix@ttfamily\hyphenchar\font=45\relax}
+\makeatother
+
+% Headings in the text font, the way an article class does.
+\addtokomafont{disposition}{\rmfamily}
+\setkomafont{chapter}{\normalfont\huge\bfseries}
+\setkomafont{section}{\normalfont\Large\bfseries}
+\setkomafont{subsection}{\normalfont\large\bfseries}
+
+% Dotted leaders, matching an article contents.
+% Part titles already read "Part I — ...", so drop the extra number.
+\makeatletter
+\DeclareTOCStyleEntry[
+  linefill=\TOCLineLeaderFill,
+  entrynumberformat=\@gobble
+]{tocline}{part}
+\makeatother
+\DeclareTOCStyleEntry[linefill=\TOCLineLeaderFill]{tocline}{chapter}
+\renewcommand*{\partformat}{}
+
+\definecolor{dategray}{HTML}{8A9098}
+
+\newcommand{\bookreleasedate}{August 2, 2026}
+\newcommand{\bookupdatedate}{\today}
+
+\newcommand{\bookcoverlogofile}{}
+\IfFileExists{cover.png}{\renewcommand{\bookcoverlogofile}{cover.png}}{}
+\IfFileExists{../cover.png}{\renewcommand{\bookcoverlogofile}{../cover.png}}{}
+
+\newcommand{\bookcoverlogoblock}{%
+  \ifx\bookcoverlogofile\empty
+  \else
+    \includegraphics[width=3.1cm]{\bookcoverlogofile}%
+  \fi
+}
+
+\newcommand{\bookdatestamp}[2]{%
+  {\sffamily\fontsize{7.4}{9}\selectfont\color{dategray}%
+   \MakeUppercase{#1}\par}%
+  \vspace{0.28em}%
+  {\rmfamily #2\par}%
+}
+
+\newcommand{\bookreleasedates}{%
+  \begin{minipage}{0.62\textwidth}
+    \centering
+    \begin{minipage}[t]{0.46\textwidth}
+      \centering
+      \bookdatestamp{Released}{\bookreleasedate}
+    \end{minipage}%
+    \hspace{1.4em}%
+    \begin{minipage}[t]{0.46\textwidth}
+      \centering
+      \bookdatestamp{Last updated}{\bookupdatedate}
+    \end{minipage}
+  \end{minipage}%
+}
+
+\makeatletter
+\renewcommand{\maketitle}{%
+  \begin{titlepage}
+    \thispagestyle{empty}
+    \centering
+    \vspace*{22mm}
+    {\usekomafont{title}\huge\bfseries\@title\par}
+    \vspace{0.55em}
+    {\ifx\@subtitle\@empty\else
+       \usekomafont{subtitle}\large\@subtitle\par
+     \fi}
+    \vspace{9mm}
+    {\usekomafont{author}\large\@author\par}
+    \vspace{14mm}
+    \bookreleasedates\par
+    \vfill
+    \bookcoverlogoblock\par
+    \vfill
+    {\sffamily\fontsize{8.2}{10}\selectfont\color{dategray}Blue Whale Lab\par}
+    \vspace*{8mm}
+  \end{titlepage}%
+}
+\makeatother

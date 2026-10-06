@@ -1,17 +1,19 @@
-# Quarto profile: `quarto render --profile pdf --to pdf`
-# Option 1 of scripts/render-pdf.sh (KOMA-Script, TeX Gyre Pagella, LuaLaTeX).
-# Option 2 is the `pdf2` profile. Keep this chapter list identical to
-# _quarto-site.yml. Default `quarto render` stays HTML (the `site` profile).
+# Quarto profile: `quarto render --profile pdf2 --to pdf`
+# Option 2 of scripts/render-pdf.sh.
+# Same manuscript, set in the type of the FEP research note:
+# XeLaTeX, STIXGeneral, STIX Two Math, article-like margins,
+# and a generated contents (the handwritten contents.qmd is omitted).
+# scripts/render-pdf.sh --style 2 copies the result over
+# assets/Entropy-Based-Learning.pdf, the file the site publishes.
 
 project:
-  output-dir: _book-pdf
+  output-dir: _book-pdf-stix
   resources:
     - cover.png
 
 book:
   chapters:
     - index.qmd
-    - contents.qmd
     - 01-intro.qmd
     - part: "Part I — Foundations"
       chapters:
@@ -39,24 +41,23 @@ format:
       - open=any
       - numbers=noenddot
       - fontsize=11pt
-    pdf-engine: lualatex
-    # The detailed Contents page is contents.qmd (also included in
-    # the preface and the introduction). Do not also emit a generated TOC.
-    toc: false
+    pdf-engine: xelatex
+    toc: true
     toc-depth: 3
+    toc-title: "Contents"
     lot: false
     lof: false
     number-sections: true
     papersize: a4
     geometry:
-      - top=24mm
-      - bottom=24mm
-      - left=26mm
-      - right=26mm
-    linestretch: 1.18
-    mainfont: "TeX Gyre Pagella"
-    sansfont: "TeX Gyre Heros"
-    monofont: "Latin Modern Mono"
+      - top=2.3cm
+      - bottom=2.3cm
+      - left=2.2cm
+      - right=2.2cm
+    linestretch: 1.05
+    mainfont: "STIXGeneral"
+    sansfont: "STIXGeneral"
+    mathfont: "STIX Two Math"
     colorlinks: true
     fig-align: center
     fig-pos: "H"
@@ -66,7 +67,4 @@ format:
     filters:
       - filters/svg-to-pdf.lua
     include-in-header:
-      - tex/book-pdf-header.tex
-      - tex/book-pdf-titlepage.tex
-    header-includes:
-      - \usepackage{float}
+      - tex/book-pdf-stix.tex

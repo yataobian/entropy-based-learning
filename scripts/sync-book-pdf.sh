@@ -21,8 +21,8 @@ Usage:
                 or if the tracked PDF is missing.
   -h, --help    Show this help.
 
-The PDF is built locally (quarto + lualatex). GitHub Actions only
-publishes the committed file; it does not compile TeX.
+The PDF is built locally with option 2 (quarto + xelatex, STIX).
+GitHub Actions only publishes the committed file; it does not compile TeX.
 EOF
 }
 
@@ -50,7 +50,7 @@ pdf_is_stale() {
   # BSD find (macOS) has no -quit; a non-empty first hit is enough.
   if find \
     index.qmd 01-intro.qmd summary.qmd references.qmd references.bib \
-    _quarto.yml _quarto-pdf.yml custom.scss \
+    _quarto.yml _quarto-pdf.yml _quarto-pdf2.yml _quarto-site.yml custom.scss \
     chapters tex filters code figures \
     \( -type f -o -type l \) \
     ! -name '*.pdf' \
@@ -76,4 +76,4 @@ if [[ ! -x $RENDER ]]; then
   exit 1
 fi
 
-"$RENDER"
+"$RENDER" --style 2
