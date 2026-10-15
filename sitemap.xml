@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://yataobian.github.io/entropy-based-learning/index.html</loc>
-    <lastmod>2026-10-06T17:44:34.000Z</lastmod>
+    <lastmod>2026-10-15T18:42:47.000Z</lastmod>
   </url>
   <url>
     <loc>https://yataobian.github.io/entropy-based-learning/contents.html</loc>
@@ -45,8 +45,12 @@
     <lastmod>2026-09-22T09:19:30.000Z</lastmod>
   </url>
   <url>
-    <loc>https://yataobian.github.io/entropy-based-learning/chapters/10-ai-for-science.html</loc>
-    <lastmod>2026-09-22T09:19:30.000Z</lastmod>
+    <loc>https://yataobian.github.io/entropy-based-learning/chapters/10-free-energy-principle.html</loc>
+    <lastmod>2026-10-15T18:42:47.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://yataobian.github.io/entropy-based-learning/chapters/11-ai-for-science.html</loc>
+    <lastmod>2026-10-15T18:42:47.000Z</lastmod>
   </url>
   <url>
     <loc>https://yataobian.github.io/entropy-based-learning/summary.html</loc>
