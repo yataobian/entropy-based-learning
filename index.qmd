@@ -66,8 +66,9 @@ This book is an ongoing project, released early so you can follow its developmen
 | 7 — Minimax-Entropy Learning | first full draft |
 | 8 — Energy-Based Guidance and Refinement | first full draft |
 | 9 — Maximum-Entropy Post-Training | first full draft |
-| 10 — Entropy-Based Learning for Science | early draft |
-| 11 — Summary | early draft |
+| 10 — From Entropy-Based Learning to the Free-Energy Principle | first full draft |
+| 11 — Entropy-Based Learning for Science | early draft |
+| 12 — Summary | early draft |
 
 "Mostly complete" means the argument is in place and has been checked, though details may still move. "First full draft" means the chapter is written end to end but has not yet been checked with the same care. "Early draft" means little more than a
 scaffold. The table will be updated as chapters mature. Feedback and contributions are

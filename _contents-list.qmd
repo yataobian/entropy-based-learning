@@ -116,14 +116,19 @@
   - [9.5 The continuous case](chapters/09-max-entropy-post-training.qmd#sec-post-continuous)
   - [9.6 Post-training on the three levels, and where it stops](chapters/09-max-entropy-post-training.qmd#sec-post-levels)
   - [9.7 Takeaway](chapters/09-max-entropy-post-training.qmd#sec-post-takeaway)
+- [10. From Entropy-Based Learning to the Free-Energy Principle](chapters/10-free-energy-principle.qmd)
+  - [10.1 Foundations of the free-energy principle](chapters/10-free-energy-principle.qmd#sec-fep-foundations)
+  - [10.2 Recent developments, 2019–2026](chapters/10-free-energy-principle.qmd#sec-fep-recent)
+  - [10.3 Connections to entropy-based learning](chapters/10-free-energy-principle.qmd#sec-fep-connections)
+  - [10.4 Takeaway](chapters/10-free-energy-principle.qmd#sec-fep-takeaway)
 
 **Part III — Applications**
 
-- [10. Entropy-Based Learning for Science](chapters/10-ai-for-science.qmd)
-  - [10.1 Two synergistic directions](chapters/10-ai-for-science.qmd#two-synergistic-directions)
-  - [10.2 Molecular foundation models](chapters/10-ai-for-science.qmd#molecular-foundation-models)
-  - [10.3 Outlook](chapters/10-ai-for-science.qmd#outlook)
-- [11. Summary](summary.qmd)
+- [11. Entropy-Based Learning for Science](chapters/11-ai-for-science.qmd)
+  - [11.1 Two synergistic directions](chapters/11-ai-for-science.qmd#two-synergistic-directions)
+  - [11.2 Molecular foundation models](chapters/11-ai-for-science.qmd#molecular-foundation-models)
+  - [11.3 Outlook](chapters/11-ai-for-science.qmd#outlook)
+- [12. Summary](summary.qmd)
 - [References](references.qmd)
 
 :::

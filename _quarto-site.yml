@@ -19,8 +19,9 @@ book:
         - chapters/07-minimax-entropy.qmd
         - chapters/08-energy-reasoning.qmd
         - chapters/09-max-entropy-post-training.qmd
+        - chapters/10-free-energy-principle.qmd
     - part: "Part III — Applications"
       chapters:
-        - chapters/10-ai-for-science.qmd
+        - chapters/11-ai-for-science.qmd
     - summary.qmd
     - references.qmd

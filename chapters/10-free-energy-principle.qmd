@@ -1,0 +1,1225 @@
+---
+date: "2026-10-14"
+date-modified: last-modified
+---
+
+# From Entropy-Based Learning to the Free-Energy Principle {#sec-fep}
+
+The free-energy principle (FEP) is the most ambitious claim in this
+neighbourhood of ideas: that perception, learning, action, and — in its
+strongest form — the persistence of living things are all one optimization.
+It was developed in theoretical neuroscience, largely by Friston and
+collaborators [@friston2005theory; @friston2006free; @friston2010free], and
+it is usually presented in a vocabulary of its own. 
+This chapter examines the connection of the free-energy principle in the terms and concepts developed throughout this book.
+Some of the FEP is an
+identity with material we have already derived: it is @eq-max-def-free at
+$T = 1$, read in a particular way. Some of it is a correspondence, close
+enough to be illuminating but not a theorem. 
+Other aspects — such as the physics of Markov blankets and non-equilibrium steady states — stand apart from the framework developed in this book, and we will make that distinction clear.
+
+
+The reason to spend a chapter on this is not completeness. It is that the
+FEP supplies the one ingredient the preceding chapters leave implicit.
+Chapters 5 through 7 organize methods as an inner free-energy problem under
+an outer criterion, and that criterion either fits the data (@sec-max-entropy), or sharpens the model's own output (@sec-min-entropy), or
+chooses which features to measure and which assignments to commit to (@sec-minimax-entropy). All three take the data as given. Active inference
+does not: its outer problem chooses *what to observe*. 
+We propose that this constitutes a third distinct type of outer problem, as described in @sec-minimax-two-questions—precisely the kind that has been absent from the rest of the book. Making this explicit serves to clarify the structure and implications on both fronts.
+
+
+Because the principle will be unfamiliar to many readers of this book, the
+chapter is arranged in four parts. The first, @sec-fep-foundations, presents
+the FEP on its own terms and in its own notation — where it came from, what
+it says about perception, learning, and action, and the physical claims that
+were later built on it — with two worked examples, of perception and of
+planning. The second, @sec-fep-recent, surveys the developments of the field
+since 2019, critiques included. 
+The third section, @sec-fep-connections, acts as a bridge: it clarifies which aspects of the free-energy principle are mathematically identical to the free energy discussed in @sec-free-energy, which aspects are related but only by analogy, and which fall outside both categories. To illustrate these connections, it adds two additional examples—one focused on learning processes, and another on the case where preferences themselves are subject to learning.
+The fourth, @sec-fep-takeaway, collects what the translation establishes
+and what it leaves open. The numbers in all four examples come from
+`code/fep-examples.py`.
+
+## Foundations of the free-energy principle {#sec-fep-foundations}
+
+### Origins {#sec-fep-origins}
+
+The idea behind the FEP is older than the name. Helmholtz described
+perception as *unconscious inference* about the causes of sensations, and
+the FEP begins by taking that description literally [@friston2005theory].
+Its direct predecessors in machine learning are the Helmholtz machine
+[@dayan1995helmholtz] and the free-energy view of EM [@neal1998em], both of
+which read the evidence lower bound as a negative variational free energy, as
+the table of @sec-free-energy records. What Friston, a neuroscientist at
+University College London, added was the claim that the brain — and, later,
+any system that persists — minimizes this quantity, and that perception,
+learning, and action are the three ways of doing so.
+
+The principle took shape in roughly four steps. i) In 2005, Friston observed
+that perceptual inference and perceptual learning both rest on minimizing the
+brain's free energy, with learning arising from synaptic changes that
+minimize the free energy averaged over the stimuli encountered
+[@friston2005theory]; in 2006, with Kilner and Harrison, he termed this a
+free-energy principle for the brain [@friston2006free]. ii) In 2007, the
+variational Laplace method gave a practical algorithm for computing the free
+energy under a Gaussian approximation [@friston2007laplace]. iii) Two reviews
+of 2009–2010 promoted it to a unified brain theory [@friston2009rough; @friston2010free], and "Action and behavior" of 2010 brought in action,
+reading motor control as the fulfilment of prior expectations about
+proprioceptive sensations [@friston2010action]. iv) From 2012 on, *active
+inference* on discrete state spaces recast optimal control as a pure
+inference problem, with cost functions absorbed into prior beliefs about
+state transitions and terminal states [@friston2012agency]; it then
+introduced the expected free energy and epistemic value
+[@friston2015epistemic], learning and habits [@friston2016learning], and a
+process theory for the brain [@friston2017process]. The textbook is *Active
+Inference* by Parr, Pezzulo, and Friston [@parr2022active]; a mathematical
+review is that of Buckley et al. [@buckley2017review], and an introductory
+tutorial is that of Bogacz [@bogacz2017tutorial], whose running example we
+adopt below.
+
+In outline, the principle says the following. A system that persists must
+keep its sensory exchanges with the environment within bounds, i.e., it must
+avoid surprising sensations, where the surprise of an observation $o$ under
+a model is $-\log p(o)$. Surprise cannot be evaluated directly, because the
+model has hidden causes that would have to be integrated out, so the system
+minimizes a tractable upper bound on it, the *variational free energy*. It
+has three ways of doing so: it can change its beliefs about the causes,
+which is perception; it can change the model, which is learning; or it can
+change the sensations themselves by acting on the world, which is action.
+The quantities behind these three sentences are developed in the next four
+subsections; the physical claim that makes "persists" into a theorem, by way
+of Markov blankets and steady states, is set out in @sec-fep-blankets.
+
+### Variational free energy and perception {#sec-fep-vfe}
+
+The FEP starts from a *generative model*, namely a joint distribution
+$p(o, s) = p(s)\, p(o \mid s)$ over observations $o$ and their hidden causes
+$s$, which the agent is assumed to embody. Given an observation, the agent
+cannot in general compute the posterior $p(s \mid o)$ or the evidence
+$p(o)$, so it maintains an approximate belief $q(s)$, termed the recognition
+density, and scores it by the variational free energy
+
+$$
+\begin{aligned}
+F[q; o] \;&=\; \mathbb{E}_{q(s)}\big[-\log p(o, s)\big] - H[q] \\
+&=\; \mathrm{KL}\big(q(s) \,\Vert\, p(s \mid o)\big) - \log p(o) \\
+&=\; \underbrace{\mathrm{KL}\big(q(s) \,\Vert\, p(s)\big)}_{\text{complexity}}
+\;-\; \underbrace{\mathbb{E}_{q(s)}\big[\log p(o \mid s)\big]}_{\text{accuracy}}
+\;\;\ge\;\; -\log p(o) .
+\end{aligned}
+$$ {#eq-fep-vfe}
+
+The three lines read "energy minus entropy", "divergence plus surprise", and
+"complexity minus accuracy". The second shows that $F$ is an upper bound on
+the surprise $-\log p(o)$, with equality if and only if $q$ is the exact
+posterior, so that minimizing $F$ does two things at once: it brings $q$ to
+the posterior, which is perception, and it brings $F$ down to the surprise,
+which gives a computable bound on the model evidence — the negative of the
+evidence lower bound of @sec-free-energy. We note at once that what the FEP
+minimizes is the surprise of particular observations and not an entropy; the
+two are linked by a sentence of Friston's — under ergodic assumptions, the
+long-term average of surprise is entropy [@friston2013life] — to which we
+return in @sec-fep-blankets and @sec-fep-duality.
+
+**Example 1 (perception).** We take the example of Bogacz's tutorial
+[@bogacz2017tutorial]: an animal infers the size $v$ of a food item from an
+observed light intensity $u$, with the prior $v \sim \mathcal{N}(3, 1)$, the
+likelihood $u \mid v \sim \mathcal{N}(v^2, 1)$, and the observation $u = 2$.
+The model is nonlinear and the posterior has no closed form, but in one
+dimension it can be computed on a fine grid. The surprise is
+$-\log p(u) = 3.2368$ nats, and the posterior has mean $1.4797$, standard
+deviation $0.3425$, and mode $1.5675$. Gradient descent on @eq-fep-vfe over
+the Gaussian family $q = \mathcal{N}(m, s^2)$, started at the prior,
+converges to $m^\star = 1.4933$ and $s^\star = 0.3025$ with
+$F^\star = 3.2636$. The excess of $F^\star$ over the surprise, $0.026828$
+nats, agrees with $\mathrm{KL}(q^\star \Vert p(v \mid u))$ to within
+$10^{-13}$, as the second line of @eq-fep-vfe says it must. At the starting
+point the free energy is $51.92$ nats, since the prior predicts an intensity
+$v^2 \approx 9$, far from the observed value 2 (@fig-fep-perception a, b).
+
+![Perception as free-energy minimization (Example 1). (a) Prior, normalized likelihood, exact posterior, the best Gaussian $q^\star$, and the Laplace approximation after observing $u = 2$, with the posterior mode marked; (b) the excess of $F(q)$ over the surprise along gradient descent, converging to $\mathrm{KL}(q^\star \Vert p(v \mid u)) = 0.0268$; (c) the predictive-coding network, whose state $\phi$ and two error nodes converge to their values at the posterior mode. Produced by `code/fep-examples.py`.](../figures/fep-perception.png){#fig-fep-perception width="100%"}
+
+### Predictive coding, precision, and attention {#sec-fep-pc}
+
+*Predictive coding* is the process theory that implements the minimization
+in neural tissue, as message passing between units that carry states and
+units that carry prediction errors [@rao1999predictive; @friston2005theory].
+The name is older than the principle, and the idea is best seen where it
+started. In the engineering of signals, Elias proposed to transmit not a
+signal but the difference between the signal and a prediction of it formed
+from its own past: the difference is smaller and cheaper to send, and a
+receiver that forms the same prediction loses nothing
+[@elias1955predictive]. The channel is then quiet as long as the world
+behaves as expected and speaks only when something unpredicted happens, as
+in @fig-fep-predictive-coding (c). Srinivasan, Laughlin, and Dubs read the
+centre–surround organization of early visual neurons in the same way: the
+surround forms a prediction of the centre from its neighbours, the cell
+transmits the residual, and the best weighting of the prediction depends on
+the signal-to-noise ratio of the input [@srinivasan1982predictive]. Mumford
+proposed that the cortex as a whole is organized like this, with the
+feedback from a higher area carrying its reconstruction of the activity in
+the lower area and the feedforward path carrying only what remains
+unexplained [@mumford1992neocortex], and Rao and Ballard built the
+hierarchical network and trained it on natural images [@rao1999predictive].
+Their best-known result is the *end-stopping* of visual neurons, i.e., a
+unit that responds to a short bar responds progressively less when the bar
+is extended beyond its receptive field: the long bar is predicted from its
+surroundings, so there is little residual left to report.
+
+Under the FEP this becomes a circuit with two kinds of units at every level
+of a hierarchy (@fig-fep-predictive-coding a, b). State units hold the
+current estimate of the causes at their level and send a prediction to the
+level below; error units at that lower level compare the prediction with
+what is actually there and send back the difference, multiplied by a gain.
+Three rules govern the traffic: i) predictions descend and errors ascend;
+ii) an error that has been explained is silenced, so that at equilibrium
+only the unexplained part of the input travels upward, namely the news;
+and iii) a state unit moves in the direction that reduces the errors it
+receives, from below and from above. The picture to keep is of a hierarchy
+in which each level tries to quieten the level below. Perception in this
+scheme is not a reconstruction of the scene assembled upward from the
+retina but a guess issued downward and corrected by whatever it failed to
+predict; what climbs the hierarchy is a report of the misfit, not a copy of
+the world. The everyday analogy is proofreading one's own text: a fluent
+reader predicts the next word and looks only where the prediction fails,
+which is why a typo in a familiar word is so easily missed, and why it is
+found when one reads slowly, i.e., when the gain on the sensory error is
+turned up. Anatomically, the FEP assigns the errors to the superficial
+pyramidal cells that send forward connections and the predictions to the
+deep pyramidal cells that send backward connections
+[@friston2005theory; @bastos2012canonical]; the general scheme for
+hierarchies of dynamical models in continuous time is given in
+[@friston2008hierarchical].
+
+![Predictive coding as a picture. (a) The circuit of Example 1: predictions (navy) descend from a state unit to the error unit of the level below, the state of each level enters its own error unit (grey), and the precision-weighted errors (rust) return to the state unit, which follows the negative gradient of the free energy. (b) The same motif stacked into a hierarchy: each level explains the one below, and only the residual, scaled by its precision $\Pi$, ascends. (c) The origin of the name: a channel that transmits the residual between a signal and its prediction carries little until something unpredicted happens. Drawn by `code/fep-predictive-coding.py`.](../figures/fep-predictive-coding.png){#fig-fep-predictive-coding width="100%"}
+
+The rules are not an extra hypothesis; they are the gradient of the free
+energy read as a wiring diagram. For Example 1, with a point estimate
+$\phi$ in place of $q$, the free energy of @eq-fep-vfe is, up to a
+constant, a sum of two squared and precision-weighted errors,
+$F(\phi) = (\phi - v_p)^2/(2\Sigma_p) + (u - \phi^2)^2/(2\Sigma_u)$, and
+gradient descent on it is exactly Bogacz's network: three nodes, the state
+$\phi$ and the prediction errors $\varepsilon_p = (\phi - v_p)/\Sigma_p$ and
+$\varepsilon_u = (u - \phi^2)/\Sigma_u$, with the dynamics
+$\dot\phi = 2\phi\, \varepsilon_u - \varepsilon_p = -\partial F/\partial\phi$
+[@bogacz2017tutorial]. Each error unit needs only the prediction from above
+and the signal from below, and the state unit needs only the two errors and
+the local slope $2\phi$ of its own prediction. This locality is the point
+of the construction: no unit knows the posterior, yet the network finds it.
+Numerically $\phi$ converges to $1.5675$ and the error nodes to
+$\varepsilon_p = -1.4325$ and $\varepsilon_u = -0.4570$, which are the
+analytic values at the mode (@fig-fep-perception c). The network therefore
+computes the *mode* of the posterior, not its mean, and the uncertainty has
+to be supplied separately by the Laplace approximation
+[@friston2007laplace]: the curvature at the mode gives $s = 0.2918$, which
+understates both the posterior standard deviation $0.3425$ and the $0.3025$
+of the best Gaussian.
+
+The errors are weighted by their *precisions*, i.e., the inverse variances
+$1/\Sigma_p$ and $1/\Sigma_u$, and a precision is simply the gain of an
+error unit: it decides how loudly a given misfit is reported. Since the
+state unit balances the two reports, what matters for the estimate is their
+ratio. Specifically, in Example 1 the mode is $1.5675$ at equal precisions;
+making the sensory channel four times more precise moves it to $1.4601$,
+towards the $\sqrt{u} = 1.4142$ that the data alone would give, and making
+the prior four times more precise moves it to $1.8171$, towards the prior
+mean $3$, and the same $1.8171$ is obtained by leaving the prior alone and
+making the sensory channel four times less precise. The FEP reads attention
+as inference about precision [@feldman2010attention]: a cue that a sensory
+channel is reliable raises the precision of its errors, and the state units
+then follow that channel more closely. In the circuit this is a change of
+gain, not a change of wiring, and it is, in effect, the knob that
+Srinivasan et al. had already found the retina turning with the
+signal-to-noise ratio. Notably,
+predictive coding is the process theory for continuous states; the
+discrete-state schemes of @sec-fep-core-action minimize the same free energy
+with a different message passing [@friston2017process]. For the broader
+view of predictive processing in cognitive science, see the review of Clark
+and the introduction of Sprevak and Smith
+[@clark2013whatever; @sprevak2023introduction].
+
+### Learning and model selection {#sec-fep-core-learning}
+
+Learning uses the same quantity. Under the FEP, parameters are slowly
+varying hidden variables, and beliefs about them are updated by minimizing
+the free energy averaged over observations. In the standard discrete-state
+scheme the likelihood matrix $\mathbf{A}$ and the transition matrices
+$\mathbf{B}$ carry Dirichlet priors, and learning accumulates their
+concentration parameters after each observation [@friston2016learning; @dacosta2020discrete]; in the limit of point estimates this is EM, with the
+E-step minimizing over the hidden states and the M-step over the parameters
+[@neal1998em]. In the third line of @eq-fep-vfe the complexity term
+penalizes departures from the prior and the accuracy term rewards the fit, so
+the free energy is also a computable bound on the negative log model
+evidence, which serves for model comparison. Structure learning in active
+inference adds hidden-state slots for novel concepts and uses Bayesian model
+reduction to reset them in favour of a simpler model with higher evidence
+[@smith2020structure].
+
+### Action: active inference and the expected free energy {#sec-fep-core-action}
+
+Action enters the FEP in two ways. i) In continuous-state formulations it
+minimizes $F$ directly, by changing the observations so that they conform to
+predictions — motor control as the fulfilment of prior expectations about
+proprioception [@friston2010action]. ii) In discrete-state formulations the
+agent infers policies $\pi$, i.e., sequences of actions, scoring them by the
+*expected free energy* [@friston2015epistemic; @friston2017process; @dacosta2020discrete],
+
+$$
+\begin{aligned}
+G(\pi) \;&=\; \underbrace{\mathrm{KL}\big(q(o \mid \pi) \,\Vert\, \tilde p(o)\big)}_{\text{risk}}
+\;+\; \underbrace{\mathbb{E}_{q(s \mid \pi)}\, H\big[p(o \mid s)\big]}_{\text{ambiguity}} \\
+&=\; \underbrace{-\,\mathbb{E}_{q(o \mid \pi)}\big[\log \tilde p(o)\big]}_{-\,\text{pragmatic value}}
+\;-\; \underbrace{I_\pi(S; O)}_{\text{epistemic value}} ,
+\end{aligned}
+$$ {#eq-fep-efe}
+
+where $q(o \mid \pi) = \mathbb{E}_{q(s \mid \pi)} p(o \mid s)$ is the
+predicted distribution of outcomes, $\tilde p(o)$ the *preferences*, termed
+prior preferences in the literature, and
+$I_\pi(S; O) = H[q(o \mid \pi)] - \mathbb{E}_{q(s \mid \pi)} H[p(o \mid s)]$
+the mutual information between hidden states and outcomes, i.e., the expected
+information gain. The first line reads "risk plus ambiguity" and the second
+"minus pragmatic value minus epistemic value"; exploration and exploitation
+thus sit inside one quantity, and Friston et al. note the formal consistency
+with the InfoMax principle and with risk-sensitive KL control themselves
+[@friston2015epistemic]. The posterior over policies is a softmax,
+
+$$
+q(\pi) \;=\; \sigma\big(\log E(\pi) - \gamma\, G(\pi)\big) ,
+$$ {#eq-fep-policy}
+
+with $E$ a prior over policies and $\gamma$ a precision. Da Costa et al. call
+$\gamma$ an inverse temperature that denotes the confidence in selecting a
+policy [@dacosta2020discrete]; in the tutorial of Smith et al. the prior $E$
+reflects the number of times a policy has previously been chosen, which
+models habits, and $\gamma$ has a prior of its own and is inferred
+[@smith2022tutorial]. Experimentally, midbrain activity tracks
+trial-by-trial model-based estimates of precision
+[@schwartenbeck2015dopamine]. It is worth being careful about what @eq-fep-efe is and is not: it is not simply the free energy of the future
+[@millidge2021whence], and several non-equivalent objectives have been
+proposed for the same role [@parr2019generalised; @sajid2021demystified; @champion2024reframing]; we return to this in @sec-fep-recent.
+
+**Example 2 (a T-maze with a cue, and the dark room).** A hidden context
+$c \in \{L, R\}$ decides whether a reward lies in the left or the right arm,
+with prior $(1/2, 1/2)$. The agent may stay at the centre, visit a cue that
+reveals the context with validity $v$, enter an arm (reward or loss with
+probability $0.98$, after which it cannot leave), or enter a dark room (after
+which it cannot leave). The preferences are $\tilde p \propto e^{C}$ with
+$C = +3$ for the reward, $-3$ for the loss, and 0 otherwise, so that
+$\tilde p$ is $0.8322$ for the reward, $0.0021$ for the loss, and $0.0414$
+for each neutral outcome.
+
+| Action | Cross-entropy | $H[q(o)]$ | Ambiguity | Risk | Information gain | $G$ |
+|------------------------|------------:|----------:|----------:|----------:|------------:|----------:|
+| centre | 3.1837 | 0 | 0 | 3.1837 | 0 | 3.1837 |
+| cue, $v = 1$ | 3.1837 | 0.6931 | 0 | 2.4905 | 0.6931 | **2.4905** |
+| cue, $v = 0.9$ | 3.1837 | 0.6931 | 0.3251 | 2.4905 | 0.3681 | 2.8156 |
+| left (= right) | 3.1837 | 0.6931 | 0.0980 | 2.4905 | 0.5951 | 2.5886 |
+| dark | 3.1837 | 0 | 0 | 3.1837 | 0 | 3.1837 |
+
+: One-step expected free energy of each action in Example 2, in nats. Because the preferences are symmetric, the cross-entropy is the same for every action and the first choice is decided by the epistemic term alone; the rows for the centre, the arms, and the dark room do not depend on the cue validity $v$. {#tbl-fep-tmaze}
+
+Three features of @tbl-fep-tmaze are worth noting. First, the symmetry of the
+preferences makes the cross-entropy — minus the pragmatic value — equal to
+$3.1837$ nats for every action, so the first move is decided by the epistemic
+term alone. Second, the two actions with the *lowest* outcome entropy, the
+centre and the dark room, have the *highest* expected free energy. This is
+the precise form of the answer to the dark-room objection. Critics asked why
+an agent that minimizes surprise does not retreat into a dark and unchanging
+room; Friston, Thornton, and Clark replied that average surprise is a
+function of the sensations *and of the agent predicting them*, whereas the
+entropy that a dark room minimizes is a function of the sensations alone
+[@friston2012darkroom], and Schwartenbeck et al. added that minimizing
+surprise leads naturally to exploration and to novelty bonuses
+[@schwartenbeck2013exploration]. In @tbl-fep-tmaze the reply becomes an
+identity: the risk term
+$\mathrm{KL}(q(o \mid \pi) \Vert \tilde p) = \mathrm{CE} - H[q(o \mid \pi)]$
+subtracts the outcome entropy from the expected surprise, so an agent
+minimizing @eq-fep-efe does not minimize the entropy of its outcomes, and the
+dark room is chosen only if the preferences themselves favour it. Third, the
+epistemic term is sensitive to reliability: with a perfect cue the
+information gain is $\log 2 = 0.6931$ against $0.5951$ for an arm, so the
+agent looks at the cue; at a validity of $0.9$ the ambiguity rises to
+$0.3251$ and the one-step choice flips to entering an arm. The precision
+$\gamma$ sets how deterministic the choice is: with a reliable cue, the
+probability of visiting the cue under @eq-fep-policy with a flat $E$ is only
+$0.262$ at $\gamma = 1$, $0.404$ at $\gamma = 4$, and $0.706$ at
+$\gamma = 16$ (@fig-fep-tmaze b).
+
+![Planning with the expected free energy (Example 2). (a) Cross-entropy to the preferences, minus the information gain, and $G$ for each action with a fully reliable cue; (b) the precision dial $q(a) \propto e^{-\gamma G(a)}$; (c) one-step $G$ (dots) against the sophisticated two-step value (bars) at two cue validities. Produced by `code/fep-examples.py`.](../figures/fep-tmaze.png){#fig-fep-tmaze width="100%"}
+
+That last flip is an artefact of myopia, and it is worth saying so, because
+the one-step expected free energy is often presented as the whole story.
+*Sophisticated inference* computes $G$ recursively: the expected free energy
+of the next action is its own risk and ambiguity plus the average expected
+free energy of the beliefs that would follow under counterfactual outcomes
+and subsequent actions, the latter weighted by a softmax of their own $G$, so
+that it is a tree search over beliefs about beliefs
+[@friston2021sophisticated]. In the high-precision limit the two-step value
+is $G(a_1) + \mathbb{E}_{o_1} \min_{a_2} G(a_2 \mid o_1)$. Under that score,
+visiting the cue first is best at both validities — $2.7942$ at $v = 1$ and
+$3.4344$ at $v = 0.9$, against $5.6742$ for staying at the centre, $5.7049$
+for entering an arm, and $6.3674$ for the dark room — which corrects the
+one-step choice (@fig-fep-tmaze c). By contrast, a score that adds two
+one-step values of $G$ under the same prior belief selects "cue, then cue
+again" ($4.9811$) at $v = 1$ and "left, then left" ($5.1771$) at $v = 0.9$,
+because it does not let the second step use the first observation. This
+matches the result of Da Costa et al.: the standard scheme is Bellman optimal
+for a planning horizon of one and not beyond, whereas sophisticated inference
+is Bellman optimal on any finite horizon [@dacosta2023reward].
+
+### Markov blankets, steady states, and Bayesian mechanics {#sec-fep-blankets}
+
+The most ambitious part of the FEP is not an algorithm but a physical claim
+about existence. In "Life as we know it", Friston argues that if a set of
+dynamical systems is coupled only by short-range forces, then remote states
+are conditionally independent, which induces a *Markov blanket* separating
+internal from external states; the internal states then appear to minimize
+a free-energy functional of the blanket states, i.e., appear to infer the
+external world. He goes on to argue that, since the long-term average of
+surprise is an entropy, minimizing free energy by selectively sampling the
+world places an upper bound on the entropy of the sensory states, which in
+his words enables biological systems to resist the second law of
+thermodynamics [@friston2013life]. Kirchhoff et al. nest the construction
+into blankets of blankets [@kirchhoff2018blankets], and Ramstead et al.
+extend it to the capacity of living systems to avoid decay, in answer to
+Schrödinger's question [@ramstead2018schrodinger].
+
+After 2019 this part developed into *Bayesian mechanics*. Starting from a
+Langevin equation, sparse coupling yields a *particular partition*, and the
+paths of the internal states of a particle obey a principle of least action
+which, read teleologically, maximizes the marginal likelihood
+[@friston2019particular; @friston2023simpler]; "strange" particles also
+infer their own actions [@friston2023path]. Da Costa et al. give a more
+careful treatment for stationary processes, in which the internal states
+appear to perform variational inference and the active states can be read as
+performing active inference, covering classical stochastic control such as
+PID control [@dacosta2021stationary]. Ramstead et al. distinguish
+path-tracking, mode-tracking, and mode-matching mechanics and examine a
+duality between the FEP and the constrained maximum entropy principle
+[@ramstead2023bayesian]; Sakthivadivel argues that for a class of constrained
+dynamics the inference is equivalent to gradient ascent on a Shannon entropy
+functional [@sakthivadivel2022geometry]; a quantum-information version is due
+to Fields et al. [@fields2022quantum].
+
+This is also where the controversy concentrates, and the critiques are taken
+up in @sec-fep-critiques. Two points matter for what follows. The
+mathematics of @sec-fep-vfe to @sec-fep-core-action does not depend on the
+physical assumptions about blankets and steady states; and, conversely, the
+physical claims do not follow from the entropy-based learning of this book,
+as we explain in @sec-fep-duality.
+
+### A map of the principle {#sec-fep-map}
+
+The FEP therefore operates at several levels at once, and much of the
+confusion around it comes from not saying which level is meant. @tbl-fep-map lists the levels, the object and the quantity minimized at
+each, and the counterpart in this book, which @sec-fep-connections
+establishes row by row.
+
+| Level | Object in the FEP | Quantity minimized | Counterpart in this book |
+|---------------|------------------|----------------------|--------------------------------------|
+| perception | belief $q(s)$ | $F[q; o]$, @eq-fep-vfe | @eq-max-def-free at $T = 1$ with $h = p(s)$; @sec-fep-one |
+| predictive coding | mode $\phi$, precisions | $-\log p(o, \phi)$, plus curvature | the $T \to 0$ end of the dial with a Laplace correction; @sec-fep-perception |
+| learning | parameters $\theta$ | average $F$ | maximum-entropy learning with missing data (@sec-max-boundary); $T = 1$ on the dial of @sec-minimax-label-temperature; @sec-fep-learning |
+| model selection | model $m$ | $F$ as a bound on $-\log p(o \mid m)$ | Type I with a cost on the parameters; MDL (@sec-minimax-principle); @sec-fep-modelsel |
+| planning | policy $\pi$ | $G(\pi)$, @eq-fep-efe | firmness plus fairness (@sec-min-history); Type III, proposed in @sec-fep-typeIII |
+| policy selection | $q(\pi)$, @eq-fep-policy | $\mathbb{E}_q[G] + \gamma^{-1} \mathrm{KL}(q \Vert E)$ | the Gibbs tilts @eq-min-gibbs and @eq-post-tilt; @sec-fep-tilt |
+| existence | steady-state density, blankets | average surprise | not derivable; a duality with maximum entropy; @sec-fep-duality |
+
+: The levels of the free-energy principle and their counterparts in this book. {#tbl-fep-map}
+
+## Recent developments, 2019–2026 {#sec-fep-recent}
+
+### Critiques and replies {#sec-fep-critiques}
+
+The principle has been examined closely since 2020, and the examination has
+drawn detailed replies; in our reading the exchange is still open. We group
+the main lines under three headings, state each position as its authors
+state it, and do not attempt to settle the matter. Two cautions apply
+throughout. First, much of the technical discussion concerns the 2013
+formulation of @sec-fep-blankets, and the critics themselves note that the
+later formulations parametrize the variational density by different
+variables and carry a different interpretation [@biehl2021critique], so
+that an objection to one formulation is not automatically an objection to
+another. Second, the variational free energy of @sec-fep-vfe and its use in
+perception and learning, which is most of what this chapter draws on, is
+not what is in dispute; the disputes concern the physical claims about
+blankets and steady states, the objective for planning, and the epistemic
+status of the principle as a whole.
+
+i\) *Technical.* Biehl, Pollock, and Kanai examine the formulation of "Life
+as we know it" and report that the definitions of the Markov blanket used in
+different papers are not equivalent, that the steps which rewrite the
+equations of motion of a system with a blanket are not generally correct
+without additional assumptions that had not been stated, and that the
+free-energy lemma, taken at face value, admits counterexamples; where the
+lemma does hold, they show, the variational density coincides with the
+conditional density of the steady state, and since the interpretation in
+terms of Bayesian inference hinges on this point they conclude that it is
+not sufficiently justified. They add that the problems they raise do not
+rule out that the general ideas behind the principle are worth pursuing
+[@biehl2021critique]. Friston, Da Costa, and Parr take the observations as
+bearing on an early formulation and use them to set out the technical
+arguments that underwrite the principle, with the discussion focusing on
+solenoidal coupling between subsets of states in sparsely coupled systems
+and on the distinction between exact and approximate Bayesian inference
+[@friston2021observations]. Aguilera et al. examine the simplest setting,
+weakly coupled linear stochastic systems, and report that the blanket
+condition and the restrictions on solenoidal flow are met only in a narrow
+region of parameter space, requiring an absence of perception–action
+asymmetry that they consider unusual for living systems, and that the step
+from the dynamics to variational inference relies on an equivalence between
+the dynamics of the average states and the average of the dynamics which
+does not hold in general even for linear systems; they conclude that more
+development is needed before the theory can be applied to living and
+cognitive systems [@aguilera2022particular]. Friston replied in a comment
+[@friston2022veryparticular], and Heins and Da Costa worked out, for
+Gaussian steady states and for linear and nonlinear dynamics alike, the
+conditions under which sparse coupling does or does not give rise to a
+Markov blanket [@heins2022sparse]; the authors' response moves the
+discussion toward what they term a confederation of Bayesian mechanics
+[@aguilera2023confederation]. The later formulations surveyed in @sec-fep-blankets state their starting point as a partition defined by
+conditional independences that inherit from sparsely coupled dynamics
+[@friston2023simpler; @dacosta2021stationary; @ramstead2023bayesian]; how
+far this meets the objections is, in our reading, still being worked out on
+both sides.
+
+ii\) *Conceptual.* Bruineberg et al. trace the Markov blanket from its use
+in Bayesian networks to its use in active inference, distinguish *Pearl
+blankets*, an epistemic tool for Bayesian inference, from *Friston
+blankets*, a construct meant to demarcate the physical boundary between an
+agent and its environment, and argue that the literature has not kept the
+two apart; only the second, they hold, can do metaphysical work, and it
+requires philosophical premises that the success of the mathematics does
+not by itself supply [@bruineberg2022emperor]. The paper appeared as a
+target article with thirty-five commentaries, which take many different
+stances, and the authors' reply [@bruineberg2022naked]. Raja et al. argue
+that the FEP generalizes Bayesian inference to all domains by way of the
+blanket formalism, which they term the Markov blanket trick, and that active
+inference presupposes successful perception and action instead of explaining
+them [@raja2021blanket]; Friston replied in a comment, and the authors
+responded [@friston2022ultimate; @raja2023trick]. Colombo and Wright note
+that the FEP has been called a postulate, an unfalsifiable principle, a
+natural law, and an imperative, that its epistemic status is unclear, and
+that it might nevertheless afford a theoretical foundation for the relation
+between environment, life, and mind; they set out limits and prospects for
+it as a first principle in the life sciences [@colombo2021first]. Andrews
+takes both the positive and the negative evaluations to date to have been
+largely in error: the FEP, on his account, is a model structure, i.e., a
+modelling language to which construals are added to make FEP models, so
+that demands that the principle itself be falsifiable or biologically
+realistic rest on a category error — the mathematics is not the territory
+[@andrews2021math].
+
+iii\) *On the expected free energy.* Millidge, Tschantz, and Buckley
+investigate where the expected free energy comes from and argue that it is
+not simply the free energy in the future: a functional that they take to be
+the natural extension of @eq-fep-vfe into the future actively discourages
+exploration, so that exploration does not directly follow from minimizing
+free energy ahead of time, and they develop the free energy of the expected
+future as an alternative objective [@millidge2021whence]. Gottwald and
+Braun distinguish two notions of free energy in current models of
+intelligent agency, both of them applications of Bayesian inference to
+action selection, namely one that appears when trading off accuracy against
+uncertainty under a general maximum-entropy principle, and one that
+formulates action selection as minimizing the deviation of beliefs and
+policies from reference models, which is active inference
+[@gottwald2020two]. The free energy of this book is of the first kind, as
+we make precise in @sec-fep-one; the subsequent theory of the expected free
+energy, which addresses part of the question raised by Millidge et al., is
+the subject of @sec-fep-planning.
+
+### Planning and the theory of the expected free energy {#sec-fep-planning}
+
+The status of the expected free energy has nevertheless been clarified
+considerably. Parr and Friston compare two functionals: in the expected free
+energy, prior beliefs about outcomes are not part of the generative model
+but are absorbed into the prior over policies, whereas in the *generalized*
+free energy they become an explicit part of the model
+[@parr2019generalised]. Da Costa et al. give a complete synthesis of active
+inference on discrete state spaces [@dacosta2020discrete], and sophisticated
+inference and its Bellman optimality were discussed in @sec-fep-core-action
+[@friston2021sophisticated; @dacosta2023reward]. Sajid et al. compare active
+inference with reinforcement learning on the same environments and stress
+that reward can be treated as one more observation over which the agent has
+a preference [@sajid2021demystified]. Champion et al. formalize the
+*unification problem* — deriving the various forms of the expected free
+energy from a single root definition — and find that in one setting all the
+forms are recovered, but that the root definition itself has no justification
+to date and admits only a limited class of preferences
+[@champion2024reframing]. Most recently, de Vries et al. and Nuijten et al.
+show that planning with the expected free energy can be written as
+variational free-energy minimization on a generative model augmented with
+*epistemic priors* [@devries2025efe; @nuijten2026efe]; Nuijten et al. then
+rewrite the free energy of the augmented model as that of the predictive
+model plus explicit entropy corrections, and note that full planning also
+needs a correction that turns marginal inference into policy optimization
+[@nuijten2026type]. Sweeney et al. develop the formal correspondences between
+expected-free-energy minimization and Bayesian decision theory, resource
+rationality, optimal control, reinforcement learning, rate–distortion theory,
+and maximum entropy [@sweeney2026decision].
+
+### Deep and scalable active inference {#sec-fep-deep}
+
+Taking active inference from small discrete problems to high-dimensional
+tasks has been the main engineering direction. Ueltzhöffer combines it with
+variational inference in deep generative models and with evolution
+strategies, and obtains goal-directed behaviour on the mountain-car problem
+[@ueltzhoffer2018deep]; Millidge approximates the key densities by deep
+networks, obtains performance comparable with common reinforcement-learning
+baselines on OpenAI Gym benchmarks, and notes the similarities with
+maximum-entropy reinforcement learning and with policy gradients
+[@millidge2020dpg]; Tschantz et al. take the free energy of the expected
+future as the objective and balance exploration and exploitation on
+benchmarks with sparse, well-shaped, and no rewards [@tschantz2020rl]; and
+Fountas et al. build deep agents with Monte Carlo tree search, a habitual
+network, and MC dropout [@fountas2020deep]. Surveys are those of Mazzaglia et
+al., from the side of deep learning [@mazzaglia2022deep], and of Lanillos et
+al., for robotics [@lanillos2021robotics]; software includes pymdp
+[@heins2022pymdp] and RxInfer [@bagaev2023rxinfer]. The latest step is the
+*renormalizing generative model*, which generalizes partially observed
+Markov decision processes to include paths as latent variables and uses the
+renormalization group to build deep, scale-invariant models, applied to
+image classification, to the compression and generation of movies and music,
+and to Atari-like games [@friston2025pixels]; AXIOM uses object-centric core
+priors to accelerate the learning of games in the low-data regime
+[@heins2025axiom]. Closest to machine learning, Hafner et al. introduce the
+*action–perception divergence*, a single principle that covers
+representation learning, information gain, empowerment, and skill discovery,
+with agents that use perception to align their beliefs with the world and
+action to align the world with their beliefs [@hafner2020divergence].
+
+### Experimental tests {#sec-fep-empirical}
+
+The evidence concentrates on in vitro neural networks and on human
+decision-making. Isomura and Friston stimulated in vitro cortical cultures
+with stimulus trains of known statistical structure and found the recorded
+responses consistent with variational message passing [@isomura2018invitro];
+Isomura et al. show that a class of canonical neural networks with delayed
+modulation of Hebbian plasticity implicitly performs active inference
+[@isomura2022canonical]; and in 2023 Isomura et al. used in vitro networks of
+rat cortical neurons that separate two mixed hidden sources to confirm
+quantitative predictions — pharmacological up- and down-regulation of
+excitability disrupted the inference in the way that a change of prior
+would, and changes in effective synaptic connectivity reduced the variational
+free energy [@isomura2023experimental]. The DishBrain of Kagan et al.
+embedded in vitro neurons in a simulated game of Pong and reports learning
+within minutes [@kagan2022invitro]; its use of the word "sentience" drew a
+public response [@balci2023response]. In humans, Schwartenbeck et al. found
+with fMRI that midbrain activity tracks model-based estimates of precision
+[@schwartenbeck2015dopamine]. These results test particular process theories
+rather than the principle as such, and Isomura et al. say so explicitly:
+empirical applications entail a commitment to a particular process theory
+[@isomura2023experimental].
+
+### Generative AI and agents {#sec-fep-ai}
+
+Since 2023 the FEP literature has addressed generative AI directly. Pezzulo
+et al. argue that the generative models of living organisms are anchored to
+the body and the world: unlike the passive models learned by generative AI,
+they must capture and control the sensory consequences of action, which in
+their view is what understanding rests on [@pezzulo2024generating]. Friston
+et al. read intelligence as the capacity to accumulate evidence for a
+generative model of one's sensed world, i.e., self-evidencing in the sense of
+Hohwy [@hohwy2016selfevidencing], and envisage an ecosystem of shared
+intelligence built on active inference [@friston2024ecosystems]. On the
+engineering side, Dutta et al. cast context acquisition by interactive AI
+agents — clarifying questions, retrieval, tool calls — as active inference:
+an inner step updates beliefs over a latent task state, and an outer decision
+selects the next action to minimize the expected free energy under a cost; in
+deterministic settings the epistemic term reduces to the expected
+information gain, and they benchmark frontier language models on an
+optimal-question-asking task [@dutta2026context]. We return to this
+structure, inference inside and the choice of data outside, in @sec-fep-ceiling.
+
+### Timeline {#sec-fep-timeline}
+
+The milestones of the principle, from its predecessors in machine learning
+to the developments of this section, are collected in @tbl-fep-timeline.
+
+| Year | Work | Point |
+|-------------|------------------------|------------------------------------------------|
+| 1995–1998 | Dayan et al.; Neal and Hinton | the evidence lower bound as a negative free energy [@dayan1995helmholtz; @neal1998em] |
+| 1999 | Rao and Ballard | predictive coding in the visual cortex [@rao1999predictive] |
+| 2005–2007 | Friston; Friston, Kilner, and Harrison; Friston et al. | cortical responses; the FEP for the brain; variational Laplace [@friston2005theory; @friston2006free; @friston2007laplace] |
+| 2010 | Friston; Friston et al. | a unified brain theory; action and behaviour [@friston2010free; @friston2010action] |
+| 2012–2013 | Friston et al.; Friston | control without cost functions; the dark room; Markov blankets and life [@friston2012agency; @friston2012darkroom; @friston2013life] |
+| 2015–2017 | Friston et al. | epistemic value; learning and habits; a process theory [@friston2015epistemic; @friston2016learning; @friston2017process] |
+| 2019–2021 | Parr and Friston; Da Costa et al.; Friston et al. | generalized free energy; the discrete synthesis; sophisticated inference [@parr2019generalised; @dacosta2020discrete; @friston2021sophisticated] |
+| 2020–2023 | critiques and replies | two kinds of free energy; the technical critique and its reply; whence the EFE; linear systems and sparse coupling; Pearl and Friston blankets [@gottwald2020two; @biehl2021critique; @friston2021observations; @millidge2021whence; @aguilera2022particular; @heins2022sparse; @bruineberg2022emperor] |
+| 2021–2023 | Bayesian mechanics | stationary processes; made simpler; the maximum-entropy duality [@dacosta2021stationary; @friston2023simpler; @ramstead2023bayesian] |
+| 2022–2023 | in vitro tests | DishBrain; experimental validation [@kagan2022invitro; @isomura2023experimental] |
+| 2023 | Da Costa et al. | Bellman optimality of sophisticated inference [@dacosta2023reward] |
+| 2024–2025 | Pezzulo et al.; Friston et al.; Heins et al. | generative AI; renormalizing generative models; AXIOM [@pezzulo2024generating; @friston2025pixels; @heins2025axiom] |
+| 2024–2026 | Champion et al.; de Vries et al.; Nuijten et al.; Sweeney et al.; Dutta et al. | the unification problem; planning as free-energy minimization with epistemic priors; formal equivalences; context acquisition by language-model agents [@champion2024reframing; @devries2025efe; @nuijten2026efe; @nuijten2026type; @sweeney2026decision; @dutta2026context] |
+
+: Milestones of the free-energy principle and active inference. {#tbl-fep-timeline}
+
+## Connections to entropy-based learning {#sec-fep-connections}
+
+
+This concludes our review of the principle in its own language. Now, let us
+reinterpret it in the framework developed throughout this book, moving step
+by step along the levels summarized in @tbl-fep-map. The point to hold on
+to, at the outset, is that the central translations below are identities,
+not analogies; where a translation is only a correspondence, or a reading
+of ours, @tbl-fep-corr says so.
+
+### One free energy {#sec-fep-one}
+
+The first line of @eq-fep-vfe is the free energy of @sec-max-def-representation with a particular assignment of base measure and
+energy.
+
+::: {.callout-note title="Proposition 1 (one free energy)"}
+For a generative model $p(o, s) = p(s)\, p(o \mid s)$, the variational free
+energy @eq-fep-vfe equals $\mathcal{F}_T(q; E)$ of @eq-max-def-free with
+$h = p(s)$, $E(s) = -\log p(o \mid s)$, and $T = 1$. It also equals
+$\mathcal{F}_1$ with a flat base measure and the energy
+$E(s) = -\log p(o, s)$. In both readings the minimizer is the posterior
+$p(s \mid o)$ and the minimum is $-\log Z = -\log p(o)$. For a general
+temperature the two readings differ: the minimizers are
+$q_T \propto p(s)\, p(o \mid s)^{1/T}$ and $q_T \propto p(o, s)^{1/T}$,
+respectively.
+:::
+
+The proof is a substitution: $\mathbb{E}_q[-\log p(o \mid s)] +
+\mathrm{KL}(q \Vert p(s))$ is the third line of @eq-fep-vfe, and
+$Z = \int p(s)\, p(o \mid s)\, ds = p(o)$. Two remarks are worth making.
+First, in perception under the FEP, $T = 1$ is not a dial that someone
+chooses; it is the point at which Bayes' rule itself sits. Writing Bayes'
+rule as a variational problem is an old result in statistics, which goes
+back to the Donsker–Varadhan formula, to Williams' principle of minimum
+information, and to Zellner's optimal information processing
+[@donsker1975asymptotic; @williams1980bayesian; @zellner1988optimal]; Giffin
+and Caticha process data and moment constraints simultaneously by maximum
+relative entropy [@giffin2007updating], which is the constrained and the
+free-energy form of @sec-max-def-representation unified in Bayesian
+updating. Second, replacing the negative log-likelihood by a general loss, or
+the KL divergence by another divergence, gives general Bayesian updating and
+generalized variational inference [@bissiri2016general; @knoblauch2022gvi],
+i.e., the generalized sense of @sec-max-boundary.
+
+Notably, the two readings of Proposition 1 are not a technicality. They are
+the two ways of splitting a model into a base measure and an energy, and the
+rest of this section shows that the FEP uses both, at different levels, and
+that several of its apparent puzzles dissolve once one asks which split is in
+force. Proposition 1 also concerns the variational free energy only, and it
+is worth placing it in the distinction of Gottwald and Braun (@sec-fep-critiques). Their first kind, the *free energy from constraints*,
+is an energy traded against an entropy with a multiplier that is determined
+by a constraint, which is @eq-max-def-free; their second kind, the
+*variational free energy*, is an error measure between a trial distribution
+$q$ and an unnormalized reference function $\phi$, namely
+$\mathbb{E}_q[-\log \phi] - H(q)$, introduced as a device for representing a
+normalization as an optimization problem, which is the first line of @eq-fep-vfe with $\phi = p(o, s)$. They note that the two expressions are
+transformed into each other by $\phi = h\, e^{-E/T}$, and insist that they
+nevertheless differ in method and motivation: the first presupposes a
+constrained quantity and a trade-off, the second presupposes neither
+[@gottwald2020two]. Proposition 1 is that transformation at $T = 1$, and its
+second reading is exactly their second kind. The free energy of this book is
+of the first kind; the expected free energy @eq-fep-efe is a further object
+of the second kind, built for action selection, which is not the same object
+as @eq-fep-vfe, and we come to it in @sec-fep-typeIII.
+
+### Perception: two readings of the dial {#sec-fep-perception}
+
+Example 1 showed that predictive coding computes the mode of the posterior
+and not its mean, with the uncertainty supplied afterwards by the Laplace
+approximation. This is the first place where the distinction of Proposition
+1 earns its keep. Predictive coding is the $T \to 0$ end of the *second*
+reading, in which the energy is $-\log p(o, s)$ and lowering the temperature
+concentrates the belief on the maximum a posteriori value without moving it.
+
+**Precision is a temperature.** For a Gaussian likelihood, lowering the
+temperature of the likelihood term from 1 to $T$ is the same as raising the
+sensory precision from $1/\Sigma_u$ to $1/(T\Sigma_u)$, since
+$p(u \mid v)^{1/T} \propto \mathcal{N}(u; v^2, T\Sigma_u)$. This is the
+*first* reading of Proposition 1, in which the prior is the base measure and
+the dial of @sec-free-energy acts on the likelihood alone. In Example 1 the
+mode of $q_T \propto p(v)\, p(u \mid v)^{1/T}$ moves from $1.817$ at $T = 4$,
+towards the prior mean $3$, through $1.5675$ at $T = 1$, to $1.418$ at
+$T = 0.02$, approaching the maximum-likelihood value $\sqrt{2} = 1.4142$;
+under the second reading the mode stays at $1.5675$ for every $T$, while the
+mean moves from $1.480$ at $T = 1$ to $1.566$ at $T = 0.02$, towards the
+mode. Attention as inference about precision (@sec-fep-pc) is,
+in our terms, inference about a likelihood temperature. Perception itself
+stays at $T = 1$.
+
+In the classification of @sec-max-definition, perception has only the levels
+i) and ii), representation and inference, with no learner: it is inference
+over a maximum-entropy model, and nothing is fitted.
+
+### Learning: minimax entropy at $T = 1$ {#sec-fep-learning}
+
+We saw in @sec-fep-core-learning that learning under the FEP minimizes the
+same free energy, and that in the limit of point estimates it is EM. The
+question for this book is which outer problem that is. The answer is sharper
+than we expected.
+
+::: {.callout-note title="Proposition 2 (learning as a difference of entropies)"}
+Let the complete-data model
+$p_\theta(o, s) \propto h(o, s) \exp\big(\boldsymbol{\lambda}^{\top}
+\mathsf{T}(o, s)\big)$ be an exponential family in the sufficient statistics
+$\mathsf{T}$ with a uniform base measure $h$. Given data $o_1, \dots, o_n$
+and any conditional distribution $q(s \mid o)$, let $\boldsymbol{\lambda}$ be
+the M-step fit to the completed data $\hat p(o)\, q(s \mid o)$, i.e.,
+$\mathbb{E}_{\hat p q}[\mathsf{T}] = \mathbb{E}_{p_\theta}[\mathsf{T}]$. Then
+for every label temperature $T \ge 0$,
+
+$$
+\frac{1}{n}\sum_{i=1}^{n} \Big\{ \mathbb{E}_{q(\cdot \mid o_i)}\big[-\log p_\theta(o_i, s)\big] - T\, H\big(q(\cdot \mid o_i)\big) \Big\}
+\;=\; H\big(p_\theta(O, S)\big) - T\, \overline{H(q)} ,
+$$ {#eq-fep-learning}
+
+where $\overline{H(q)} = \frac{1}{n}\sum_i H\big(q(\cdot \mid o_i)\big)$. At
+$T = 1$ the left-hand side is the average variational free energy @eq-fep-vfe.
+:::
+
+The proof is that of @eq-max-bridge. For a uniform $h$ we have
+$-\log p_\theta(o, s) = -\boldsymbol{\lambda}^{\top} \mathsf{T}(o, s) +
+\log Z(\boldsymbol{\lambda})$ up to a constant, so the cross-entropy on the
+completed data equals $-\boldsymbol{\lambda}^{\top}
+\mathbb{E}_{\hat p q}[\mathsf{T}] + \log Z =
+-\boldsymbol{\lambda}^{\top} \mathbb{E}_{p_\theta}[\mathsf{T}] + \log Z =
+H(p_\theta)$; subtracting $T\, \overline{H(q)}$ gives @eq-fep-learning. If
+the statistics also depend on representation parameters $\theta'$, writing
+$p^\star_{\theta', q}$ for the maximum-entropy model of the completed data
+and $\ell_T$ for the label free energy @eq-mm-label-free gives
+
+$$
+\min_{\theta}\; \frac{1}{n}\sum_{i=1}^{n} \ell_T(\theta; o_i)
+\;=\; \min_{\theta',\, q} \Big\{ H\big(p^\star_{\theta', q}\big) - T\, \overline{H(q)} \Big\} ,
+$$ {#eq-fep-learning-minimax}
+
+whose $T \to 0$ end is @eq-mm-minimax-labels, the classification likelihood,
+and whose $T = 1$ end is the marginal likelihood, i.e., EM.
+
+Proposition 2 is a direct consequence of @eq-max-bridge, and @eq-mm-plugin,
+the decomposition of Hathaway [@hathaway1986em], is its counterpart on the
+side of the E-step; we claim no priority for either. What we want the reader
+to take from it is the *reading*. The average free energy is the entropy of
+the world model minus the entropy of the inferred causes. Learning under the
+FEP is therefore minimax-entropy learning whose outer problem minimizes the
+entropy of the world model — which is Type I of @sec-minimax-two-questions —
+while the inner problem keeps the entropy of the causes at full weight. The
+interpolation between the two ends that @sec-minimax-label-temperature
+describes is exactly the $T$ of @eq-fep-learning, and the FEP sits at one
+particular setting of it.
+
+**Example 3 (learning).** We draw $n = 2000$ samples from
+$0.4\, \mathcal{N}(-1, 0.7^2) + 0.6\, \mathcal{N}(1, 1)$ and run EM at a
+label temperature $T$, with the E-step
+$q(s \mid o) \propto p_\theta(o, s)^{1/T}$ — a hard assignment at $T = 0$ —
+and the M-step matching the moments of the completed data. At every
+temperature and every iteration the two sides of @eq-fep-learning agree to
+within $3.8 \times 10^{-15}$, and the objective is non-increasing to within
+rounding (@fig-fep-learning a). At $T = 1$, EM converges to
+$\hat\pi = (0.399, 0.601)$, $\hat\mu = (-1.034, 1.010)$, and
+$\hat\sigma = (0.703, 0.991)$; the average free energy $1.6791$ equals the
+training negative log-likelihood to within $10^{-12}$, and it splits into a
+world-model entropy of $1.9457$ minus a cause entropy of $0.2666$. On
+200,000 held-out samples the negative log-likelihood is $0.4$ millinats above
+that of the true distribution. At $T = 0$, which is classification EM
+[@celeux1992cem], the entropy of the world model falls to $1.7782$ and that
+of the causes to zero, but the means are pushed apart and the variances
+shrink, $\hat\mu = (-0.963, 1.291)$ and $\hat\sigma = (0.657, 0.777)$, and
+the held-out negative log-likelihood is $17.0$ millinats above the truth,
+against $12.3$ at $T = 0.5$ (@fig-fep-learning b, c).
+
+![Learning as free-energy minimization (Example 3). (a) EM at $T = 1$: the entropy of the world model, the entropy of the inferred causes, and their difference, with the average free energy computed directly shown as dots; (b) the label-temperature dial, with the two entropies at convergence on the left axis and the excess of the held-out negative log-likelihood over the truth on the right, in millinats; (c) fitted densities at $T = 1$, $0.5$, and $0$ against the truth. Produced by `code/fep-examples.py`.](../figures/fep-learning.png){#fig-fep-learning width="100%"}
+
+This is what @sec-minimax-label-temperature predicts: a label temperature
+below one makes the label side commit, which is Type II, and it pays for the
+commitment in the fit of the density to the inputs. Learning under the FEP
+declines to make that trade.
+
+One detail deserves mention, since it looks like a contradiction and is not.
+We said in @sec-max-boundary that directed graphical models fitted by maximum
+likelihood or EM are maximum-entropy learners without being maximum-entropy
+models, which is true of the marginal $p_\theta(o)$. Proposition 2 says that
+at the level of the *completed* data, EM for an exponential-family mixture is
+a minimax-entropy learner. The two statements concern different sets of
+variables.
+
+### Model selection: Type I and description length {#sec-fep-modelsel}
+
+Model selection is the same story one level up. Recall that @sec-minimax-principle starts from minimum description length: for a
+maximum-entropy model the description length equals the model's own entropy,
+$L(P_F) = S(P_F)$, so choosing features for the shortest description is
+Type I [@grunwald2007mdl; @feder1986maximum; @carcamo2025minimax]. Model
+selection under the FEP uses the free energy as a bound on the negative log
+model evidence (@sec-fep-core-learning), and its complexity term for the
+parameters, $\mathrm{KL}(q(\theta) \Vert p(\theta))$, is their description
+length. This reading is not new to the FEP: Hinton and van Camp read
+variational learning as minimizing the description length of the weights
+[@hinton1993keeping], Hinton and Zemel read the cost of an autoencoder in
+terms of MDL and the Helmholtz free energy [@hinton1994autoencoders], and
+Honkela and Valpola explain variational Bayesian learning through bits-back
+coding [@honkela2004bitsback].
+
+In the language of this book, then, model selection under the FEP is Type I
+with a cost on the parameters: the budget of @sec-minimax-principle is a
+number of features, whereas that of the FEP is counted in nats. The outer
+criteria differ slightly, in a way worth keeping straight. Type I minimizes
+$S(P_F)$, the cross-entropy at the maximum-likelihood fit; the FEP minimizes
+a free energy that also carries the uncertainty about the parameters. When
+the parameter posterior is concentrated, the free energy of $n$ data points
+is approximately $n\, S(P_F)$ plus the cost of the parameters, and the two
+agree to leading order. The structure learning of @sec-fep-core-learning,
+which adds hidden-state slots and reduces them by Bayesian model reduction,
+is the combinatorial search of @sec-minimax-principle conducted in nats.
+Notably, the minimax entropy principle has recently yielded exactly solvable
+models of large neuronal populations [@lynn2024exact], a natural meeting
+point with the neuroscience from which the FEP arose.
+
+### Action: Type III, firm but fair {#sec-fep-typeIII}
+
+The first line of @eq-fep-efe is an object this book has already met, with
+the direction of one arrow reversed.
+
+::: {.callout-note title="Proposition 3 (the expected free energy is firm but fair)"}
+Write $\bar p_\pi = q(o \mid \pi)$ for the predicted marginal of the
+outcomes. Then
+
+$$
+G(\pi) \;=\; \underbrace{\mathrm{KL}\big(\bar p_\pi \,\Vert\, \tilde p\big)}_{\text{fairness, target } \tilde p}
+\;+\; \underbrace{\mathbb{E}_{q(s \mid \pi)} H\big[p(o \mid s)\big]}_{\text{firmness}} ,
+$$ {#eq-fep-firmfair}
+
+i.e., the fairness and firmness terms of @sec-min-history, with the hidden
+state $s$ in the place of the input, the outcome $o$ in the place of the
+label, and the likelihood $p(o \mid s)$ in the place of the classifier. With
+flat preferences, $G(\pi) = \log|\mathcal{O}| - I_\pi(S; O)$, so that
+minimizing $G$ maximizes the mutual information of Bridle et al.
+[@bridle1992phantom]. Unlike in Bridle's case, the variable being optimized
+is not the classifier but the distribution $q(s \mid \pi)$ of the inputs, or
+the channel $p(o \mid s, \pi)$.
+:::
+
+The decomposition into risk and ambiguity is standard [@friston2015epistemic; @dacosta2020discrete]; what we add is the correspondence, which shows that
+both entropy terms of the expected free energy have been in this book all
+along. The classifier of @sec-min-history is optimized for a fixed
+distribution of data; active inference fixes the likelihood and optimizes
+*what to look at*. That direction is the one of channel capacity and of
+Bayesian experimental design: Lindley measures the information an experiment
+provides by the expected information between parameter and data
+[@lindley1956measure], MacKay uses it for active data selection
+[@mackay1992information], and Linsker's InfoMax maximizes the mutual
+information between the input and the output of a perceptual network
+[@linsker1988self]. Within the book, @sec-minimax-entropy already observes
+that Sustek et al., by adding $I_\theta(X; Y)$ to the objective of a joint
+energy-based model, place the mutual-information objective of @sec-min-history on top of a maximum-entropy learner [@sustek2023stabilized];
+the expected free energy places the same objective on top of a generative
+model and changes the optimized variable from the classifier to the action.
+
+This is the gap in @sec-minimax-two-questions, and we propose to fill it.
+
+::: {.callout-tip title="Definition: minimax-entropy learning of Type III"}
+In addition to Types I and II of @sec-minimax-two-questions, we term a method
+of **Type III** (*what to observe*) if its outer problem chooses an action, a
+policy, or an experiment $\xi$ that decides the data to which the inner model
+will be fitted, so as to minimize the expected entropy of the inner model's
+posterior over its hidden variables,
+
+$$
+\min_{\xi}\; \mathbb{E}_{o \sim q(o \mid \xi)}\, H\big(q(S \mid o, \xi)\big) ,
+$$ {#eq-fep-typeIII}
+
+which, when the prior over the hidden variables does not depend on $\xi$, is
+the same as maximizing $I_\xi(S; O)$. The outer problem may add a prescribed
+marginal of the outcomes, the preferences, as the target of fairness. The
+posterior is computed at $T = 1$: the entropy is lowered by the choice of the
+data and not by sharpening the posterior. The anchor iii) is then met
+*through the world* — the outer entropy is an expectation under the inner
+model's own predictive distribution, and the inner model is afterwards fitted
+to the data that the chosen action actually produces.
+:::
+
+| Type | Outer variable | Entropy minimized | Temperature | Examples |
+|---------------|-----------------|----------------------|----------------|--------------------------------|
+| I, what to measure | features, model, parameters | entropy of the maximum-entropy model, $S(P_F)$ | inner at $T = 1$ | FRAME; energy-based models by maximum likelihood; EM (Proposition 2); model selection under the FEP |
+| II, what to commit to | assignments, classifier | predictive entropy of $Y$ | label at $T < 1$ | softmax classification; classification EM; joint energy-based models with entropy minimization |
+| III, what to observe | action, policy, experiment | expected posterior entropy $\mathbb{E}_o H(S \mid o)$ | posterior at $T = 1$; policies at $1/\gamma$ | epistemic value of @eq-fep-efe; Bayesian experimental design; context acquisition by agents |
+
+: The three kinds of outer problem in minimax-entropy learning. Types I and II are those of @sec-minimax-two-questions; Type III is proposed here, and it is the one in which the data are not given. {#tbl-fep-types}
+
+Example 2 shows the type at work and separates it from Type II. The symmetry
+of the preferences made the first move a pure Type III decision, settled by
+the epistemic term alone. The agent's belief about the context is a Bayesian
+posterior at $T = 1$ throughout; it never commits by sharpening that
+posterior. It obtains certainty by *fetching the data* on which the
+posterior can be confident. Type II lowers the entropy of a belief on fixed
+data; Type III goes out and changes the data.
+
+### Policies: Gibbs tilts, and precision as a temperature {#sec-fep-tilt}
+
+The posterior over policies, @eq-fep-policy, is an object from @sec-post-training.
+
+::: {.callout-note title="Proposition 4 (the posterior over policies is a Gibbs tilt)"}
+$q(\pi) = \sigma\big(\log E(\pi) - \gamma G(\pi)\big)$ is the unique
+minimizer of $\mathbb{E}_q[G] + \gamma^{-1} \mathrm{KL}(q \Vert E)$, with
+minimum $-\gamma^{-1} \log \sum_\pi E(\pi)\, e^{-\gamma G(\pi)}$. It is
+therefore @eq-max-def-free on the space of policies, with the energy $G$, the
+base measure $E$, and the temperature $T = 1/\gamma$; equivalently it is @eq-min-gibbs with reward $-G$ and reference policy $E$, and @eq-post-tilt
+with the habits as reference.
+:::
+
+Three comparisons follow, and each sharpens something stated loosely
+elsewhere. i) *Risk is maximum-entropy control on outcomes.* Since
+$\mathrm{KL}(\bar p_\pi \Vert \tilde p) = -H(\bar p_\pi) -
+\mathbb{E}_{\bar p_\pi}[C] + \log Z_C$ for $\tilde p \propto e^{C}$,
+minimizing the risk maximizes expected utility *plus the entropy of the
+outcomes*. The structure is that of @eq-max-rl-objective, but with the
+entropy bonus on the outcomes rather than on the actions; Millidge et al.
+likewise locate the difference between active inference and control as
+inference in how value enters the respective generative models
+[@millidge2020cai; @levine2018rlinference]. ii) *Precision is an inferred
+temperature.* We called the temperature of @eq-post-tilt a genuine dial,
+chosen by the designer (@sec-post-tilt). Active inference gives $\gamma$ a
+prior and infers it, and the inferred value has a neural correlate (@sec-fep-core-action). The temperature of a learned energy is not
+identifiable when the family is closed under rescaling (@sec-max-def-family); $\gamma$ escapes this because $G$ is measured in nats,
+on a fixed scale. iii) *The case without preferences.* If $\tilde p$ is flat
+and $E$ uniform, $q(\pi) \propto e^{\gamma I_\pi(S; O)}$ — a pure explorer
+that Gibbs-tilts by information gain.
+
+### The closed loop and the information ceiling {#sec-fep-ceiling}
+
+What Type III buys can be stated precisely with the ceiling of @sec-min-ceiling, which says that a self-referential training loop cannot
+create information about the truth: if every update uses only the model's own
+samples and a frozen equivalence relation, then
+$I(\pi_T; a^\star \mid \pi_0, q, \sim) = 0$, and supervision breaks the chain
+only because the verifier's reward makes the trained policy a function of the
+answer as well. Active inference breaks the chain in the same way, and this
+is, we think, the cleanest statement of what the closed loop is for. An
+observation $o \sim p(o \mid s^\star, \pi)$ depends on the *true* hidden
+state $s^\star$, so the agent's beliefs are not a function of themselves
+alone. Moreover, if the agent's model is correct, the epistemic term
+$I_\pi(S; O)$ is exactly the expected information, in nats, that the world
+deposits into the beliefs under the policy $\pi$. The epistemic value of @eq-fep-efe therefore measures precisely the quantity that is missing from
+the ceiling of @sec-min-ceiling.
+
+The dividing line is then clear. The self-referential methods of @sec-min-entropy are open-loop, and their rewards come from the model itself;
+perception and learning under the FEP are closed-loop and spend the incoming
+information honestly at $T = 1$; and action of Type III goes out to acquire
+it. The good regulator theorem of cybernetics says, as its title has it, that
+every good regulator of a system must be a model of that system
+[@conant1970good]; the closed loop is where that model is put to the test of
+the world. Type III is also where the FEP meets the agents of the present:
+the context acquisition of Dutta et al. (@sec-fep-ai), with inference inside
+and the choice of data outside, is exactly the structure of @eq-fep-typeIII
+[@dutta2026context], and among the objectives that the action–perception
+divergence of Hafner et al. derives from one principle — representation
+learning, information gain, empowerment, and skill discovery
+[@hafner2020divergence] — information gain is the one that @eq-fep-typeIII
+names.
+
+### Self-referential tilts: learned preferences and habits {#sec-fep-selfref}
+
+Two ingredients of the tilt @eq-fep-policy, the habits $E$ and the
+preferences $\tilde p$, may themselves be learned from the agent's own
+behaviour, and this is where the one failure mode of the chapter appears. We
+observed in @sec-post-self that an external reward tilts the reference toward
+what the world values, whereas an internal one tilts it toward what the model
+already believes. Active inference has two places where an internal reward
+can appear: habits, where $E$ reflects how often a policy has been chosen
+before [@smith2022tutorial; @friston2016learning], and learned preferences,
+where $\tilde p$ is estimated from experience [@sajid2021pepper]. The two
+behave differently, and the difference is instructive.
+
+::: {.callout-note title="Proposition 5 (critical precision for learned preferences)"}
+Let there be $K$ actions, each deterministically yielding its own outcome, so
+that $G(a) = -\log \tilde p(o_a)$ and $q(a) \propto \tilde p(o_a)^{\gamma}$.
+Let the preferences have a fixed and a learned part,
+$\tilde p = (1 - w)\, p + w\, u$ with $u$ uniform, where $p$ tracks the
+agent's own outcomes, $p_{t+1} = (1 - \lambda)\, p_t + \lambda\, q_t$ for
+$0 < \lambda \le 1$. Then i) $q$ minimizes
+$\mathrm{KL}(q \Vert \tilde p) + (1 - 1/\gamma) H(q)$; and ii) the balanced
+point $p = u$ is linearly stable if and only if $\gamma(1 - w) < 1$, i.e.,
+
+$$
+\gamma_c = \frac{1}{1 - w}, \qquad T_c = 1 - w ,
+$$ {#eq-fep-gammac}
+
+independently of $K$ and $\lambda$.
+:::
+
+Part i) follows because $q \propto \tilde p^{\gamma}$ minimizes
+$\mathrm{CE}(q, \tilde p) - \gamma^{-1} H(q)$ and
+$\mathrm{CE} = \mathrm{KL} + H$. For ii), put $p = u + \varepsilon$ with
+$\sum_a \varepsilon_a = 0$; then $\tilde p = u + (1 - w)\varepsilon$, and to
+first order $q_a = 1/K + \gamma(1 - w)\, \varepsilon_a$, so that
+$\varepsilon_{t+1} = \big[1 - \lambda\big(1 - \gamma(1 - w)\big)\big]
+\varepsilon_t$. The reading of i) is the point. At $\gamma = 1$ the objective
+is pure fairness to the preferences and any $q = \tilde p$ is
+self-consistent: this is the neutral point. For $\gamma > 1$ an entropy term
+of positive weight $1 - 1/\gamma$ appears, which is minimum-entropy learning
+at the level of policies, and if the preferences then follow the agent's own
+behaviour, this is exactly the self-referential tilt of @sec-min-collapse.
+With $w = 0$ the critical precision is $\gamma_c = 1$, the Bayesian value.
+
+**Example 4 (learned preferences).** We take $K$ rooms, room 0 being dark,
+and iterate the dynamics of Proposition 5. The numerics agree with @eq-fep-gammac: from a balanced start the symmetric state breaks at
+$\gamma = 1.005$, $1.255$, and $2.005$ for $w = 0$, $0.2$, and $0.5$, on a
+grid of step $0.005$, against the predicted $1$, $1.25$, and $2$. For
+$w > 0$ the picture is that of @eq-min-selfconsistent. At $K = 2$ the
+transition is continuous; for $K \ge 3$ a collapsed state reached from a
+committed start remains stable below $\gamma_c$, giving a hysteresis window
+— $[1.225, 1.25]$ and $[1.87, 2.0]$ at $K = 4$ for $w = 0.2$ and $0.5$ —
+across which the largest probability jumps by about $0.49$ and $0.52$ (@fig-fep-preferences b): a continuous transition at $K = 2$ and a
+first-order transition with hysteresis of mean-field Potts type for
+$K \ge 3$ [@wu1982potts]. The case $w = 0$ is degenerate. The fixed points
+of $p \mapsto p^{\gamma}/\sum_a p_a^{\gamma}$ are the distributions uniform
+on a subset of the actions, since $p_a = p_a^{\gamma}/Z$ forces
+$p_a^{\gamma - 1} = Z$ on the support; the balanced state loses stability at
+$\gamma = 1$ exactly where the collapsed ones gain it, so the largest
+probability jumps from $1/K$ to $1$ at $\gamma_c = 1$ for every $K$, with no
+window. The time courses make it concrete. With $K = 4$, $w = 0$, and the
+dark room ahead by 5 per cent,
+$q_t(\text{dark})$ returns from $0.257$ to $0.250$ at $\gamma = 0.8$, stays
+at $0.259$ at $\gamma = 1$, and rises to $0.994$ within 400 steps at
+$\gamma = 1.25$ (@fig-fep-preferences a).
+
+![Learned preferences as a self-referential tilt (Example 4). (a) Time courses of $q_t(\text{dark})$ for $K = 4$ and $w = 0$, with the dark room ahead by 5 per cent; (b) the resting value of the largest probability against the precision at $K = 4$, from a balanced start (solid) and a committed start (dashed), with $\gamma_c = 1/(1 - w)$ dotted and the hysteresis windows shaded. Produced by `code/fep-examples.py`.](../figures/fep-preferences.png){#fig-fep-preferences width="100%"}
+
+So the dark room returns, but by a different door than the critics supposed.
+Fixed preferences rule it out, as @tbl-fep-tmaze shows. Preferences learned
+from one's own behaviour bring it back above a critical precision: the agent
+learns to prefer what it happened to do more often, and then does it with
+more confidence. Habits, by contrast, do not collapse in this way. If
+$\tilde p$ is fixed and $E$ tracks past choices, then $q \propto E$ whenever
+the policies have equal $G$, so $E$ enters the softmax with unit weight,
+exactly at the neutral point — self-consistent but not amplifying. Collapse
+requires the precision to amplify an internal reward beyond one. In both
+cases it is the position of the precision relative to $T = 1$ that decides
+whether a self-referential tilt keeps its diversity, which is the counterpart
+of the critical value of @sec-min-collapse.
+
+We should be plain about the status of this example. It is a toy model
+constructed for this chapter, not a reproduction of any published agent; it
+exhibits a possible failure mode, not an observed one.
+
+### Schrödinger, steady states, and the maximum-entropy duality {#sec-fep-duality}
+
+The reading of Schrödinger in @sec-min-schrodinger stresses that he describes
+a stationary and fairly low entropy level — a balance, not a minimization —
+and warns against transplanting thermodynamic theorems onto the Shannon
+entropy of a predictive distribution. The entropic claim of @sec-fep-blankets
+is compatible with that warning, provided it is read with the same care.
+
+The claim is that the long-term average of surprise is an entropy, so that
+minimizing free energy by selectively sampling the world bounds the entropy
+of the sensory states [@friston2013life]. In the language of @sec-minimax-entropy the average surprise is a cross-entropy,
+$\mathbb{E}_p[-\log p_m] = H(p) + \mathrm{KL}(p \Vert p_m) \ge H(p)$, which
+is the identity behind the "closest to the truth" view, and which for a
+maximum-entropy model at its maximum-likelihood fit also equals the model's
+own entropy (@eq-max-bridge). Bounding the entropy therefore means that a
+cross-entropy bounds the true entropy from above. It does not mean that
+anything is pushed toward zero. And if the agent changes its sensory
+distribution by acting, the first term of
+$H(p^\pi) + \mathrm{KL}(p^\pi \Vert p_m)$ would reward the dark room — which
+is exactly the term that the risk of @eq-fep-efe removes, as Example 2
+showed.
+
+The duality between the FEP and the constrained maximum entropy principle (@sec-fep-blankets) is where the physics of the FEP comes closest to this
+book, since @sec-max-entropy is the maximum-entropy side of it
+[@ramstead2023bayesian; @sakthivadivel2022geometry], and at the level of
+paths the counterpart is the principle of maximum caliber
+[@presse2013maxcal]. It is a conditional closeness, and the conditions are
+under discussion (@sec-fep-critiques): it has been argued that the premises
+of the blanket construction hold, even for linear stochastic systems, only
+in a narrow region of parameter space [@aguilera2022particular], that
+crucial steps of the original derivation needed assumptions that had not
+been stated [@biehl2021critique], and that the relation between the
+mathematical construct and the biological entities it is read onto needs
+premises which the mathematics does not by itself supply
+[@bruineberg2022emperor; @raja2021blanket; @colombo2021first]; the replies
+and the later formulations are cited there. Whatever the outcome, we record
+the Markov-blanket claims as *not derivable* from anything in this book:
+they need assumptions about dynamics — a Langevin equation, sparse
+coupling, a steady state — and about a partition, the Markov blanket, that
+the book does not contain, and we would discourage the reader from treating
+them as though they followed from it. The translations of @sec-fep-one to @sec-fep-selfref do not depend on them.
+
+Two physical connections stand on firmer ground and deserve mention for that
+reason. Still et al. show that the non-predictive information retained by a
+stochastically driven system — the inefficiency of its implicit model — is
+equivalent to thermodynamic dissipation, so that a system which keeps memory
+about its environment and runs at maximal energetic efficiency must be
+predictive [@still2012thermodynamics]. Ortega and Braun write
+bounded-rational decision-making as a free energy trading expected utility
+against information-processing cost measured in relative entropy
+[@ortega2013thermodynamics]. The first gives prediction a thermodynamic
+meaning that needs no Markov blanket; the second is the decision-theoretic
+reading of the Gibbs tilts of @sec-max-entropy and @sec-post-training — a
+free energy of the first kind, in the sense of @sec-fep-one.
+
+### The correspondence at a glance {#sec-fep-corr}
+
+The translations of this section are collected in @tbl-fep-corr, each with
+its status.
+
+| In the FEP | In this book | Status |
+|------------------------------|----------------------------------------|----------------------|
+| variational free energy $F[q; o]$ | @eq-max-def-free with $h = p(s)$, $T = 1$ | identity (Proposition 1) |
+| perception: minimize $F$ over $q$ | inference over a maximum-entropy model, levels i)–ii) of @sec-max-definition | identity |
+| precision of a Gaussian likelihood | temperature of the likelihood term | identity |
+| predictive coding | the $T \to 0$ mode with a Laplace correction | approximation |
+| learning (EM) | maximum-entropy learning with missing data; $T = 1$ on the dial of @sec-minimax-label-temperature; Type I on the completed data | identity (Proposition 2) |
+| model evidence, complexity | Type I with a cost on the parameters; MDL, bits-back | correspondence |
+| risk plus ambiguity | fairness to $\tilde p$ plus firmness (@sec-min-history) | identity (Proposition 3) |
+| epistemic value | Type III (proposed); InfoMax; Lindley's information | new reading |
+| $q(\pi) = \sigma(\log E - \gamma G)$ | the Gibbs tilts @eq-min-gibbs, @eq-post-tilt | identity (Proposition 4) |
+| precision $\gamma$ | an inverse temperature that is inferred | correspondence |
+| closed loop | breaks the information ceiling of @sec-min-ceiling | new reading |
+| learned preferences, habits | self-referential tilt, @eq-min-selfconsistent | new (Proposition 5, Example 4) |
+| average surprise bounds entropy | cross-entropy bounds entropy, the views of @sec-minimax-entropy | identity, with a caveat |
+| Markov blankets, steady states | none; the maximum-entropy duality is the nearest point | not derivable |
+
+: The correspondence between the free-energy principle and this book. {#tbl-fep-corr}
+
+## Takeaway {#sec-fep-takeaway}
+
+The principle itself can be summarized in three sentences. The FEP says that
+a persisting system minimizes a variational bound on the surprise of its
+sensations, by perception, by learning, and by action; active inference
+scores actions by an expected free energy that combines a preference term
+with an information-gain term and selects among them by a
+precision-weighted softmax; and the physical claim that any system with a
+Markov blanket does this is contested in detail, whereas the mathematics of
+the first two sentences is not.
+
+
+At its foundation, the translation is an exact identity.
+The free energy of the FEP is
+the free energy of this book at $T = 1$ (Proposition 1), and nearly
+everything else follows from asking which base measure, which temperature,
+and which outer problem is in force. Perception is inference over a
+maximum-entropy model with no learner, and predictive coding is its
+zero-temperature mode with a Laplace correction. Learning is maximum-entropy
+learning with missing data, and its average free energy is the entropy of
+the world model minus the entropy of the inferred causes (Proposition 2) —
+Type I on the completed data, sitting at the $T = 1$ end of the dial of @sec-minimax-label-temperature rather than committing like Type II. Model
+selection is Type I with a cost in nats. The posterior over policies is a
+Gibbs tilt (Proposition 4), the same object as @eq-post-tilt with the
+precision as an inverse temperature that is, unusually, inferred rather than
+chosen. 
+We note that the physics of Markov blankets and non-equilibrium steady states cannot be derived from the framework developed here.
+
+
+Two things in the chapter are not translations. The first is Type III: the
+expected free energy is firm but fair (Proposition 3) with the action, not
+the classifier, as the optimized variable, and this is an outer problem the
+book did not have — the one in which the data are not given but fetched (@tbl-fep-types). It is also what breaks the information ceiling of @sec-min-ceiling, since the epistemic value measures exactly the information
+the world deposits into the beliefs. 
+The second concerns the failure mode: when preferences are learned from one’s own predicted behaviour, setting the precision above its Bayesian value can re-open the dark room through a first-order transition (Proposition 5). This illustrates how the collapse mechanism described in @sec-min-collapse resurfaces within a theory that was originally intended to rule out such pathologies.
+
+
+Significant open questions remain. The definition of expected free energy is not unique, and there is currently no consensus on a criterion for selecting among the various objectives proposed for this role [@millidge2021whence; @parr2019generalised; @champion2024reframing]. Whether recent approaches that recast planning as free-energy minimization within an expanded model framework [@devries2025efe; @nuijten2026efe] can provide such a criterion is, in our view, a key issue for future research.
+Proposition 5 is proved for a model without hidden states, and the collapse
+condition for learned preferences in a model that has them is unknown. Type
+III invites a concrete programme for agents that acquire their own context
+[@dutta2026context], where the question is whether the expected posterior
+entropy of @eq-fep-typeIII is a usable objective at scale or merely a correct
+one. And the label temperature of @eq-fep-learning-minimax still has no
+schedule: this chapter shows that the FEP pins it at one, which is a
+principled choice, but @sec-minimax-entropy leaves open whether anything
+better is available when the goal is to commit.

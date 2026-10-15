@@ -28,7 +28,7 @@ profile:
   group:
     - [site, pdf, pdf2]
 
-bibliography: references.bib
+bibliography: [references.bib, references-fep.bib]
 
 language:
   title-block-published: "Released"
