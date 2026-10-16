@@ -5,15 +5,14 @@ date-modified: last-modified
 
 # From Entropy-Based Learning to the Free-Energy Principle {#sec-fep}
 
-The free-energy principle (FEP) is the most ambitious claim in this
-neighbourhood of ideas: that perception, learning, action, and — in its
+The free-energy principle (FEP) is one of the most ambitious claims related to intelligence: that perception, learning, action, and — in its
 strongest form — the persistence of living things are all one optimization.
 It was developed in theoretical neuroscience, largely by Friston and
 collaborators [@friston2005theory; @friston2006free; @friston2010free], and
 it is usually presented in a vocabulary of its own. 
 This chapter examines the connection of the free-energy principle in the terms and concepts developed throughout this book.
 Some of the FEP is an
-identity with material we have already derived: it is @eq-max-def-free at
+identity with material of entroy-based learning: it is @eq-max-def-free at
 $T = 1$, read in a particular way. Some of it is a correspondence, close
 enough to be illuminating but not a theorem. 
 Other aspects — such as the physics of Markov blankets and non-equilibrium steady states — stand apart from the framework developed in this book, and we will make that distinction clear.
@@ -28,17 +27,18 @@ does not: its outer problem chooses *what to observe*.
 We propose that this constitutes a third distinct type of outer problem, as described in @sec-minimax-two-questions—precisely the kind that has been absent from the rest of the book. Making this explicit serves to clarify the structure and implications on both fronts.
 
 
-Because the principle will be unfamiliar to many readers of this book, the
+Because the principle might be unfamiliar to many readers of this book, the
 chapter is arranged in four parts. The first, @sec-fep-foundations, presents
 the FEP on its own terms and in its own notation — where it came from, what
 it says about perception, learning, and action, and the physical claims that
-were later built on it — with two worked examples, of perception and of
+were later built on it — with worked examples, of perception and of
 planning. The second, @sec-fep-recent, surveys the developments of the field
-since 2019, critiques included. 
+since 2019, debates included. 
 The third section, @sec-fep-connections, acts as a bridge: it clarifies which aspects of the free-energy principle are mathematically identical to the free energy discussed in @sec-free-energy, which aspects are related but only by analogy, and which fall outside both categories. To illustrate these connections, it adds two additional examples—one focused on learning processes, and another on the case where preferences themselves are subject to learning.
 The fourth, @sec-fep-takeaway, collects what the translation establishes
 and what it leaves open. The numbers in all four examples come from
 `code/fep-examples.py`.
+
 
 ## Foundations of the free-energy principle {#sec-fep-foundations}
 
